@@ -1,0 +1,179 @@
+<ngx-spinner></ngx-spinner>
+
+<!-- Listado de invitados -->
+<p-toolbar styleClass="p-mb-4">
+	<ng-template pTemplate="left">
+		<button pButton pRipple label="Agregar Mesas" icon="pi pi-plus" class="p-button-success p-mr-2"
+			(click)="openNewTableByNumber()"></button>
+	</ng-template>
+</p-toolbar>
+
+<!-- Datatable de mesas y sillas -->
+
+<p-table #dt [value]="tables" [rows]="10" [paginator]="true" [globalFilterFields]="['name','code']"
+	responsiveLayout="scroll" [(selection)]="selectedTables" [rowHover]="true" dataKey="id" 
+	currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+	<ng-template pTemplate="caption">
+		<div class="p-d-flex p-ai-center p-jc-between">
+			<h5 class="p-m-0">Administrar Mesas</h5>
+			<span class="p-input-icon-left">
+				<i class="pi pi-search"></i>
+				<input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+					placeholder="Buscar..." />
+			</span>
+		</div>
+	</ng-template>
+	<ng-template pTemplate="header">
+		<tr>
+			<th style="width: 3rem"></th>
+			<th pSortableColumn="name">Detalle <p-sortIcon field="name"></p-sortIcon>
+			</th>
+			<th pSortableColumn="code">Código <p-sortIcon field="price"></p-sortIcon>
+			</th>
+			<th></th>
+			<th></th>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-table let-expanded="expanded">
+		<tr>
+			<td>
+				<button type="button" pButton pRipple [pRowToggler]="table"
+					class="p-button-text p-button-rounded p-button-plain"
+					[icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+			</td>
+			<td>{{table.name}}</td>
+			<td>{{table.code}}</td>
+			<td>
+				<button pButton pRipple label="Agregar sillas" class="p-button-success p-button-text"
+					(click)="addChairs(table)"></button>
+			</td>
+			<td>
+				<button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+					(click)="editTable(table)"></button>
+				<button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+					(click)="deleteTable(table)"></button>
+			</td>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="rowexpansion" let-table>
+		<tr>
+			<td colspan="4">
+				<div class="p-3">
+					<p-table [value]="table.chairs" dataKey="id">
+						<ng-template pTemplate="header">
+		<tr>
+			<th></th>
+			<th pSortableColumn="name">Nombre <p-sortIcon field="name"></p-sortIcon>
+			</th>
+			<th pSortableColumn="code">Código <p-sortIcon field="code"></p-sortIcon>
+			</th>
+			<th pSortableColumn="user">Usuario <p-sortIcon field="user"></p-sortIcon>
+			</th>
+			<th style="width: 4rem"></th>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-chair>
+		<tr>
+			<td></td>
+			<td>{{chair.name}}</td>
+			<td>{{chair.code}}</td>
+			<td *ngIf="chair?.user">{{chair.user.name}}</td>
+			<td *ngIf="chair?.user==null">Silla no asignada...</td>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="emptymessage">
+		<tr>
+			<td colspan="6">No hay sillas para esta mesa todavía</td>
+		</tr>
+	</ng-template>
+</p-table>
+</div>
+</td>
+</tr>
+</ng-template>
+</p-table>
+
+<!-- fin del datatable -->
+
+
+<!-- Modal del invitado -->
+<p-dialog [(visible)]="tableDialog" [style]="{width: '450px'}" header="" [modal]="true" styleClass="p-fluid">
+	<ng-template pTemplate="content">
+		<form [formGroup]="formTable" (ngSubmit)="onSubmitTable()">
+
+			<div class="p-field">
+				<input id="name" type="name" aria-describedby="username1-help" pInputText formControlName="name"
+					placeholder="Detalle de la mesa" />
+			</div>
+			<br>
+			<div class="p-field">
+				<input id="code" type="code" aria-describedby="code-help" pInputText formControlName="code"
+					placeholder="Código" />
+			</div>
+			<br>
+			<button type="submit" pButton pRipple label="Aceptar" icon="pi pi-save"
+				class="p-button-success p-button-raised"></button>
+		</form>
+	</ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="tableByNumberDialog" [style]="{width: '450px'}" [modal]="true" styleClass="p-fluid">
+	<ng-template pTemplate="content">
+		<div class="grid p-fluid">
+			<div class="field col-12 md:col-3">
+				<label for="minmax-buttons">Número de mesas</label>
+			</div>
+			<div class="field col-12 md:col-3">
+				<p-inputNumber [(ngModel)]="number" mode="decimal" [showButtons]="true" inputId="minmax-buttons"
+					[min]="0" [max]="20">
+				</p-inputNumber>
+			</div>
+		</div>
+		<br>
+		<br>
+		<div>
+			<button pButton pRipple label="Aceptar" class="p-button-success p-button-raised"
+				(click)="onSubmitTableByNumber(number)"></button>
+		</div>
+	</ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="chairDialog" [style]="{width: '450px'}" header="" [modal]="true" styleClass="p-fluid">
+	<ng-template pTemplate="content">
+		<form [formGroup]="formChair" (ngSubmit)="onSubmitChair()">
+			<div class="p-field">
+				<input id="name" type="name" aria-describedby="username1-help" pInputText formControlName="name"
+					placeholder="Detalle de la silla" />
+			</div>
+			<br>
+			<div class="p-field">
+				<input id="code" type="code" aria-describedby="code-help" pInputText formControlName="code"
+					placeholder="Código" />
+			</div>
+			<br>
+			<button type="submit" pButton pRipple label="Aceptar" icon="pi pi-save"
+				class="p-button-success p-button-raised"></button>
+		</form>
+	</ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="chairByNumberDialog" [style]="{width: '450px'}" [modal]="true" styleClass="p-fluid">
+	<ng-template pTemplate="content">
+		<div class="grid p-fluid">
+			<div class="field col-12 md:col-3">
+				<label for="minmax-buttons">Número de sillas</label>
+			</div>
+			<div class="field col-12 md:col-3">
+				<p-inputNumber [(ngModel)]="number" mode="decimal" [showButtons]="true" inputId="minmax-buttons"
+					[min]="0" [max]="20">
+				</p-inputNumber>
+			</div>
+		</div>
+		<br>
+		<br>
+		<div>
+			<button pButton pRipple label="Aceptar" class="p-button-success p-button-raised"
+				(click)="storeChairs(number)"></button>
+		</div>
+	</ng-template>
+</p-dialog>

@@ -1,0 +1,24 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400&display=swap" rel="stylesheet">
+
+
+<div id="container" class="card p-field col-6 md:col-6" style="margin:auto; text-align:center; margin-top:125px">
+	<form [formGroup]="formLogin" (ngSubmit)="onSubmitLogin($event)" class="form mt-3">
+		<h5>Login</h5>
+		<div class="p-fluid md:col-8" style="margin:auto">
+			<input formControlName="email" class="form-control" type="text" pInputText placeholder="Correo">
+		</div>
+		<br>
+		<div class="p-fluid md:col-8" style="margin:auto">
+			<p-password formControlName="password" class="form-control" [toggleMask]="true" [feedback]="false" type="password" placeholder="Contraseña">
+			</p-password>
+		</div>
+		<br>
+		<div class="p-field">
+			<button id="btnlogin" pButton pRipple type="button" label="Login"
+				class="p-button-text p-button-plain" type="submit"></button>
+		</div>
+	</form>
+</div>
+<br>

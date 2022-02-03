@@ -1,0 +1,185 @@
+<ngx-spinner></ngx-spinner>
+
+<!-- Listado de invitados -->
+<p-toolbar styleClass="p-mb-4">
+	<ng-template pTemplate="left">
+		<button pButton pRipple label="Nuevo Invitado" class="p-button-success p-mr-2" (click)="openNewUser()"></button>
+	</ng-template>
+	<ng-template pTemplate="right">
+		<button pButton pRipple label="Importar Data" class="p-button-success p-mr-2"
+			(click)="openImportData()"></button>
+	</ng-template>
+</p-toolbar>
+
+
+
+<p-table #dt [value]="users" [rows]="10" [paginator]="true"
+	[globalFilterFields]="['chair.name', 'chair.table.name' , 'name', 'email']" responsiveLayout="scroll"
+	[(selection)]="selectedUsers" [rowHover]="true" dataKey="id"
+	currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+	<ng-template pTemplate="caption">
+		<div class="p-d-flex p-ai-center p-jc-between">
+			<h5 class="p-m-0">Administrar Invitados</h5>
+			<!-- <span class="p-input-icon-left">
+				<i class="pi pi-search"></i>
+				<input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+					placeholder="Search..." />
+			</span> -->
+		</div>
+	</ng-template>
+	<ng-template pTemplate="header">
+		<tr>
+			<th pSortableColumn="name">Nombre Completo<p-sortIcon field="name"></p-sortIcon>
+			</th>
+			<th pSortableColumn="email">Correo<p-sortIcon field="email"></p-sortIcon>
+			</th>
+			<th>Status</th>
+			<th>Silla</th>
+			<th></th>
+			<th></th>
+		</tr>
+		<tr>
+			<th>
+				<p-columnFilter type="text" field="name" [matchMode]="'contains'" placeholder="Buscar...">
+				</p-columnFilter>
+			</th>
+			<th>
+				<p-columnFilter type="text" field="email" [matchMode]="'contains'" placeholder="Buscar...">
+				</p-columnFilter>
+			</th>
+			<th>
+				<p-dropdown [options]="tables" (onChange)="dt.filter($event.value, 'chair.table.name', 'equals')"
+					styleClass="p-column-filter" placeholder="Select Table" [showClear]="true">
+					<ng-template let-option pTemplate="item">
+						<span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
+					</ng-template>
+				</p-dropdown>
+			</th>
+			<th>
+				<p-dropdown [options]="chairs" (onChange)="dt.filter($event.value, 'chair.name', 'equals')"
+					styleClass="p-column-filter" placeholder="Select Chair" [showClear]="true">
+					<ng-template let-option pTemplate="item">
+						<span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
+					</ng-template>
+				</p-dropdown>
+			</th>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-user>
+		<tr>
+			<td>{{user.name}}</td>
+			<td>{{user.email}}</td>
+			<td *ngIf="user?.chair">{{user.chair.table.name}}</td>
+			<td *ngIf="user?.chair==null">
+				<div> </div>
+			</td>
+			<td *ngIf="user?.chair">
+				{{user.chair.name}}
+			</td>
+			<td *ngIf="user?.chair==null">
+				<button pButton pRipple label="Asignar silla" class="p-button-outlined p-button-success"
+					(click)="addChair(user)"></button>
+			</td>
+			<td>
+				<button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+					(click)="editUser(user)"></button>
+				<button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+					(click)="deleteUser(user)"></button>
+			</td>
+
+		</tr>
+	</ng-template>
+</p-table>
+
+<!-- Modal del invitado -->
+<p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" header="Informacion del invitado" [modal]="true"
+	styleClass="p-fluid">
+	<ng-template pTemplate="content">
+		<form [formGroup]="formUser" (ngSubmit)="onSubmitUser()">
+
+			<div class="p-field">
+				<input id="name" type="name" aria-describedby="username1-help" pInputText formControlName="name"
+					placeholder="Nombres y apellidos" />
+				<small id="username1-help">*Por favor ingrese su nombres y apellidos</small>
+			</div>
+			<br>
+			<div class="p-field">
+				<input id="email" type="email" aria-describedby="email-help" pInputText formControlName="email"
+					placeholder="Correo" />
+				<small id="email-help">*Por favor ingrese su correo</small>
+			</div>
+			<br>
+			<div class="p-field" *ngIf="setPassword">
+				<p-password formControlName="password" class="form-control" [toggleMask]="true"
+					aria-describedby="password-help" [feedback]="false" type="password" placeholder="Contraseña">
+				</p-password>
+				<small id="password-help">*Por favor ingrese una contraseña</small>
+			</div>
+			<br>
+			<div class="p-field" *ngIf="setPassword">
+				<p-password formControlName="password_confirmation" class="form-control" [toggleMask]="true"
+					aria-describedby="password-confirmation-help" [feedback]="false" type="password"
+					placeholder="Confirmar contraseña">
+				</p-password>
+				<small id="password-confirmation-help">*Por favor confirme la contraseña</small>
+
+			</div>
+			<button type="submit" pButton pRipple label="Aceptar" icon="pi pi-save"
+				class="p-button-success p-button-raised"></button>
+		</form>
+	</ng-template>
+</p-dialog>
+
+<!-- Modal de agregar silla -->
+
+<p-dialog (onHide)="tableSelected=false" [(visible)]="chairDialog" [style]="{height: '350px', width: '300px'}" header=""
+	[modal]="true" styleClass="p-fluid">
+	<ng-template pTemplate="content">
+		<form [formGroup]="formChair" (ngSubmit)="onSubmitChair()">
+
+			<div class="p-field">
+				<p-dropdown [options]="tables" (onChange)="selectTable($event)" placeholder="Seleccione una mesa"
+					optionLabel="name" [showClear]="true"></p-dropdown>
+			</div>
+			<br>
+			<div class="p-field" *ngIf="tableSelected">
+				<p-dropdown [options]="chairsById" (onChange)="selectChair($event)" placeholder="Seleccione una silla"
+					optionLabel="name" [showClear]="true"></p-dropdown>
+			</div>
+			<div>
+			</div>
+			<br>
+
+			<button type="submit" pButton pRipple label="Aceptar" icon="pi pi-save"
+				class="p-button-success p-button-raised"></button>
+		</form>
+	</ng-template>
+</p-dialog>
+
+<!-- import data dialog -->
+
+<p-dialog [(visible)]="importDataDialog" header="Import Data" [style]="{width: '50vw'}" [modal]="true"
+	styleClass="p-fluid">
+	<ng-template pTemplate="content">
+		<div><input id="file-upload" type="file" (change)="fileUpload($event)" name="fileUpload" accept=".xls, .xlsx">
+			<label for="file-upload" id="file-drag"></label>
+		</div>
+		<br>
+		<p-table *ngIf="importedData" [value]="importedData" responsiveLayout="scroll">
+			<ng-template pTemplate="header">
+				<tr>
+					<th>Nombres</th>
+					<th>Email</th>
+				</tr>
+			</ng-template>
+			<ng-template pTemplate="body" let-imported>
+				<tr>
+					<td>{{imported.name}}</td>
+					<td>{{imported.email}}</td>
+				</tr>
+			</ng-template>
+		</p-table>
+		<button pButton pRipple label="Importar Informacion" class="p-button-success p-mr-2"
+			(click)="onSubmitImport()"></button>
+	</ng-template>
+</p-dialog>
