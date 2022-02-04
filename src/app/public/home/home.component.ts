@@ -176,16 +176,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   storeUser(user: User) {
-    this.userService.store('register', { 'user': user })
+    this.userService.store('add-user', { 'user': user })
       .subscribe(response => {
         this.getGuests();
       });
   }
 
   importData(data: Array<any>) {
+    this.spinner.show()
     this.userService.store('import-users', {data: data})
     .subscribe(response => {
       this.getGuests();
+      this.spinner.hide();
     });
   }
 
@@ -210,14 +212,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   onSubmitUser() {
-    this.spinner.show();
     if (this.formUser.valid) {
       this.submitted = true;
       if (this.userIdField.value) {
         this.updateUser(this.formUser.value);
         this.formUser.reset();
         this.userValue = false;
-        this.spinner.hide();
         //this.messageService232.successUnit();
       }
       else {
@@ -225,18 +225,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.storeUser(this.formUser.value);
         this.formUser.reset();
         this.userValue = false;
-        this.spinner.hide();
       }
       this.userDialog = false;
     } else {
-      this.spinner.hide();
       //this.messageService232.invalidFields();
     }
   }
 
   onSubmitImport() {
     //this.convertedJson = JSON.stringify(this.importedData, undefined, 4)
-    console.log(this.importedData);    
+    console.log(this.importedData);   
     this.importData(this.importedData);
     this.importDataDialog= false;
   }
@@ -247,6 +245,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.formChair.reset();
     this.tableSelected= false;
     this.chairDialog= false;
+  }  
+
+  removeChair(user: User) {
+    this.formChair.patchValue(user.chair);    
+    this.formChair.patchValue({ user: null });
+    this.updateChair(this.formChair.value);
+    this.formChair.reset();
+    this.tableSelected= false;
   }  
 
   fileUpload(event:any) {    

@@ -45,27 +45,29 @@ export class LoginComponent implements OnInit {
 
   onSubmitLogin(event: Event) {
     event.preventDefault();
+    this.spinner.show();
     if (this.formLogin.valid) {
-      this.login();
+      this.login().subscribe(response=>{
+        this.spinner.hide();
+      })
     } else {
       console.log('error');
+      this.spinner.hide();
     }
   }
 
   login() {
-    this.spinner.show();
     this.loginHttpService.login(this.formLogin.value).subscribe(
       (result:any) => {
         localStorage.setItem('token', result.data.token);
         this.router.navigate(['/home']); 
-        this.spinner.hide();  
       },
       error => {
         console.log('error');
         console.log(error);
-        this.spinner.hide();                
       }
     );
+    return null;
   }
 
   logout() {

@@ -1,3 +1,4 @@
+import { Chair } from "../table-management/chair";
 
 export interface User {
     /*id?: number;
@@ -13,6 +14,7 @@ export interface User {
     email?: string;
     password?: string;
     password_confirmation?: string;
+    chair?: Chair;
     roles?: string;
 
 }

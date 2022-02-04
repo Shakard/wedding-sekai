@@ -1,11 +1,11 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-export const URL_API = 'http://localhost/wedding_api/public/api/';
+export const URL_API = 'http://localhost/Wedding-backend/public/api/';
 
 export const environment = {
   production: false,
-  URL_API_LOCAL : 'http://localhost/wedding_api/public/api/',
+  URL_API_LOCAL : 'http://localhost/Wedding-backend/public/api/',
   API_URL_TABLE_MANAGEMENT: URL_API + 'table-management/',
 };
 
