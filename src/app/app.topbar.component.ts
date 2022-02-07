@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppMainComponent } from './app.main.component';
-import { Subscription } from 'rxjs';
+import { delay, firstValueFrom, Subscription } from 'rxjs';
 import { MenuItem } from 'primeng/api';
 import { User } from './models/auth/user';
 import { Router } from '@angular/router';
 import { LoginComponent } from './public/login/login.component';
 import { LoginHttpService } from './services/login/login-http.service';
 import { UserService } from './services/user/user.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
     selector: 'app-topbar',
@@ -16,17 +17,18 @@ import { UserService } from './services/user/user.service';
 export class AppTopBarComponent implements OnDestroy, OnInit {
 
     subscription: Subscription;
-    loggedIn;
+    loggedIn: any;
     items: MenuItem[];
     user: User;
 
     constructor(public app: AppComponent, public appMain: AppMainComponent,
         private loginComponent: LoginComponent,
-        private userService: UserService
+        private userService: UserService,
+        private spinner: NgxSpinnerService
     ) { }
 
     ngOnInit(): void {
-        this.getLoggedUser();                
+           this.getLoggedUser();
     }
 
     ngOnDestroy() {
@@ -35,14 +37,15 @@ export class AppTopBarComponent implements OnDestroy, OnInit {
         }
     }
 
-    public getLoggedUser(){     
-        this.userService.getLoggedUser().subscribe(response => {
-          this.user = response['data']
+    public getLoggedUser() {
+        this.spinner.show();
+        firstValueFrom(this.userService.getLoggedUser()).then(response => {
+            this.user = response['data']
+            this.spinner.hide();
         });
-      }
+    }
 
     logout(): void {
-        console.log(localStorage.getItem('token')); 
         this.loginComponent.logout();
     }
 }

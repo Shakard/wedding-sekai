@@ -46,16 +46,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    /** spinner starts on init */
-    this.spinner.show();
     this.buildFormUser();
     this.buildFormTable();
     this.buildFormChair();    
-
-    setTimeout(() => {
-      /** spinner ends after 5 seconds */
-      this.spinner.hide();
-    }, 500);
   }
 
   buildFormUser() {
@@ -69,7 +62,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onChange(event) {
+  onChange(event:any) {
     console.log(event.value);
 }
 
@@ -132,8 +125,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   getChairs() {
+    this.spinner.show();
     this.userService.getChairs().subscribe(response => {
       this.chairs = response['data'];
+      this.spinner.hide();
     });
   }
 
@@ -149,22 +144,28 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }  
 
   public getGuests() {
+    this.spinner.show();
     this.userService.getGuests().subscribe(response => {
       this.users = response['data']
       console.log(this.users);
+      this.spinner.hide();
     });
   }
 
   public getTables() {
+    this.spinner.show();
     this.userService.getTables().subscribe(response => {
       this.tables = response['data']
+      this.spinner.hide();
     });
   } 
 
   updateUser(user: User) {
+    this.spinner.show();
     this.userService.update('user/' + user.id, { user })
       .subscribe(response => {
         this.getGuests();
+        this.spinner.hide();
       });
   }
 
@@ -176,9 +177,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   storeUser(user: User) {
-    this.userService.store('add-user', { 'user': user })
+    this.spinner.show()
+    this.userService.store('register', { 'user': user })
       .subscribe(response => {
         this.getGuests();
+        this.spinner.hide();
       });
   }
 

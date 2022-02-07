@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject, Subscription } from 'rxjs';
+import { delay, firstValueFrom, Subject, Subscription } from 'rxjs';
 import { User } from 'src/app/models/auth/user';
 import { LoginHttpService } from 'src/app/services/login/login-http.service';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -45,38 +45,32 @@ export class LoginComponent implements OnInit {
 
   onSubmitLogin(event: Event) {
     event.preventDefault();
-    this.spinner.show();
     if (this.formLogin.valid) {
-      this.login().subscribe(response=>{
-        this.spinner.hide();
-      })
+      this.login();
     } else {
       console.log('error');
-      this.spinner.hide();
     }
   }
 
+
+
   login() {
-    this.loginHttpService.login(this.formLogin.value).subscribe(
-      (result:any) => {
-        localStorage.setItem('token', result.data.token);
-        this.router.navigate(['/home']); 
-      },
-      error => {
-        console.log('error');
-        console.log(error);
-      }
-    );
-    return null;
+    this.spinner.show();
+    firstValueFrom(this.loginHttpService.login(this.formLogin.value)).then((result: any) => {
+      localStorage.setItem('token', result.data.token);
+      this.router.navigate(['/home']);
+    });
   }
 
   logout() {
+    this.spinner.show();
     this.loginHttpService.logout().subscribe(response => {
       localStorage.removeItem('token');
       this.router.navigate(['']);
+      this.spinner.hide();
     })
   }
- 
+
   isUserLoggedIn(): Subject<boolean> {
     return this.loggedChanged;
   }

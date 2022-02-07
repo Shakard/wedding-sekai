@@ -7,15 +7,13 @@ import { environment } from '../../../environments/environment';
 })
 export class UserService {
   url = environment.URL_API_LOCAL;
-  token = localStorage.getItem('token');
-
   constructor(private httpClient: HttpClient) { }
 
   getLoggedUser() {
     const url = this.url + 'logged-user';
     const headers = new HttpHeaders(
       {
-        'Authorization': 'Bearer ' + this.token
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     );
     return this.httpClient.get(url, { headers: headers });
@@ -25,7 +23,7 @@ export class UserService {
     const url = this.url + 'users';
     const headers = new HttpHeaders(
       {
-        'Authorization': 'Bearer ' + this.token
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     );
     return this.httpClient.get(url, { headers: headers });
@@ -35,8 +33,8 @@ export class UserService {
     const url = this.url + 'guests';
     const headers = new HttpHeaders(
       {
-        'Authorization': 'Bearer ' + this.token
-      }
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }  
     );
     return this.httpClient.get(url, { headers: headers });
   }
@@ -45,8 +43,8 @@ export class UserService {
     const url = this.url + 'tables';
     const headers = new HttpHeaders(
       {
-        'Authorization': 'Bearer ' + this.token
-      }
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }  
     );
     return this.httpClient.get(url, { headers: headers });
   }
@@ -55,7 +53,7 @@ export class UserService {
     const url = this.url + 'chairs';
     const headers = new HttpHeaders(
       {
-        'Authorization': 'Bearer ' + this.token
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     );
     return this.httpClient.get(url, { headers: headers });
@@ -65,8 +63,8 @@ export class UserService {
     const url = this.url + 'chairs-by-table/' + tableId;
     const headers = new HttpHeaders(
       {
-        'Authorization': 'Bearer ' + this.token
-      }
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }  
     );
     return this.httpClient.get(url, { headers: headers });
 }  
@@ -86,7 +84,7 @@ export class UserService {
   store(url: string, data: any, params = new HttpParams()) {
     const headers = new HttpHeaders(
       {
-        'Authorization': 'Bearer ' + this.token
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     );
     url = this.url + url;
@@ -96,7 +94,7 @@ export class UserService {
   storeByNumber(url: string) {
     const headers = new HttpHeaders(
       {
-        'Authorization': 'Bearer ' + this.token
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     );
     url = this.url + url;
@@ -106,7 +104,7 @@ export class UserService {
   update(url: string, data: any) {
     const headers = new HttpHeaders(
       {
-        'Authorization': 'Bearer ' + this.token
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     );
     url = this.url + url;
@@ -116,7 +114,7 @@ export class UserService {
   delete(url: string) {
     const headers = new HttpHeaders(
       {
-        'Authorization': 'Bearer ' + this.token
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     );
     url = this.url + url;

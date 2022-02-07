@@ -145,9 +145,11 @@ export class TableGuestComponent implements OnInit {
   }
 
   deleteTable(table: TableGuest) {
+    this.spinner.show()
     this.userService.delete('table/' + table.id)
       .subscribe(response => {
         this.getTables();
+        this.spinner.hide();
       }
       );
   }
@@ -198,9 +200,9 @@ export class TableGuestComponent implements OnInit {
   }
 
   onSubmitTableByNumber(number: Number) {
+    this.spinner.show();
     this.userService.store('store-table-by-number', { 'number': number })
       .subscribe(response => {
-        this.spinner.show();
         this.getTables();
         this.tableByNumberDialog = false;
         this.number = null;
@@ -214,9 +216,9 @@ export class TableGuestComponent implements OnInit {
   }
 
   onSubmitChairByNumber(number: Number, chair: Chair) {
+    this.spinner.show();
     this.userService.store('store-chair-by-number', { 'number': number, 'chair': chair })
       .subscribe(response => {
-        this.spinner.show();
         this.tableByNumberDialog = false;
         this.number = null;
         this.getTables();

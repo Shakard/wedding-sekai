@@ -33,9 +33,10 @@
 			</th>
 			<th pSortableColumn="email">Correo<p-sortIcon field="email"></p-sortIcon>
 			</th>
-			<th >Mesa</th>
-			<th >Silla</th>
-			<th >editar</th>
+			<th>Mesa</th>
+			<th>Silla</th>
+			<th></th>
+			<th></th>
 			<th></th>
 		</tr>
 		<tr>
@@ -76,14 +77,12 @@
 			</td>
 			<!-- columnas de la silla -->
 			<td *ngIf="user?.chair">
-				<div >
-					<b style = "text-align: left">{{user.chair.name}} </b>	
-					<b style = "text-align: right">
-						<button pButton pRipple icon="pi pi-trash" 
-						class="p-button-outlined p-button-rounded p-button-danger"					
-					   (click)="removeChair(user)"></button>
-					</b>						
-				</div>
+				{{user.chair.name}}
+			</td>
+			<td *ngIf="user?.chair"> 
+				<button pButton pRipple icon="pi pi-minus" style="width: 20px; height:10px"
+				 class="p-button-outlined p-button-rounded p-button-danger"
+					(click)="removeChair(user)"></button>
 			</td>
 			<td *ngIf="user?.chair==null">
 				<button pButton pRipple label="Seleccionar silla" class="p-button-outlined p-button-success"
@@ -91,12 +90,12 @@
 			</td>
 			<!-- columnas de crud -->
 			<td>
-				<button pButton pRipple icon="pi pi-pencil" style="width: 20px; height:10px" class="p-button-outlined p-button-info"
-					(click)="editUser(user)"></button>				
+				<button pButton pRipple icon="pi pi-pencil" style="width: 20px; height:10px"
+					class="p-button-outlined p-button-info" (click)="editUser(user)"></button>
 			</td>
 			<td>
-				<button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px" class="p-button-outlined p-button-danger"
-					(click)="deleteUser(user)"></button>
+				<button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px"
+					class="p-button-outlined p-button-danger" (click)="deleteUser(user)"></button>
 			</td>
 		</tr>
 	</ng-template>

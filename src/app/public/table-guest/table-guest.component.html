@@ -41,27 +41,28 @@
 					class="p-button-text p-button-rounded p-button-plain"
 					[icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
 			</td>
-			<td>{{table.name}}</td>
-			<td>{{table.code}}</td>
-			<td>
+			<td style="width:160px;">{{table.name}}</td>
+			<td style="width:160px;">{{table.code}}</td>
+			<td style="width:160px;">
 				<button pButton pRipple label="Agregar sillas" class="p-button-success p-button-text"
 					(click)="addChairs(table)"></button>
 			</td>
 			<td>
-				<button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
-					(click)="editTable(table)"></button>
-				<button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-					(click)="deleteTable(table)"></button>
+				<button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px"
+					class="p-button-outlined p-button-danger" (click)="deleteTable(table)"></button>
 			</td>
 		</tr>
 	</ng-template>
 	<ng-template pTemplate="rowexpansion" let-table>
 		<tr>
-			<td colspan="4">
+			<td colspan="6">
 				<div class="p-3">
 					<p-table [value]="table.chairs" dataKey="id">
 						<ng-template pTemplate="header">
 		<tr>
+			<th></th>
+			<th></th>
+			<th></th>
 			<th></th>
 			<th pSortableColumn="name">Nombre <p-sortIcon field="name"></p-sortIcon>
 			</th>
@@ -74,6 +75,9 @@
 	</ng-template>
 	<ng-template pTemplate="body" let-chair>
 		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
 			<td></td>
 			<td>{{chair.name}}</td>
 			<td>{{chair.code}}</td>
