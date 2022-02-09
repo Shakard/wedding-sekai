@@ -29,7 +29,9 @@
 	</ng-template>
 	<ng-template pTemplate="header">
 		<tr>
-			<th pSortableColumn="name">Nombre Completo<p-sortIcon field="name"></p-sortIcon>
+			<th pSortableColumn="first_name">Nombres<p-sortIcon field="first_name"></p-sortIcon>
+			</th>
+			<th pSortableColumn="last_name">Apellidos<p-sortIcon field="last_name"></p-sortIcon>
 			</th>
 			<th pSortableColumn="email">Correo<p-sortIcon field="email"></p-sortIcon>
 			</th>
@@ -41,7 +43,11 @@
 		</tr>
 		<tr>
 			<th>
-				<p-columnFilter type="text" field="name" [matchMode]="'contains'" placeholder="Buscar...">
+				<p-columnFilter type="text" field="first_name" [matchMode]="'contains'" placeholder="Buscar...">
+				</p-columnFilter>
+			</th>
+			<th>
+				<p-columnFilter type="text" field="last_name" [matchMode]="'contains'" placeholder="Buscar...">
 				</p-columnFilter>
 			</th>
 			<th>
@@ -68,7 +74,8 @@
 	</ng-template>
 	<ng-template pTemplate="body" let-user>
 		<tr>
-			<td>{{user.name}}</td>
+			<td>{{user.first_name}}</td>
+			<td>{{user.last_name}}</td>
 			<td>{{user.email}}</td>
 			<!-- columnas de la mesa -->
 			<td *ngIf="user?.chair">{{user.chair.table.name}}</td>
@@ -108,9 +115,15 @@
 		<form [formGroup]="formUser" (ngSubmit)="onSubmitUser()">
 
 			<div class="p-field">
-				<input id="name" type="name" aria-describedby="username1-help" pInputText formControlName="name"
-					placeholder="Nombres y apellidos" />
-				<small *ngIf="formUser.get('name').invalid && formUser.get('name').touched">* Por favor ingrese sus nombres y apellidos</small>
+				<input id="firstName" type="first_name" pInputText formControlName="first_name"
+					placeholder="Nombres" />
+				<small *ngIf="formUser.get('first_name').invalid && formUser.get('first_name').touched">* Por favor ingrese sus nombres</small>
+			</div>
+			<br>
+			<div class="p-field">
+				<input id="lastName" type="last_name" pInputText formControlName="last_name"
+					placeholder="Apellidos" />
+				<small *ngIf="formUser.get('last_name').invalid && formUser.get('last_name').touched">* Por favor ingrese sus nombres y apellidos</small>
 			</div>
 			<br>
 			<div class="p-field">
@@ -119,21 +132,7 @@
 				<small *ngIf="formUser.get('email').invalid && formUser.get('email').touched">* Por favor ingrese su correo</small>
 			</div>
 			<br>
-			<div class="p-field" *ngIf="setPassword">
-				<p-password formControlName="password" class="form-control" [toggleMask]="true"
-					aria-describedby="password-help" [feedback]="false" type="password" placeholder="Contraseña">
-				</p-password>
-				<small *ngIf="formUser.get('password').invalid && formUser.get('password').touched">* La contraseña es de mínimo 5 caracteres</small>
-			</div>
-			<br>
-			<div class="p-field" *ngIf="setPassword">
-				<p-password formControlName="password_confirmation" class="form-control" [toggleMask]="true"
-					aria-describedby="password-confirmation-help" [feedback]="false" type="password"
-					placeholder="Confirmar contraseña">
-				</p-password>
-				<small *ngIf="formUser.get('password_confirmation').invalid && formUser.get('password_confirmation').touched">* Por favor confirme la contraseña</small>
-
-			</div>
+			
 			<button type="submit" pButton pRipple label="Aceptar" icon="pi pi-save"
 				class="p-button-success p-button-raised"></button>
 		</form>
@@ -179,12 +178,14 @@
 			<ng-template pTemplate="header">
 				<tr>
 					<th>Nombres</th>
+					<th>Apellidos</th>
 					<th>Email</th>
 				</tr>
 			</ng-template>
 			<ng-template pTemplate="body" let-imported>
 				<tr>
-					<td>{{imported.name}}</td>
+					<td>{{imported.first_name}}</td>
+					<td>{{imported.last_name}}</td>
 					<td>{{imported.email}}</td>
 				</tr>
 			</ng-template>

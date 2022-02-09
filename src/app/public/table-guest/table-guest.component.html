@@ -81,7 +81,7 @@
 			<td></td>
 			<td>{{chair.name}}</td>
 			<td>{{chair.code}}</td>
-			<td *ngIf="chair?.user">{{chair.user.name}}</td>
+			<td *ngIf="chair?.user">{{chair.user.first_name}}</td>
 			<td *ngIf="chair?.user==null">Silla no asignada...</td>
 		</tr>
 	</ng-template>

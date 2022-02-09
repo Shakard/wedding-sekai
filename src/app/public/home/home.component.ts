@@ -56,7 +56,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   buildFormUser() {
     this.formUser = this.formBuilder.group({
       id: [null],
-      name: [null, Validators.required],
+      first_name: [null, Validators.required],
+      last_name: [null, Validators.required],
+      confirmation: [null],
       email: [null, [Validators.required, Validators.email]],
       password: [null, Validators.minLength(5)],
       password_confirmation: [null, Validators.minLength(5)],
@@ -85,9 +87,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return this.formUser.get('id');
   }
 
-  get nameField() {
-    return this.formUser.get('name');
+  get firstNameField() {
+    return this.formUser.get('first_name');
   }
+
+  get lastNameField() {
+    return this.formUser.get('last_name');
+  }
+
+  get confirmationField() {
+    return this.formUser.get('confirmation');
+  }
+
+  get phoneField() {
+    return this.formUser.get('phone');
+  }
+
   get emailField() {
     return this.formUser.get('email');
   }
@@ -182,7 +197,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   storeUser(user: User) {
     this.spinner.show()
-    this.userService.store('register', { 'user': user })
+    this.userService.store('add-user', { 'user': user })
       .subscribe(response => {
         this.getGuests();
         this.spinner.hide();
@@ -232,6 +247,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   onSubmitUser() {
     if (this.formUser.valid) {
+      this.formUser.patchValue({ confirmation: 0});
       this.submitted = true;
       if (this.userIdField.value) {
         this.updateUser(this.formUser.value);
