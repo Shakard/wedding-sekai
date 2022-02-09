@@ -99,28 +99,7 @@
 
 <!-- fin del datatable -->
 
-
-<!-- Modal del invitado -->
-<p-dialog [(visible)]="tableDialog" [style]="{width: '450px'}" header="" [modal]="true" styleClass="p-fluid">
-	<ng-template pTemplate="content">
-		<form [formGroup]="formTable" (ngSubmit)="onSubmitTable()">
-
-			<div class="p-field">
-				<input id="name" type="name" aria-describedby="username1-help" pInputText formControlName="name"
-					placeholder="Detalle de la mesa" />
-			</div>
-			<br>
-			<div class="p-field">
-				<input id="code" type="code" aria-describedby="code-help" pInputText formControlName="code"
-					placeholder="Código" />
-			</div>
-			<br>
-			<button type="submit" pButton pRipple label="Aceptar" icon="pi pi-save"
-				class="p-button-success p-button-raised"></button>
-		</form>
-	</ng-template>
-</p-dialog>
-
+<!-- Modal de mesas -->
 <p-dialog [(visible)]="tableByNumberDialog" [style]="{width: '450px'}" [modal]="true" styleClass="p-fluid">
 	<ng-template pTemplate="content">
 		<div class="grid p-fluid">

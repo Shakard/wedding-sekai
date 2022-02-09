@@ -110,20 +110,20 @@
 			<div class="p-field">
 				<input id="name" type="name" aria-describedby="username1-help" pInputText formControlName="name"
 					placeholder="Nombres y apellidos" />
-				<small id="username1-help">*Por favor ingrese su nombres y apellidos</small>
+				<small *ngIf="formUser.get('name').invalid && formUser.get('name').touched">* Por favor ingrese sus nombres y apellidos</small>
 			</div>
 			<br>
 			<div class="p-field">
 				<input id="email" type="email" aria-describedby="email-help" pInputText formControlName="email"
 					placeholder="Correo" />
-				<small id="email-help">*Por favor ingrese su correo</small>
+				<small *ngIf="formUser.get('email').invalid && formUser.get('email').touched">* Por favor ingrese su correo</small>
 			</div>
 			<br>
 			<div class="p-field" *ngIf="setPassword">
 				<p-password formControlName="password" class="form-control" [toggleMask]="true"
 					aria-describedby="password-help" [feedback]="false" type="password" placeholder="Contraseña">
 				</p-password>
-				<small id="password-help">*Por favor ingrese una contraseña</small>
+				<small *ngIf="formUser.get('password').invalid && formUser.get('password').touched">* La contraseña es de mínimo 5 caracteres</small>
 			</div>
 			<br>
 			<div class="p-field" *ngIf="setPassword">
@@ -131,7 +131,7 @@
 					aria-describedby="password-confirmation-help" [feedback]="false" type="password"
 					placeholder="Confirmar contraseña">
 				</p-password>
-				<small id="password-confirmation-help">*Por favor confirme la contraseña</small>
+				<small *ngIf="formUser.get('password_confirmation').invalid && formUser.get('password_confirmation').touched">* Por favor confirme la contraseña</small>
 
 			</div>
 			<button type="submit" pButton pRipple label="Aceptar" icon="pi pi-save"

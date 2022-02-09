@@ -6,6 +6,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { Chair } from 'src/app/models/table-management/chair';
 import { TableGuest } from 'src/app/models/table-management/table-guest';
 import * as XLSX from 'xlsx';
+import { SweetMessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-home',
@@ -37,18 +38,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private spinner: NgxSpinnerService,
+    private messageService: SweetMessageService
   ) { }
 
   ngAfterViewInit() {
     this.getGuests();
-    this.getTables();    
+    this.getTables();
     this.getChairs();
   }
 
   ngOnInit(): void {
     this.buildFormUser();
     this.buildFormTable();
-    this.buildFormChair();    
+    this.buildFormChair();
   }
 
   buildFormUser() {
@@ -62,20 +64,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onChange(event:any) {
+  onChange(event: any) {
     console.log(event.value);
-}
+  }
 
   buildFormTable() {
     this.formTable = this.formBuilder.group({
-      id: [null],     
+      id: [null],
     });
   }
 
   buildFormChair() {
     this.formChair = this.formBuilder.group({
-      id: [null],     
-      user: [null],     
+      id: [null],
+      user: [null],
     });
   }
 
@@ -132,16 +134,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  selectTable(event) {    
+  selectTable(event: any) {
     this.formTable.patchValue(event.value);
-    this.tableSelected=true;
+    this.tableSelected = true;
     this.getChairsByTableId();
   }
 
-  selectChair(event) {    
+  selectChair(event: any) {
     this.formChair.patchValue({ id: event.value.id });
     this.getGuests();
-  }  
+  }
 
   public getGuests() {
     this.spinner.show();
@@ -158,7 +160,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.tables = response['data']
       this.spinner.hide();
     });
-  } 
+  }
 
   updateUser(user: User) {
     this.spinner.show();
@@ -170,9 +172,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   updateChair(chair: Chair) {
+    this.spinner.show();
     this.userService.update('add-user/' + chair.id, { chair })
       .subscribe(response => {
         this.getGuests();
+        this.spinner.hide();
       });
   }
 
@@ -187,11 +191,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   importData(data: Array<any>) {
     this.spinner.show()
-    this.userService.store('import-users', {data: data})
-    .subscribe(response => {
-      this.getGuests();
-      this.spinner.hide();
-    });
+    this.userService.store('import-users', { data: data })
+      .subscribe(response => {
+        this.getGuests();
+        this.spinner.hide();
+        this.messageService.successImportGuests();
+      });
   }
 
   editUser(user: User) {
@@ -207,11 +212,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   deleteUser(user: User) {
-    this.userService.delete('user/' + user.id)
-      .subscribe(response => {
-        this.getGuests();
-      }
-      );
+    this.messageService.questionDelete({})
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.spinner.show();
+          this.userService.delete('user/' + user.id)
+            .subscribe(response => {
+              this.getGuests();              
+              this.spinner.hide();
+              this.messageService.success(response);
+            }, error => {
+              this.getGuests();            
+              this.spinner.hide();
+              this.messageService.error(error);
+            });
+        }
+      });
   }
 
   onSubmitUser() {
@@ -221,56 +237,59 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.updateUser(this.formUser.value);
         this.formUser.reset();
         this.userValue = false;
-        //this.messageService232.successUnit();
+        this.userDialog = false;
+        this.messageService.successUpdateGuest();
       }
       else {
         this.formUser.patchValue({ roles: 'Guest' });
         this.storeUser(this.formUser.value);
         this.formUser.reset();
         this.userValue = false;
+        this.userDialog = false;
+        this.messageService.successStoreGuest();
       }
-      this.userDialog = false;
     } else {
-      //this.messageService232.invalidFields();
+      this.userDialog=false;
+      this.messageService.invalidFields();
     }
   }
 
   onSubmitImport() {
     //this.convertedJson = JSON.stringify(this.importedData, undefined, 4)
-    console.log(this.importedData);   
+    console.log(this.importedData);
     this.importData(this.importedData);
-    this.importDataDialog= false;
+    this.importDataDialog = false;
   }
 
   onSubmitChair() {
-    console.log(this.formChair.value);    
     this.updateChair(this.formChair.value);
     this.formChair.reset();
-    this.tableSelected= false;
-    this.chairDialog= false;
-  }  
+    this.tableSelected = false;
+    this.chairDialog = false;
+    this.messageService.successAddChair();
+  }
 
   removeChair(user: User) {
-    this.formChair.patchValue(user.chair);    
+    this.formChair.patchValue(user.chair);
     this.formChair.patchValue({ user: null });
     this.updateChair(this.formChair.value);
     this.formChair.reset();
-    this.tableSelected= false;
-  }  
+    this.tableSelected = false;
+  }
 
-  fileUpload(event:any) {    
+  fileUpload(event: any) {
     const selectedFile = event.target.files[0];
     const fileReader = new FileReader();
     fileReader.readAsBinaryString(selectedFile);
-    fileReader.onload = (event)=>{
+    fileReader.onload = (event) => {
       let binaryData = event.target.result;
-      let workBook = XLSX.read(binaryData, {type:'binary'});
-      workBook.SheetNames.forEach(sheet =>{
+      let workBook = XLSX.read(binaryData, { type: 'binary' });
+      workBook.SheetNames.forEach(sheet => {
         const data = XLSX.utils.sheet_to_json(workBook.Sheets[sheet]);
         this.importedData = data;
         console.log(this.importedData);
       })
-    }  
-  }  
+    }
+  }
 
 }

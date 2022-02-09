@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Chair } from 'src/app/models/table-management/chair';
 import { TableGuest } from 'src/app/models/table-management/table-guest';
+import { SweetMessageService } from 'src/app/services/message.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -31,7 +32,8 @@ export class TableGuestComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private messageService: SweetMessageService
   ) { }
 
   ngOnInit(): void {
@@ -145,15 +147,23 @@ export class TableGuestComponent implements OnInit {
   }
 
   deleteTable(table: TableGuest) {
-    this.spinner.show()
-    this.userService.delete('table/' + table.id)
-      .subscribe(response => {
-        this.getTables();
-        this.spinner.hide();
-      }
-      );
+    this.messageService.questionDelete({})
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.spinner.show();
+          this.userService.delete('table/' + table.id)
+            .subscribe(response => {
+              this.getTables();              
+              this.spinner.hide();
+              this.messageService.success(response);
+            }, error => {
+              this.getTables();            
+              this.spinner.hide();
+              this.messageService.error(error);
+            });
+        }
+      });
   }
-
 
   onSubmitTable() {
     console.log(this.formTable.value);
@@ -207,6 +217,7 @@ export class TableGuestComponent implements OnInit {
         this.tableByNumberDialog = false;
         this.number = null;
         this.spinner.hide();
+        this.messageService.successStoreTables();
       });
   }
 
@@ -223,6 +234,7 @@ export class TableGuestComponent implements OnInit {
         this.number = null;
         this.getTables();
         this.spinner.hide();
+        this.messageService.successStoreChairs();
       });
   }
 

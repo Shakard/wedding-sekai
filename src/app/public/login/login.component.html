@@ -4,7 +4,7 @@
 
 
 <div id="container" class="card p-field col-6 md:col-6" style="margin:auto; text-align:center; margin-top:125px">
-	<form [formGroup]="formLogin" (ngSubmit)="onSubmitLogin($event)" class="form mt-3">
+	<form [formGroup]="formLogin" (ngSubmit)="login()" class="form mt-3">
 		<h5>Login</h5>
 		<div class="p-fluid md:col-8" style="margin:auto">
 			<input formControlName="email" class="form-control" type="text" pInputText placeholder="Correo">

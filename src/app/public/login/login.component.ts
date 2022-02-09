@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { delay, firstValueFrom, Subject, Subscription } from 'rxjs';
+import { catchError, delay, firstValueFrom, Subject, Subscription, throwError } from 'rxjs';
 import { User } from 'src/app/models/auth/user';
 import { LoginHttpService } from 'src/app/services/login/login-http.service';
 import { NgxSpinnerService } from "ngx-spinner";
+import { SweetMessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private loginHttpService: LoginHttpService,
     private router: Router,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private messageService: SweetMessageService
   ) { }
 
   ngOnInit(): void {
@@ -30,8 +32,8 @@ export class LoginComponent implements OnInit {
 
   buildFormLogin() {
     this.formLogin = this.formBuilder.group({
-      email: [null, [Validators.required, Validators.email]],
-      password: [null, [Validators.required, Validators.minLength(5)]],
+      email: [null],
+      password: [null],
     });
   }
 
@@ -48,18 +50,35 @@ export class LoginComponent implements OnInit {
     if (this.formLogin.valid) {
       this.login();
     } else {
-      console.log('error');
+      this.messageService.badCredentials();
     }
   }
 
-
+  // login() {
+  //   this.spinner.show();
+  //   firstValueFrom(this.loginHttpService.login(this.formLogin.value)).then((result: any) => {
+  //     localStorage.setItem('token', result.data.token);
+  //     this.spinner.hide();
+  //     this.router.navigate(['/home']);
+  //   });
+  // }
 
   login() {
     this.spinner.show();
-    firstValueFrom(this.loginHttpService.login(this.formLogin.value)).then((result: any) => {
-      localStorage.setItem('token', result.data.token);
-      this.router.navigate(['/home']);
-    });
+    this.loginHttpService.login(this.formLogin.value)
+      .subscribe(
+        (result: any) => {
+          localStorage.setItem('token', result.data.token);
+          this.router.navigate(['/home']);
+          this.spinner.hide();
+        },
+        
+        error => {
+          this.spinner.hide();
+          this.messageService.badCredentials()
+        }
+
+      );
   }
 
   logout() {
@@ -71,8 +90,6 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  isUserLoggedIn(): Subject<boolean> {
-    return this.loggedChanged;
-  }
+
 
 }
