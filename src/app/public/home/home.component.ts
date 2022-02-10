@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   formTable: FormGroup;
   formChair: FormGroup;
   tableSelected: boolean = false;
+  chairSelected: boolean = false;
   userValue: boolean;
   submitted: boolean;
   importDataDialog: boolean;
@@ -157,6 +158,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   selectChair(event: any) {
     this.formChair.patchValue({ id: event.value.id });
+    this.chairSelected = true;
     this.getGuests();
   }
 
@@ -193,7 +195,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.getGuests();
         this.spinner.hide();
       });
-  }
+  }  
 
   storeUser(user: User) {
     this.spinner.show()
@@ -272,7 +274,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   onSubmitImport() {
     //this.convertedJson = JSON.stringify(this.importedData, undefined, 4)
-    console.log(this.importedData);
     this.importData(this.importedData);
     this.importDataDialog = false;
   }

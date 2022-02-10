@@ -100,6 +100,7 @@ export class UserService {
     url = this.url + url;
     return this.httpClient.post(url, {headers: headers});
   }
+  
 
   update(url: string, data: any) {
     const headers = new HttpHeaders(
