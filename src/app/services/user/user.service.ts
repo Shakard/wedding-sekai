@@ -122,4 +122,14 @@ export class UserService {
     return this.httpClient.delete(url, { headers: headers });
   }
 
+  get(url: string) {
+    const headers = new HttpHeaders(
+      {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    );
+    url = this.url + url;
+    return this.httpClient.get(url, { headers: headers });
+  }
+
 }

@@ -43,15 +43,18 @@ export class SweetMessageService {
         return Swal.fire({
             title: error.error.msg.summary,
             text: error.error.msg.detail,
+            width: '300px',
             icon: 'error'
         });
     }
 
     success(response) {
         return Swal.fire({
+            icon: 'success',
             title: response.msg.summary,
             text: response.msg.detail,
-            icon: 'info'
+            padding: '1px',
+            color: '#4f62fa',  
         }).then(response);
     }
 
@@ -67,6 +70,33 @@ export class SweetMessageService {
             cancelButtonColor: '#3085d6',
             padding: '2px',
             confirmButtonText: '<i class="pi pi-trash"> Eliminar!!!!!</i>'
+        });
+    }
+
+    questionDeleteUsers({title = '¿Está seguro de eliminar todos los usuarios?', text = 'No podrá recuperar esta información!'}) {
+        return Swal.fire({
+            title,
+            text,
+            width: '300px',
+            color: '#4f62fa',  
+            showCancelButton: true,
+            confirmButtonColor: '#f7502d ',
+            cancelButtonColor: '#02ccc6',
+            padding: '1px',
+            confirmButtonText: '<i class="pi pi-trash"> Eliminar!!!!!</i>'
+        });
+    }
+
+    questionSendMail({title = '¿Está seguro de notificar a todos los invitados?'}) {
+        return Swal.fire({
+            title,
+            width: '300px',
+            color: '#4f62fa',  
+            showCancelButton: true,
+            confirmButtonColor: ' #3ea664',
+            cancelButtonColor: '#02ccc6',
+            padding: '1px',
+            confirmButtonText: '<i class="pi pi-send"> Notificar!!!!!</i>'
         });
     }
 

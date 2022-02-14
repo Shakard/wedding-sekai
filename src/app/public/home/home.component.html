@@ -4,10 +4,11 @@
 <p-toolbar styleClass="p-mb-4">
 	<ng-template pTemplate="left">
 		<button pButton pRipple label="Nuevo Invitado" class="p-button-success p-mr-2" (click)="openNewUser()"></button>
+
 	</ng-template>
 	<ng-template pTemplate="right">
-		<button pButton pRipple label="Importar Data" class="p-button-success p-mr-2"
-			(click)="openImportData()"></button>
+		<button pButton pRipple label="Importar Data" class="p-button-success" (click)="openImportData()"></button>
+
 	</ng-template>
 </p-toolbar>
 
@@ -20,15 +21,23 @@
 	<ng-template pTemplate="caption">
 		<div class="p-d-flex p-ai-center p-jc-between">
 			<h5 class="p-m-0">Administrar Invitados</h5>
-			<!-- <span class="p-input-icon-left">
-				<i class="pi pi-search"></i>
-				<input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
-					placeholder="Search..." />
-			</span> -->
+			<p-toolbar styleClass="p-mb-4">
+				<ng-template pTemplate="left">
+					<button pButton pRipple label="Eliminar invitados seleccionados" icon="pi pi-trash" class="p-button-danger"
+					(click)="deleteSelectedUsers()" *ngIf="selectedUsers?.length > 0"></button>
+				</ng-template>
+				<ng-template pTemplate="right">					
+					<button *ngIf="users?.length > 0" pButton pRipple icon="" label="Send Mail" icon="pi pi-send"
+						class="p-button-info" (click)="sendUsersMail()"></button>
+				</ng-template>
+			</p-toolbar>
 		</div>
 	</ng-template>
 	<ng-template pTemplate="header">
 		<tr>
+			<th style="width: 3rem">
+				<p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+			</th>
 			<th pSortableColumn="first_name">Nombres<p-sortIcon field="first_name"></p-sortIcon>
 			</th>
 			<th pSortableColumn="last_name">Apellidos<p-sortIcon field="last_name"></p-sortIcon>
@@ -42,6 +51,7 @@
 			<th></th>
 		</tr>
 		<tr>
+			<th></th>
 			<th>
 				<p-columnFilter type="text" field="first_name" [matchMode]="'contains'" placeholder="Buscar...">
 				</p-columnFilter>
@@ -76,6 +86,9 @@
 	</ng-template>
 	<ng-template pTemplate="body" let-user>
 		<tr>
+			<td>
+				<p-tableCheckbox [value]="user"></p-tableCheckbox>
+			</td>
 			<td>{{user.first_name}}</td>
 			<td>{{user.last_name}}</td>
 			<td>{{user.email}}</td>
@@ -86,15 +99,12 @@
 			</td>
 			<!-- columnas de la silla -->
 			<td *ngIf="user?.chair">
-				{{user.chair.name}}
-			</td>
-			<td *ngIf="user?.chair">
-				<button pButton pRipple icon="pi pi-minus" style="width: 20px; height:10px"
-					class="p-button-outlined p-button-rounded p-button-danger" (click)="removeChair(user)"></button>
+				<button pButton pRipple icon="pi pi-minus" iconPos="right" label="{{user.chair.name}}"
+				class="p-button-outlined p-button-rounded p-button-danger" (click)="removeChair(user)"></button>
 			</td>
 			<td *ngIf="user?.chair==null">
-				<button pButton pRipple icon="pi pi-plus" class="p-button-outlined p-button-success"
-					style="width: 20px; height:10px" (click)="addChair(user)"></button>
+				<button pButton pRipple label="Ubicar invitado" class="p-button-outlined p-button-success"
+					 (click)="addChair(user)"></button>
 			</td>
 			<!-- columnas de crud -->
 			<td>

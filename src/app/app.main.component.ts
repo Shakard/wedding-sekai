@@ -51,6 +51,7 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
 
     ngOnInit() {
         this.primengConfig.ripple = true;
+      
     }
 
     ngAfterViewInit() {

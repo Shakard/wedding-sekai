@@ -14,9 +14,9 @@ export class AppConfigComponent implements OnInit{
 
     topbarColor = 'light';
 
-    componentColor = 'blue';
+    componentColor = '#02ccc6';
 
-    scale:number = 14;
+    scale:number = 12;
     
     scales:any[] = [12,13,14,15,16];
 

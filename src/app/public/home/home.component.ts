@@ -286,6 +286,47 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.messageService.successAddChair();
   }
 
+  deleteSelectedUsers() {    
+    this.messageService.questionDeleteUsers({})
+    .then((result) => {
+      if (result.isConfirmed) {
+        this.spinner.show();
+        this.userService.store('delete-users', {data: this.selectedUsers })
+      .subscribe(response => {
+        this.getGuests();
+        this.spinner.hide();
+            this.selectedUsers=null;
+            this.messageService.success(response);
+          }, error => {
+            this.getGuests();            
+            this.spinner.hide();
+            this.selectedUsers=null;            
+            this.messageService.error(error);
+          });
+      }
+    });
+  }
+
+  sendUsersMail() {
+    this.messageService.questionSendMail({})
+    .then((result) => {
+      if (result.isConfirmed) {
+        this.spinner.show()
+        this.userService.get('send-users-mail')
+          .subscribe(response => {
+            this.getGuests();
+            this.spinner.hide();
+            this.messageService.success(response);
+          }, error => {
+            this.getGuests();            
+            this.spinner.hide();
+            this.selectedUsers=null;            
+            this.messageService.error(error);
+          });
+      }
+    });
+  }
+
   removeChair(user: User) {
     this.formChair.patchValue(user.chair);
     this.formChair.patchValue({ user: null });

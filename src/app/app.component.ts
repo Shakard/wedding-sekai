@@ -6,11 +6,12 @@ import { PrimeNGConfig } from 'primeng/api';
 })
 export class AppComponent {
 
+    //menuMode = 'overlay';
     menuMode = 'static';
 
-    inputStyle = 'outlined';
+    inputStyle = 'filled';
 
-    ripple: boolean;
+    ripple: boolean = true;
 
     darkMode: boolean = false;
 
@@ -24,6 +25,6 @@ export class AppComponent {
     ngOnInit() {
         this.primengConfig.ripple = true;
         this.ripple = true;
-        document.documentElement.style.fontSize = '14px';
+        document.documentElement.style.fontSize = '12px';
     }
 }
