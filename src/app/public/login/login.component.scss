@@ -25,13 +25,19 @@
     height: 400px;
     position: absolute;
     top: -50px;
-    left: -100px;
+    left: -80px;
     background-color: #ff3cac;
     background-image: linear-gradient(
-      225deg,
-      #27d86c 0%,
-      #26caf8 50%,
-      #c625d0 100%
+      135deg,
+      #02ccc6 20%,
+      #027dcc 30%,
+      #6178cb 40%,
+      #d696df 50%,       
+      #df969f 60%,
+      #d72b0d 70%,
+      #f0ec14 80%,
+      #b7ee50 90%,
+      #429535 100%
     );
     z-index: -1;
     transition: transform 0.5s ease;
@@ -39,10 +45,85 @@
   
   #btnlogin:hover {
     transform: translate(0, -6px);
+ 
     box-shadow: 5px -5px 15px 0 rgba(143, 64, 248, 0.5),
       -5px 5px 15px 0 rgba(39, 200, 255, 0.5);
   }
+
+  #btnlogin:hover::after  {
+    -webkit-animation-name: rotate; 
+    -webkit-animation-duration: 2s; 
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: rotate; 
+    -moz-animation-duration: 2s; 
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    animation-name: rotate; 
+    animation-duration: 2s; 
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+@-webkit-keyframes rotate {
+    from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(360deg);}
+}
+
+@-moz-keyframes rotate {
+    from {-moz-transform: rotate(0deg);}
+    to {-moz-transform: rotate(360deg);}
+}
+
+@keyframes rotate {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
   
-  #btnlogin:hover::after {
-    transform: rotate(150deg);
-  }
+  // #btnlogin:hover::after {
+  //   transform: rotate(150deg);
+  // }
+
+  // body {
+  //   margin:0;
+  //   background-color:#191919;
+  //   min-height:100vh;
+  //   display:flex;
+  //   align-items:center;
+  //   justify-content:center;
+  //   font-family:Helvetica,Sans-serif;
+  // }
+  // a {
+  //   text-decoration:none;
+  //   color:#FFF;
+  // }
+  // .rainbow-button {
+  //   width:calc(20vw + 6px);
+  //   height:calc(8vw + 6px);
+  //   background-image: linear-gradient(90deg, #00C0FF 0%, #FFCF00 49%, #FC4F4F 80%, #00C0FF 100%);
+  //   border-radius:5px;
+  //   display:flex;
+  //   align-items:center;
+  //   justify-content:center;
+  //   text-transform:uppercase;
+  //   font-size:3vw;
+  //   font-weight:bold;
+  // }
+  // .rainbow-button:after {
+  //   content:attr(alt);
+  //   width:20vw;
+  //   height:8vw;
+  //   background-color:#191919;
+  //   display:flex;
+  //   align-items:center;
+  //   justify-content:center;
+  // }
+  // .rainbow-button:hover {
+  //   animation:slidebg 2s linear infinite;
+  // }
+  
+  // @keyframes slidebg {
+  //   to {
+  //     background-position:20vw;
+  //   }
+  // }
+

@@ -1,3 +1,142 @@
 small {
     color: rgb(179, 21, 21);
 }
+  
+  div {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+  }
+
+  //--------------------------------botones en los toolbars----------------------------------
+
+//   .tb1 button {
+//     text-decoration: none;
+//     padding: 10px 25px;
+//     font-size: 1rem;
+//     position: relative;    
+//     z-index: 1;
+//   }
+
+//   .tb1 button{    
+//     overflow: hidden;
+//     color: white;
+//     border-radius: 30px;
+//     box-shadow: 0 0 0 0 rgba(143, 64, 248, 0.5), 0 0 0 0 rgba(39, 200, 255, 0.5);
+//     transition: transform 0.3s ease, box-shadow 0.3s ease;
+//   }
+  
+//   .tb1 button::after {
+//     content: "";
+//     width: 400px;
+//     height: 400px;
+//     position: absolute;
+//     top: -50px;
+//     left: -80px;
+//     background-color: #ff3cac;
+//     background-image: linear-gradient(
+//       125deg,
+//       #02ccc6 20%,
+//       #027dcc 30%,
+//       #6178cb 40%,
+//       #d696df 50%,       
+//       #df969f 60%,
+//       #d72b0d 70%,
+//       #f0ec14 80%,
+//       #b7ee50 90%,
+//       #429535 100%
+//     );
+//     z-index: -1;
+//     transition: transform 0.5s ease;
+//   }
+  
+//   .tb1 button:hover {
+//     transform: translate(0, -6px);
+ 
+//     box-shadow: 5px -5px 15px 0 rgba(143, 64, 248, 0.5),
+//       -5px 5px 15px 0 rgba(39, 200, 255, 0.5);
+//   }
+
+//   .tb1 button:hover::after  {
+//     -webkit-animation-name: rotate; 
+//     -webkit-animation-duration: 2s; 
+//     -webkit-animation-iteration-count: infinite;
+//     -webkit-animation-timing-function: linear;
+//     -moz-animation-name: rotate; 
+//     -moz-animation-duration: 2s; 
+//     -moz-animation-iteration-count: infinite;
+//     -moz-animation-timing-function: linear;
+//     animation-name: rotate; 
+//     animation-duration: 2s; 
+//     animation-iteration-count: infinite;
+//     animation-timing-function: linear;
+// }
+// @-webkit-keyframes rotate {
+//     from {-webkit-transform: rotate(0deg);}
+//     to {-webkit-transform: rotate(360deg);}
+// }
+
+// @-moz-keyframes rotate {
+//     from {-moz-transform: rotate(0deg);}
+//     to {-moz-transform: rotate(360deg);}
+// }
+
+// @keyframes rotate {
+//     from {transform: rotate(0deg);}
+//     to {transform: rotate(360deg);}
+// }
+
+//---------------- boton eliminar invitados----------------
+
+// Multiple shadows, one on the outside, another on the inside
+button {  
+  box-shadow: 
+    0.3em 0.3em 0 0 var(--color),
+    inset 0.1em 0.1em 0 0 var(--color);
+  
+  &:hover,
+  &:focus {
+    box-shadow: 
+      0 0 0 0 var(--hover),
+      inset 6em 3.5em 0 0 var(--hover);
+  }
+}
+
+//=== Set button colors
+// If you wonder why use Sass vars or CSS custom properties...
+  // Make a map with the class names and matching colors
+$colors: (
+  delete: #bb2424,
+  add: #4f62fa,
+  send: #02ccc6,
+  addSeat: #02ccc6
+);
+
+// Sass variables compile to a static string; CSS variables are dynamic and inherited
+  // Loop through the map and set CSS custom properties using Sass variables
+@each $button, $color in $colors {
+  .#{$button} {
+    --color: #{$color};
+    --hover: #{adjust-hue($color, 45deg)};
+  }
+}
+
+// Now every button will have different colors as set above. We get to use the same structure, only changing the custom properties.
+button {  
+  color: var(--color);
+  transition: 0.20s;
+  
+  &:hover,
+  &:focus { 
+    border-color: var(--hover);
+    color: #fff;
+  }
+}
+
+button {
+  background: none;
+  border: 1px solid;
+  font: inherit;
+  line-height: 1;
+  margin: 0.5em;
+  padding: 0.8em 1.5em;
+}

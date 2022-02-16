@@ -1,18 +1,19 @@
 <ngx-spinner></ngx-spinner>
 
-<!-- Listado de invitados -->
-<p-toolbar styleClass="p-mb-4">
-	<ng-template pTemplate="left">
-		<button pButton pRipple label="Nuevo Invitado" class="p-button-success p-mr-2" (click)="openNewUser()"></button>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400&display=swap" rel="stylesheet">
 
+
+<!-- Listado de invitados -->
+<h5 class="p-m-0" style="color:#02ccc6; font-family:Brush Script MT; font-size:30px">Administrar Invitados</h5>
+
+<p-toolbar class="tb1" styleClass="p-mb-4">
+	<ng-template pTemplate="left">
+		<button class="add"  (click)="openNewUser()">Agregar invitado</button>
 	</ng-template>
 	<ng-template pTemplate="right">
-		<button pButton pRipple label="Importar Data" class="p-button-success" (click)="openImportData()"></button>
-
+		<button class="add" (click)="openImportData()">Importar invitados</button>
 	</ng-template>
 </p-toolbar>
-
-
 
 <p-table #dt [value]="users" [rows]="10" [paginator]="true"
 	[globalFilterFields]="['chair.name', 'chair.table.name' , 'name', 'email']" responsiveLayout="scroll"
@@ -20,15 +21,13 @@
 	currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
 	<ng-template pTemplate="caption">
 		<div class="p-d-flex p-ai-center p-jc-between">
-			<h5 class="p-m-0">Administrar Invitados</h5>
-			<p-toolbar styleClass="p-mb-4">
+			<p-toolbar class="tb2" styleClass="p-mb-4">		
 				<ng-template pTemplate="left">
-					<button pButton pRipple label="Eliminar invitados seleccionados" icon="pi pi-trash" class="p-button-danger"
-					(click)="deleteSelectedUsers()" *ngIf="selectedUsers?.length > 0"></button>
-				</ng-template>
+					<button class="delete" (click)="deleteSelectedUsers()" *ngIf="selectedUsers?.length > 0">Eliminar invitados</button>
+				</ng-template>		
 				<ng-template pTemplate="right">					
-					<button *ngIf="users?.length > 0" pButton pRipple icon="" label="Send Mail" icon="pi pi-send"
-						class="p-button-info" (click)="sendUsersMail()"></button>
+					<button *ngIf="users?.length > 0"
+						class="send" (click)="sendUsersMail()">Enviar correos</button>
 				</ng-template>
 			</p-toolbar>
 		</div>
@@ -66,7 +65,7 @@
 			</th>
 			<th>
 				<p-dropdown [options]="tables" (onChange)="dt.filter($event.value, 'chair.table.name', 'equals')"
-					autoWidth="false" [style]="{'width':'110px'}" styleClass="p-column-filter" placeholder=" "
+					autoWidth="false" [style]="{'width':'120px'}" styleClass="p-column-filter" placeholder="Buscar..."
 					[showClear]="true">
 					<ng-template let-option pTemplate="item">
 						<span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
@@ -75,7 +74,7 @@
 			</th>
 			<th>
 				<p-dropdown [options]="chairs" (onChange)="dt.filter($event.value, 'chair.name', 'equals')"
-					autoWidth="false" [style]="{'width':'110px'}" styleClass="p-column-filter" placeholder=" "
+					autoWidth="false" [style]="{'width':'120px'}" styleClass="p-column-filter" placeholder="Buscar..."
 					[showClear]="true">
 					<ng-template let-option pTemplate="item">
 						<span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
@@ -99,17 +98,19 @@
 			</td>
 			<!-- columnas de la silla -->
 			<td *ngIf="user?.chair">
-				<button pButton pRipple icon="pi pi-minus" iconPos="right" label="{{user.chair.name}}"
-				class="p-button-outlined p-button-rounded p-button-danger" (click)="removeChair(user)"></button>
+				<p>{{user.chair.name}} <button class="addSeat"
+					style="width: 25px; height:25px; padding: 0.5em 0.2em;" 
+					(click)="removeChair(user)"></button>
+				</p> 
 			</td>
 			<td *ngIf="user?.chair==null">
-				<button pButton pRipple label="Ubicar invitado" class="p-button-outlined p-button-success"
-					 (click)="addChair(user)"></button>
+				<button class="addSeat" style="width: 115px; height:30px"
+					 (click)="addChair(user)">Asignar mesa</button>
 			</td>
 			<!-- columnas de crud -->
 			<td>
-				<button pButton pRipple icon="pi pi-pencil" style="width: 20px; height:10px"
-					class="p-button-outlined p-button-info" (click)="editUser(user)"></button>
+				<button pButton pRipple icon="pi pi-pencil" style="width: 20px; height:10px; color: #4f62fa;"
+					class="p-button-outlined" (click)="editUser(user)"></button>
 			</td>
 			<td>
 				<button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px"

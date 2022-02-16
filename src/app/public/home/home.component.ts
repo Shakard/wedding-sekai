@@ -144,7 +144,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   getChairs() {
     this.spinner.show();
-    this.userService.getChairs().subscribe(response => {
+    this.userService.get('unique-chairs').subscribe(response => {
       this.chairs = response['data'];
       this.spinner.hide();
     });
