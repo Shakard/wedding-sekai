@@ -29,6 +29,7 @@ import {
 } from './services/login/login-guard.guard';
 import { TableComponent } from './components/table/table.component';
 import { TableGuestComponent } from './public/table-guest/table-guest.component';
+import { GuestSeatComponent } from './public/guest-seat/guest-seat.component';
 
 
 
@@ -41,6 +42,7 @@ import { TableGuestComponent } from './public/table-guest/table-guest.component'
                     {path: 'dashboard', component: DashboardComponent},                    
                     {path: 'home', component: HomeComponent, canActivate: [AuthGuard]}, 
                     {path: 'table', component: TableGuestComponent, canActivate: [AuthGuard]}, 
+                    {path: 'seat', component: GuestSeatComponent, canActivate: [AuthGuard]}, 
                     {path: 'uikit/formlayout', component: FormLayoutComponent},                    
                     {path: 'uikit/input', component: InputComponent},
                     {path: 'uikit/floatlabel', component: FloatLabelComponent},

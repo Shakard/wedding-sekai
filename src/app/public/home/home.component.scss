@@ -1,97 +1,73 @@
-small {
-    color: rgb(179, 21, 21);
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Poppins:wght@100;400&display=swap');
+
+html,
+ng-template {
+  font-family: 'Montserrat', sans-serif;
 }
-  
-  div {
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-  }
 
-  //--------------------------------botones en los toolbars----------------------------------
+// Separador del header
+.boxHeader{
+  background: linear-gradient(
+    90deg,
+      rgba(2,204,198,1) 0%,
+       #439ede 50%,
+        rgba(79,98,250,1) 100%);
+  background-size: 100% 100%;
+}
 
-//   .tb1 button {
-//     text-decoration: none;
-//     padding: 10px 25px;
-//     font-size: 1rem;
-//     position: relative;    
-//     z-index: 1;
-//   }
+////////////////////////////////////////////////////////////////  
+//////////////////Todos los botones/////////////////////////////
+////////////////////////////////////////////////////////////////
 
-//   .tb1 button{    
-//     overflow: hidden;
-//     color: white;
-//     border-radius: 30px;
-//     box-shadow: 0 0 0 0 rgba(143, 64, 248, 0.5), 0 0 0 0 rgba(39, 200, 255, 0.5);
-//     transition: transform 0.3s ease, box-shadow 0.3s ease;
-//   }
-  
-//   .tb1 button::after {
-//     content: "";
-//     width: 400px;
-//     height: 400px;
-//     position: absolute;
-//     top: -50px;
-//     left: -80px;
-//     background-color: #ff3cac;
-//     background-image: linear-gradient(
-//       125deg,
-//       #02ccc6 20%,
-//       #027dcc 30%,
-//       #6178cb 40%,
-//       #d696df 50%,       
-//       #df969f 60%,
-//       #d72b0d 70%,
-//       #f0ec14 80%,
-//       #b7ee50 90%,
-//       #429535 100%
-//     );
-//     z-index: -1;
-//     transition: transform 0.5s ease;
-//   }
-  
-//   .tb1 button:hover {
-//     transform: translate(0, -6px);
- 
-//     box-shadow: 5px -5px 15px 0 rgba(143, 64, 248, 0.5),
-//       -5px 5px 15px 0 rgba(39, 200, 255, 0.5);
-//   }
+// Animate the size, inside
+.fill:hover,
+.fill:focus {
+  box-shadow: inset 0 0 0 2em var(--hover);
+}
 
-//   .tb1 button:hover::after  {
-//     -webkit-animation-name: rotate; 
-//     -webkit-animation-duration: 2s; 
-//     -webkit-animation-iteration-count: infinite;
-//     -webkit-animation-timing-function: linear;
-//     -moz-animation-name: rotate; 
-//     -moz-animation-duration: 2s; 
-//     -moz-animation-iteration-count: infinite;
-//     -moz-animation-timing-function: linear;
-//     animation-name: rotate; 
-//     animation-duration: 2s; 
-//     animation-iteration-count: infinite;
-//     animation-timing-function: linear;
-// }
-// @-webkit-keyframes rotate {
-//     from {-webkit-transform: rotate(0deg);}
-//     to {-webkit-transform: rotate(360deg);}
-// }
+// Animate the size, outside
+.pulse:hover, 
+.pulse:focus {
+  animation: pulse 0.5s;
+  box-shadow: 0 0 0 2em rgba(#fff,0);
+}
 
-// @-moz-keyframes rotate {
-//     from {-moz-transform: rotate(0deg);}
-//     to {-moz-transform: rotate(360deg);}
-// }
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 var(--hover); }
+}
 
-// @keyframes rotate {
-//     from {transform: rotate(0deg);}
-//     to {transform: rotate(360deg);}
-// }
+// Stack multiple shadows, one from the left, the other from the right
+.close:hover,
+.close:focus {
+  box-shadow: 
+    inset -5.6em 0 0 0 var(--hover),
+    inset 5.6em 0 0 0 var(--hover);  
+}
 
-//---------------- boton eliminar invitados----------------
+// Size can also be negative; see how it's smaller than the element
+.raise:hover,
+.raise:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em);
+}
+
+// Animating from the bottom
+.up:hover,
+.up:focus {
+  box-shadow: inset 0 -3.25em 0 0 var(--hover);
+}
+
+// And from the left
+.slide:hover,
+.slide:focus {
+  box-shadow: inset 5em 0 0 0 var(--hover);
+}
 
 // Multiple shadows, one on the outside, another on the inside
-button {  
+.offset {  
   box-shadow: 
     0.3em 0.3em 0 0 var(--color),
-    inset 0.1em 0.1em 0 0 var(--color);
+    inset 0.3em 0.3em 0 0 var(--color);
   
   &:hover,
   &:focus {
@@ -105,10 +81,13 @@ button {
 // If you wonder why use Sass vars or CSS custom properties...
   // Make a map with the class names and matching colors
 $colors: (
-  delete: #bb2424,
-  add: #4f62fa,
-  send: #02ccc6,
-  addSeat: #02ccc6
+  fill: #ff7f82,
+  pulse: #ef6eae, 
+  close: #a972cb, 
+  raise: #e4cb58, 
+  up: #ffa260, 
+  slide: #8fc866, 
+  offset: #19bc8b
 );
 
 // Sass variables compile to a static string; CSS variables are dynamic and inherited
@@ -120,10 +99,11 @@ $colors: (
   }
 }
 
-// Now every button will have different colors as set above. We get to use the same structure, only changing the custom properties.
+// Now every button will have different colors as set above.
+// We get to use the same structure, only changing the custom properties.
 button {  
   color: var(--color);
-  transition: 0.20s;
+  transition: 0.25s;
   
   &:hover,
   &:focus { 
@@ -132,11 +112,21 @@ button {
   }
 }
 
+// Basic button styles
 button {
   background: none;
   border: 1px solid;
+  border-radius: 5px;
   font: inherit;
   line-height: 1;
   margin: 0.5em;
-  padding: 0.8em 1.5em;
+  padding: 1em 2em;
+}
+
+h1 { font-weight: 400; }
+
+code { 
+  color: #e4cb58;
+  //color: #02ccc6;
+  font: inherit;
 }

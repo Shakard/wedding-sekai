@@ -137,6 +137,8 @@ import { HomeComponent } from './public/home/home.component';
 import { LoginComponent } from './public/login/login.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { TableGuestComponent } from './public/table-guest/table-guest.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { GuestSeatComponent } from './public/guest-seat/guest-seat.component';
 
 @NgModule({
     imports: [
@@ -228,6 +230,7 @@ import { TableGuestComponent } from './public/table-guest/table-guest.component'
         AppCodeModule,
         ReactiveFormsModule,
         NgxSpinnerModule,
+        FontAwesomeModule,
     ],
     declarations: [
         AppComponent,
@@ -269,7 +272,8 @@ import { TableGuestComponent } from './public/table-guest/table-guest.component'
         PublicComponent,     
         LoginComponent, 
         HomeComponent,
-        TableGuestComponent
+        TableGuestComponent,
+        GuestSeatComponent
     ],
     
     providers: [

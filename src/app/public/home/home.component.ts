@@ -7,6 +7,7 @@ import { Chair } from 'src/app/models/table-management/chair';
 import { TableGuest } from 'src/app/models/table-management/table-guest';
 import * as XLSX from 'xlsx';
 import { SweetMessageService } from 'src/app/services/message.service';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +15,7 @@ import { SweetMessageService } from 'src/app/services/message.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+  faTrash = faTrash;
   importedData: any[];
   convertedJson!: string;
   user: User;

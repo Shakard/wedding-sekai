@@ -6,16 +6,16 @@ import { PrimeNGConfig } from 'primeng/api';
 })
 export class AppComponent {
 
-    //menuMode = 'overlay';
-    menuMode = 'static';
+    menuMode = 'overlay';
+    //menuMode = 'static';
 
     inputStyle = 'filled';
 
     ripple: boolean = true;
 
-    darkMode: boolean = false;
+    darkMode: boolean = true;
 
-    lightMode: boolean = true;
+    lightMode: boolean = false;
 
     theme = 'light';
 
