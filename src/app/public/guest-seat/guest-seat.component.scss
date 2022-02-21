@@ -2,12 +2,12 @@
 @import 'node_modules/mathsass/dist/math';
 
 //vars
-$fg:grey;
+$fg:rgb(52, 129, 230);
 $bg:blue;
 $pi:3.14;
 
 //config
-$menu-items:3+3;
+$menu-items:15+1;
 $open-distance:105px;
 $opening-angle:$pi*2;
 
@@ -22,6 +22,20 @@ $opening-angle:$pi*2;
   border-radius:100%;
   width:80px;
   height:80px;
+  margin-left:-65px;
+  position:absolute;
+  top:0px;
+  color:white;
+  text-align:center;
+  line-height:80px;
+  transform:translate3d(0,0,0);
+  transition:transform ease-out 200ms;
+}
+%item-ball{
+  background:$fg;
+  border-radius:100%;
+  width:30px;
+  height:30px;
   margin-left:-40px;
   position:absolute;
   top:20px;
@@ -35,43 +49,43 @@ $opening-angle:$pi*2;
   display:none;
 }
 .menu-item{
-  @extend %ball;
+  @extend %item-ball;
 }
-.hamburger{
-  $width:25px;
-  $height:3px;
-  width:$width;
-  height:$height;
-  background:white;
-  display:block;
-  position:absolute;
-  top:50%;
-  left:50%;
-  margin-left:-$width/2;
-  margin-top:-$height/2;
-  transition:transform 200ms;
-}
-$hamburger-spacing:8px;
-.hamburger-1{
-  transform:translate3d(0,-$hamburger-spacing,0);
-}
-.hamburger-2{
-  transform:translate3d(0,0,0);
-}
-.hamburger-3{
-  transform:translate3d(0,$hamburger-spacing,0);
-}
-.menu-open:checked+.menu-open-button{
-  .hamburger-1{
-    transform:translate3d(0,0,0) rotate(45deg); 
-  }
-  .hamburger-2{
-    transform:translate3d(0,0,0) scale(0.1,1);
-  }
-  .hamburger-3{
-    transform:translate3d(0,0,0) rotate(-45deg); 
-  }
-}
+// .hamburger{
+//   $width:25px;
+//   $height:3px;
+//   width:$width;
+//   height:$height;
+//   background:white;
+//   display:block;
+//   position:absolute;
+//   top:50%;
+//   left:50%;
+//   margin-left:-$width/2;
+//   margin-top:-$height/2;
+//   transition:transform 200ms;
+// }
+// $hamburger-spacing:8px;
+// .hamburger-1{
+//   transform:translate3d(0,-$hamburger-spacing,0);
+// }
+// .hamburger-2{
+//   transform:translate3d(0,0,0);
+// }
+// .hamburger-3{
+//   transform:translate3d(0,$hamburger-spacing,0);
+// }
+// .menu-open:checked+.menu-open-button{
+//   .hamburger-1{
+//     transform:translate3d(0,0,0) rotate(45deg); 
+//   }
+//   .hamburger-2{
+//     transform:translate3d(0,0,0) scale(0.1,1);
+//   }
+//   .hamburger-3{
+//     transform:translate3d(0,0,0) rotate(-45deg); 
+//   }
+// }
 .menu{
   @extend %goo;
   $width:380px;

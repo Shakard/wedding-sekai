@@ -1,0 +1,26 @@
+<div class="example-container">
+    <h2>Guests</h2>
+  
+    <div
+      cdkDropList
+      #todoList="cdkDropList"
+      [cdkDropListData]="users"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let user of users" cdkDrag>{{user.first_name}}</div>
+    </div>
+  </div>
+  
+  <div *ngFor="let table of tables" class="example-container">
+    <H2>{{table.name}}</H2>
+    <div
+      cdkDropList
+      #doneList="cdkDropList"
+      [cdkDropListData]="tables"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let table of tables" cdkDrag>{{table.name}}</div>
+    </div>
+  </div>
+  
+  

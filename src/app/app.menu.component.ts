@@ -31,6 +31,7 @@ export class AppMenuComponent implements OnInit {
                     {label: 'Invitados',icon: 'pi pi-fw pi-home', routerLink: ['home']}, 
                     {label: 'Mesas',icon: 'pi pi-fw pi-cog', routerLink: ['table']}, 
                     {label: 'Asientos',icon: 'pi pi-fw pi-cog', routerLink: ['seat']}, 
+                    {label: 'Drag-drop',icon: 'pi pi-fw pi-cog', routerLink: ['drag-drop']}, 
                 ]
             },
            /* {

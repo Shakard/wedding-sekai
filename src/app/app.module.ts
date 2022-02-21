@@ -139,6 +139,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { TableGuestComponent } from './public/table-guest/table-guest.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GuestSeatComponent } from './public/guest-seat/guest-seat.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { DragdropComponent } from './public/dragdrop/dragdrop.component';
 
 @NgModule({
     imports: [
@@ -231,6 +233,7 @@ import { GuestSeatComponent } from './public/guest-seat/guest-seat.component';
         ReactiveFormsModule,
         NgxSpinnerModule,
         FontAwesomeModule,
+        DragDropModule
     ],
     declarations: [
         AppComponent,
@@ -273,7 +276,8 @@ import { GuestSeatComponent } from './public/guest-seat/guest-seat.component';
         LoginComponent, 
         HomeComponent,
         TableGuestComponent,
-        GuestSeatComponent
+        GuestSeatComponent,
+        DragdropComponent
     ],
     
     providers: [

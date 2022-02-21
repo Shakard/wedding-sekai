@@ -30,6 +30,7 @@ import {
 import { TableComponent } from './components/table/table.component';
 import { TableGuestComponent } from './public/table-guest/table-guest.component';
 import { GuestSeatComponent } from './public/guest-seat/guest-seat.component';
+import { DragdropComponent } from './public/dragdrop/dragdrop.component';
 
 
 
@@ -43,6 +44,7 @@ import { GuestSeatComponent } from './public/guest-seat/guest-seat.component';
                     {path: 'home', component: HomeComponent, canActivate: [AuthGuard]}, 
                     {path: 'table', component: TableGuestComponent, canActivate: [AuthGuard]}, 
                     {path: 'seat', component: GuestSeatComponent, canActivate: [AuthGuard]}, 
+                    {path: 'drag-drop', component: DragdropComponent, canActivate: [AuthGuard]}, 
                     {path: 'uikit/formlayout', component: FormLayoutComponent},                    
                     {path: 'uikit/input', component: InputComponent},
                     {path: 'uikit/floatlabel', component: FloatLabelComponent},
