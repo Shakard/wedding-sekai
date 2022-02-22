@@ -49,6 +49,16 @@ export class UserService {
     return this.httpClient.get(url, { headers: headers });
   }
 
+  getTablesAndUsers() { 
+    const url = this.url + 'tables-users';
+    const headers = new HttpHeaders(
+      {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }  
+    );
+    return this.httpClient.get(url, { headers: headers });
+  }
+
   getChairs() {
     const url = this.url + 'chairs';
     const headers = new HttpHeaders(
@@ -99,6 +109,16 @@ export class UserService {
     );
     url = this.url + url;
     return this.httpClient.post(url, {headers: headers});
+  }
+
+  addTableId(tableId: number, data: any) {
+    const url = this.url + 'add-table-id/' + tableId;
+    const headers = new HttpHeaders(
+      {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    );
+    return this.httpClient.put(url, data, { headers: headers });
   }
   
 
