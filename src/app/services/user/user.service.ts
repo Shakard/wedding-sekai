@@ -111,16 +111,15 @@ export class UserService {
     return this.httpClient.post(url, {headers: headers});
   }
 
-  addTableId(tableId: number, data: any) {
-    const url = this.url + 'add-table-id/' + tableId;
+  clearGuest(url: string) {
     const headers = new HttpHeaders(
       {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     );
-    return this.httpClient.put(url, data, { headers: headers });
-  }
-  
+    url = this.url + url;
+    return this.httpClient.post(url, {headers: headers});
+  }  
 
   update(url: string, data: any) {
     const headers = new HttpHeaders(

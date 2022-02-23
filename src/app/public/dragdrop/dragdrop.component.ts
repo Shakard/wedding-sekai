@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/models/auth/user';
 import { Chair } from 'src/app/models/table-management/chair';
@@ -18,28 +19,40 @@ export class DragdropComponent implements OnInit {
   chairs: Chair[];
   tables: TableGuest[];
 
-  constructor(public userService: UserService, private dragulaService: DragulaService) {
+  constructor(
+    public userService: UserService,
+    private dragulaService: DragulaService,
+    private spinner: NgxSpinnerService,    
+    ) {
 
-    this.dragulaService.createGroup("COLUMNS", {
+    this.dragulaService.createGroup("COLUMNS", {       
       direction: 'horizontal',
-      moves: (el, source, handle) => handle.className === "group-handle",      
+      moves: (el, source, handle) => handle.className === "group-handle"
     });
+
+    // this.dragulaService.createGroup("SPILL", {
+    //   removeOnSpill: true   
+    // });
+
+    this.subs.add(this.dragulaService.dropModel("SPILL")
+    .subscribe(({target, item }) => {
+      if (target.id != 'mesas') {
+        this.clearGuest(item.id);
+      }       
+    })
+  );
 
     this.subs.add(this.dragulaService.drag("VAMPIRES")
       .subscribe(({ name, el, source }) => {
         // ...
       })
     );
-    this.subs.add(this.dragulaService.drop("ITEMS")
+    this.subs.add(this.dragulaService.drop("SPILL")
       .subscribe(({ name, el, target, source, sibling }) => {
-        console.log(this.tables);
+        this.saveChanges();
       })
     );
-    this.subs.add(this.dragulaService.dropModel("COLUMNS")
-      .subscribe(({ name, el, source, item }) => {
-        // console.log(item.id);        
-      })
-    );
+   
     // some events have lots of properties, just pick the ones you need
     this.subs.add(this.dragulaService.dropModel("ITEMS")
       // WHOA
@@ -83,15 +96,25 @@ export class DragdropComponent implements OnInit {
     });
   }
 
-  importData(tables: TableGuest[]) {
+  clearGuest(id: number) {
+    this.spinner.show();
+    this.userService.update('clear-user-table-id/' + id, { id }).subscribe(response => {
+      this.spinner.hide();
+    });
+  }
+
+  updateTables(tables: TableGuest[]) {
+    this.spinner.show();
     this.userService.store('update-tables', { data: tables })
       .subscribe(response => {
+        this.getTables();
         this.getGuests();
+        this.spinner.hide();
       });
   }
 
   saveChanges() {
-    this.importData(this.tables);
+    this.updateTables(this.tables);
   }
 
 }
