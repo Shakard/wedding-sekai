@@ -73,6 +73,20 @@ export class SweetMessageService {
         });
     }
 
+    questionClearTables({title = '¿Limpiar todas las mesas?'}) {
+        return Swal.fire({
+            title,
+            icon: 'warning',
+            width: '300px',
+            color: 'orange',  
+            showCancelButton: true,
+            confirmButtonColor: 'orange',
+            cancelButtonColor: '#3085d6',
+            padding: '2px',
+            confirmButtonText: '<i class="pi pi-trash"> Limpiar</i>'
+        });
+    }
+
     questionDeleteUsers({title = '¿Está seguro de eliminar todos los usuarios?', text = 'No podrá recuperar esta información!'}) {
         return Swal.fire({
             title,

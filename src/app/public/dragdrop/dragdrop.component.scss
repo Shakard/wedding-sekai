@@ -31,26 +31,211 @@
 }
 
 // ================================================================================
+// =========================Separador del header===================================
+// ================================================================================
+.boxHeader{ 
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg, rgba(79,98,250,1) 0%,
+     rgba(233,88,44,1) 33%,
+      rgba(2,204,198,1) 66%,
+       rgba(97,132,232,1) 97%);
+  // background: linear-gradient(
+  //   90deg, rgba(146,254,157,1) 0%,
+  //    #00ff91 20%,
+  //     rgba(2,204,198,1) 40%,
+  //      #439ede 80%,
+  //       rgba(79,98,250,1) 100%);
+  animation: gradient 5s ease infinite;
+  background-size: 400% 400%;
+  height: 1px
+}
+
+
+
+// ================================================================================
+// =================================SIDEBAR========================================
 // ================================================================================
 .sidebar {
-  position: fixed;
+  position: static;
   width: 230px;
   height: calc(100vh - 10.5rem);
   overflow-y: auto;
   user-select: none;
-  top: 6rem;
-  left: 1rem;
+  top: 17.5rem;
+  left: 5rem;
   background-color: var(--surface-overlay);
-  border-radius: 12px;
-  padding: 5px 100px 4px 15px;
-  box-shadow: 0px 3px 5px rgba(255, 252, 252, 0.02), 0px 0px 2px rgba(0, 0, 0, 0.05), 0px 1px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  padding-left:  1rem;
+  padding-right: 3rem;
+}
+
+////////////////////////////////////////////////////////////////  
+//////////////////Todos los botones/////////////////////////////
+////////////////////////////////////////////////////////////////
+
+// Animate the size, inside
+.fill:hover,
+.fill:focus {
+  box-shadow: inset 0 0 0 2em var(--hover);
+}
+
+// Animate the size, outside
+.pulse:hover, 
+.pulse:focus {
+  animation: pulse 0.5s;
+  box-shadow: 0 0 0 2em rgba(#fff,0);
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 var(--hover); }
+}
+
+// Stack multiple shadows, one from the left, the other from the right
+.close:hover,
+.close:focus {
+  box-shadow: 
+    inset -5.6em 0 0 0 var(--hover),
+    inset 5.6em 0 0 0 var(--hover);  
+}
+
+// Size can also be negative; see how it's smaller than the element
+.raise:hover,
+.raise:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em);
+}
+
+// Animating from the bottom
+.up:hover,
+.up:focus {
+  box-shadow: inset 0 -3.25em 0 0 var(--hover);
+}
+
+// And from the left
+.slide:hover,
+.slide:focus {
+  box-shadow: inset 5em 0 0 0 var(--hover);
+}
+
+// Multiple shadows, one on the outside, another on the inside
+.offset {  
+  box-shadow: 
+    0.3em 0.3em 0 0 var(--color),
+    inset 0.3em 0.3em 0 0 var(--color);
+  
+  &:hover,
+  &:focus {
+    box-shadow: 
+      0 0 0 0 var(--hover),
+      inset 6em 3.5em 0 0 var(--hover);
+  }
+}
+
+//=== Set button colors
+// If you wonder why use Sass vars or CSS custom properties...
+  // Make a map with the class names and matching colors
+$colors: (
+  fill: #ff7f82,
+  pulse: #ef6eae, 
+  close: #a972cb, 
+  raise: #e4cb58, 
+  up: #ffa260, 
+  slide: #8fc866, 
+  offset: #19bc8b
+);
+
+// Sass variables compile to a static string; CSS variables are dynamic and inherited
+  // Loop through the map and set CSS custom properties using Sass variables
+@each $button, $color in $colors {
+  .#{$button} {
+    --color: #{$color};
+    --hover: #{adjust-hue($color, 45deg)};
+  }
+}
+
+// Now every button will have different colors as set above.
+// We get to use the same structure, only changing the custom properties.
+button {  
+  color: var(--color);
+  transition: 0.25s;
+  
+  &:hover,
+  &:focus { 
+    border-color: var(--hover);
+    color: #fff;
+  }
+}
+
+// Basic button styles
+button {
+  background: none;
+  border: 1px solid;
+  border-radius: 5px;
+  font: inherit;
+  line-height: 1;
+  margin: 0.5em;
+  padding: 1em 2em;
+}
+
+h1 { font-weight: 400; }
+
+code { 
+  color: #19bc8b;
+  //color: #02ccc6;
+  font: inherit;
+}
+
+// ================================================================================
+// =================================CONTENEDOR CON GRADIENT========================
+// ================================================================================
+
+.canvas-container{
+  width: 83%;
+  margin-left:10px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg, rgba(79,98,250,1) 0%,
+     rgba(233,88,44,1) 33%,
+      rgba(2,204,198,1) 66%,
+       rgba(97,132,232,1) 97%);
+  // background: linear-gradient(
+  //   90deg, rgba(146,254,157,1) 0%,
+  //    #00ff91 20%,
+  //     rgba(2,204,198,1) 40%,
+  //      #439ede 80%,
+  //       rgba(79,98,250,1) 100%);
+  animation: gradient 5s ease infinite;
+  background-size: 400% 400%;
+  padding: 2px;
+  height: auto;
+  box-sizing: border-box;
+}
+
+@keyframes gradient{
+
+  0%{
+    background-position: 0% 50%;
+  }
+  50%{
+    background-position: 100% 50%;
+  }
+  100%{
+    background-position: 0% 50%;
+  }
 
 }
 
-.canvas-container {
-  margin-left:230px;
-  border: 1px solid;
-  border-color: red;
+// ===========================================================================
+
+.box-container {
+  width: auto;
+  height: auto;
+  border-radius: 4px;
+  background-color: var(--surface-overlay);
+  padding: 2rem;
+  box-sizing: border-box;
+  min-height: 515px;
 }
 
 
@@ -59,12 +244,13 @@
   max-width: 100%;
   margin: 0 25px 25px 0;
   display: inline-block;
-  vertical-align: top;
+  vertical-align: top;  
 }
 
 .guest-list {
-  height: calc(100vh - 17.5rem);
-  width: 200px;
+  height: calc(100vh - 13.4rem);
+  margin-top: 10px;
+  width: 210px;
   border: solid 1px rgb(204, 204, 204);
   min-height: 60px;
   background: rgb(255, 255, 255);
@@ -117,16 +303,19 @@
   cursor: move;
   background: white;
   font-size: 10px;
+  
 }
 
-// .cdk-drag-animating {
-//   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-// }
+.example-handle {
+  top: 10px;
+  right: 10px;
+  color: #ccc;
+  cursor: move;
+  width: 15px;
+  height: 15px;
+}
 
-// .example-box:last-child {
-//   border: none;
-// }
-
-// .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
-//   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-// }
+.contenedor-flexbox {
+  display: flex; /*Convertimos al menú en flexbox*/
+  justify-content: space-between; /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
+}

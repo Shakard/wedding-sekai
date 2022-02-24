@@ -1,20 +1,46 @@
-<div class="sidebar">
-  <div class="guests-container">
-    <h2 style="font-size: 16px">Invitados</h2>
-    <div id="invitados" dragula="SPILL" [(dragulaModel)]="users" class="guest-list">
-      <div class="guest-box" *ngFor="let user of users">{{user.first_name}} {{user.last_name}}</div>
-    </div>
-  </div>
+<div class="boxHeader">
 </div>
+<br>
+<div class="buttons">
+  <h1>Llenar <code>Mesas</code></h1>
+  <button (click)="clearAllUsers()" class="up">Limpiar mesas</button>
+  <button pButton icon="pi pi-send" label="Notificar" (click)="saveChanges()" style="color:#4f62fa"></button>
+  <button (click)="saveChanges()" class="offset">Importar Invitados</button>
+</div>
+<br>
+<div class="contenedor-flexbox">
 
-<div class="canvas-container">
-  <div class="tables-container" dragula="COLUMNS" [(dragulaModel)]="tables">
-    <div *ngFor="let table of tables" class="tables-container">
-      <h2 style="font-size: 11px">{{table.name}}</h2>
-
-      <div id="mesas" *ngIf="users" dragula="SPILL" [(dragulaModel)]="table.users" class="example-list">
-        <div class="table-box" *ngFor="let user of table.users">{{user.first_name}} {{user.last_name}}</div>
+  <div class="sidebar">
+    <div class="guests-container">
+      <div id="invitados" dragula="SPILL" [(dragulaModel)]="users" class="guest-list">
+        <div class="guest-box" *ngFor="let user of users">{{user.first_name}} {{user.last_name}}</div>
       </div>
     </div>
   </div>
+
+  <div class="canvas-container">
+    <div class="box-container">
+      <div class="tables-container" dragula="COLUMNS" [(dragulaModel)]="tables">
+        <div *ngFor="let table of tables" class="tables-container" cdkDragBoundary=".canvas-container" cdkDrag>
+          <div class="contenedor-flexbox">
+            <h2 style="font-size: 11px; margin-bottom:1px">{{table.name}} </h2>
+            <div class="example-handle" cdkDragHandle>
+              <svg width="15px" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                </path>
+                <path d="M0 0h24v24H0z" fill="none"></path>
+              </svg>
+            </div>
+          </div>
+          <div id="mesas" *ngIf="users" dragula="SPILL" [(dragulaModel)]="table.users" class="example-list">
+            <div class="table-box" *ngFor="let user of table.users">{{user.first_name}} {{user.last_name}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 </div>
+
+

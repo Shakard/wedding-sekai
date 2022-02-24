@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { User } from 'src/app/models/auth/user';
 import { Chair } from 'src/app/models/table-management/chair';
 import { TableGuest } from 'src/app/models/table-management/table-guest';
+import { SweetMessageService } from 'src/app/services/message.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -22,10 +23,11 @@ export class DragdropComponent implements OnInit {
   constructor(
     public userService: UserService,
     private dragulaService: DragulaService,
-    private spinner: NgxSpinnerService,    
-    ) {
+    private spinner: NgxSpinnerService,
+    private messageService: SweetMessageService
+  ) {
 
-    this.dragulaService.createGroup("COLUMNS", {       
+    this.dragulaService.createGroup("COLUMNS", {
       direction: 'horizontal',
       moves: (el, source, handle) => handle.className === "group-handle"
     });
@@ -35,12 +37,12 @@ export class DragdropComponent implements OnInit {
     // });
 
     this.subs.add(this.dragulaService.dropModel("SPILL")
-    .subscribe(({target, item }) => {
-      if (target.id != 'mesas') {
-        this.clearGuest(item.id);
-      }       
-    })
-  );
+      .subscribe(({ target, item }) => {
+        if (target.id != 'mesas') {
+          this.clearGuest(item.id);
+        }
+      })
+    );
 
     this.subs.add(this.dragulaService.drag("VAMPIRES")
       .subscribe(({ name, el, source }) => {
@@ -52,14 +54,14 @@ export class DragdropComponent implements OnInit {
         this.saveChanges();
       })
     );
-   
+
     // some events have lots of properties, just pick the ones you need
     this.subs.add(this.dragulaService.dropModel("ITEMS")
       // WHOA
-       .subscribe(({ name, el, target, source, sibling, sourceModel, targetModel, item }) => {
-      //.subscribe(({ sourceModel, targetModel, item }) => {
+      .subscribe(({ name, el, target, source, sibling, sourceModel, targetModel, item }) => {
+        //.subscribe(({ sourceModel, targetModel, item }) => {
         // console.log(item);
-        
+
       })
     );
 
@@ -115,6 +117,21 @@ export class DragdropComponent implements OnInit {
 
   saveChanges() {
     this.updateTables(this.tables);
+  }
+
+  clearAllUsers() {
+    this.messageService.questionClearTables({})
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.spinner.show();
+          this.spinner.show();
+          this.userService.get('clear-all-table-id')
+            .subscribe(response => {
+              this.getTables();
+              this.spinner.hide();
+            });
+        }
+      });
   }
 
 }
