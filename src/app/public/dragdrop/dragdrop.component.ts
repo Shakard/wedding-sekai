@@ -1,3 +1,4 @@
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -16,9 +17,12 @@ import { UserService } from 'src/app/services/user/user.service';
 export class DragdropComponent implements OnInit {
 
   subs = new Subscription();
+  isToggled = {};
   users: User[];
   chairs: Chair[];
   tables: TableGuest[];
+  canvas: String[];
+  dropPosition = {x: 0, y: 0};
 
   constructor(
     public userService: UserService,
@@ -31,10 +35,6 @@ export class DragdropComponent implements OnInit {
       direction: 'horizontal',
       moves: (el, source, handle) => handle.className === "group-handle"
     });
-
-    // this.dragulaService.createGroup("SPILL", {
-    //   removeOnSpill: true   
-    // });
 
     this.subs.add(this.dragulaService.dropModel("SPILL")
       .subscribe(({ target, item }) => {
@@ -77,6 +77,17 @@ export class DragdropComponent implements OnInit {
     this.getGuests();
     this.getTables();
     this.getChairs();
+    this.canvas = JSON.parse(localStorage.getItem('canvas'));
+  }
+
+  dragEnd(event: CdkDragEnd) {
+    console.log(event.dropPoint);
+    let myStorage = window.localStorage;    
+    myStorage.setItem("canvas", JSON.stringify(event.dropPoint));
+  }
+
+  public onHoverOut($i) {
+    this.isToggled[$i] = false;       
   }
 
   public getGuests() {
@@ -128,6 +139,7 @@ export class DragdropComponent implements OnInit {
           this.userService.get('clear-all-table-id')
             .subscribe(response => {
               this.getTables();
+              this.getGuests();
               this.spinner.hide();
             });
         }

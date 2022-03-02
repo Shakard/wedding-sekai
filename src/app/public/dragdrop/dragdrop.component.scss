@@ -121,8 +121,8 @@
 // Multiple shadows, one on the outside, another on the inside
 .offset {  
   box-shadow: 
-    0.3em 0.3em 0 0 var(--color),
-    inset 0.3em 0.3em 0 0 var(--color);
+    0.2em 0.2em 0 0 var(--color),
+    inset 0.1em 0.1em 0 0 var(--color);
   
   &:hover,
   &:focus {
@@ -238,6 +238,14 @@ code {
   min-height: 515px;
 }
 
+.table-guest-container {
+  width: auto;
+  min-width: 100%;
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: top;  
+}
+
 
 .guests-container {
   width: auto;
@@ -280,10 +288,13 @@ code {
   margin: 0 25px 25px 0;
   display: inline-block;
   vertical-align: top;
+
 }
 
 .example-list {
   border: solid 1px #ccc;
+  margin-left: 10px;
+  margin-right: 10px;
   min-height: 60px;
   background: white;
   border-radius: 4px;
@@ -302,7 +313,7 @@ code {
   box-sizing: border-box;
   cursor: move;
   background: white;
-  font-size: 10px;
+  font-size: 13px;
   
 }
 
@@ -316,6 +327,20 @@ code {
 }
 
 .contenedor-flexbox {
-  display: flex; /*Convertimos al menú en flexbox*/
+  display: flex; /*Convertimos al menú en flexbox*/ 
   justify-content: space-between; /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
+}
+
+.btn-table {
+  border: solid 2px;
+  border-color: #4caa2b;
+  color: #4caa2b;
+  border-radius: 100px;
+  transition: 0.25s;
+  
+  &:hover,
+  &:focus { 
+    border-color: #ffa260;
+    color: #ffa260;
+  }
 }
