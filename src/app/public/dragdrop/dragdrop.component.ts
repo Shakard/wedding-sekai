@@ -1,4 +1,4 @@
-import { CdkDragEnd } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -22,7 +22,6 @@ export class DragdropComponent implements OnInit {
   chairs: Chair[];
   tables: TableGuest[];
   canvas: String[];
-  dropPosition = {x: 0, y: 0};
 
   constructor(
     public userService: UserService,
@@ -77,17 +76,41 @@ export class DragdropComponent implements OnInit {
     this.getGuests();
     this.getTables();
     this.getChairs();
-    this.canvas = JSON.parse(localStorage.getItem('canvas'));
+  }
+
+  ngOnDestroy() {
+    // destroy all the subscriptions at once
+    this.subs.unsubscribe();
+    this.dragulaService.destroy("COLUMNS");
+  }
+
+  placeDiv(tables: TableGuest[]) {
+    tables.forEach(table => {
+      var x = table.pos_x;
+      var y = table.pos_y;
+      if (x != null && y != null) {
+        var d = document.getElementById('tbl' + table.id);
+        d.style.position = "absolute";
+        d.style.left = (x - 373) + 'px';
+        d.style.top = (y + 121) + 'px';
+      }
+    });
   }
 
   dragEnd(event: CdkDragEnd) {
-    console.log(event.dropPoint);
-    let myStorage = window.localStorage;    
-    myStorage.setItem("canvas", JSON.stringify(event.dropPoint));
+    this.spinner.show();
+    console.log(event.dropPoint['x']);
+    console.log(event.dropPoint['y']);
+    console.log(event.source.element.nativeElement.textContent);
+    var x = event.dropPoint['x'];
+    var y = event.dropPoint['y'];
+    this.userService.update('update-table-position', event.dropPoint).subscribe(response => {
+      this.spinner.hide();
+    });
   }
 
   public onHoverOut($i) {
-    this.isToggled[$i] = false;       
+    this.isToggled[$i] = false;
   }
 
   public getGuests() {
@@ -100,6 +123,7 @@ export class DragdropComponent implements OnInit {
   getTables() {
     this.userService.getTablesAndUsers().subscribe(response => {
       this.tables = response['data']
+      this.placeDiv(this.tables);
     });
   }
 

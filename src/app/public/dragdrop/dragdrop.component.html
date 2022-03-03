@@ -5,7 +5,7 @@
   <h1>Llenar <code>Mesas</code></h1>
   <button (click)="clearAllUsers()" class="up">Limpiar mesas</button>
   <button pButton icon="pi pi-send" label="Notificar" (click)="saveChanges()" style="color:#4f62fa"></button>
-  <button (click)="saveChanges()" class="offset">Importar Invitados</button>
+  <button (click)="placeDiv(tables)" class="offset">Importar Invitados</button>
 </div>
 <br>
 <div class="contenedor-flexbox">
@@ -21,9 +21,10 @@
   <div class="canvas-container">
     <div class="box-container">
       <div dragula="COLUMNS" [(dragulaModel)]="tables">
-        <div *ngFor="let table of tables; let i = index" class="tables-container" cdkDragBoundary=".canvas-container" cdkDrag (cdkDragEnded)="dragEnd($event)">
+        <div id="tbl{{table.id}}" *ngFor="let table of tables; let i = index" class="tables-container"     
+        cdkDragBoundary=".canvas-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
           <div class="contenedor-flexbox">
-            <button class="btn-table" (click)="isToggled[i] = !isToggled[i]">{{table.name}} </button>
+            <button class="btn-table" (click)="isToggled[i] = !isToggled[i]">{{table.name}}</button>
             <div class="example-handle" cdkDragHandle>
               <svg width="15px" fill="currentColor" viewBox="0 0 24 24">
                 <path
@@ -34,7 +35,7 @@
             </div>
           </div>          
           <div *ngIf="isToggled[i]" class="table-guest-container" >
-            <div id="{{i}}"  dragula="SPILL" [(dragulaModel)]="table.users" class="example-list">
+            <div dragula="SPILL" [(dragulaModel)]="table.users" class="example-list">
               <div class="table-box" *ngFor="let user of table.users">{{user.first_name}} {{user.last_name}}</div>
             </div>
           </div>         

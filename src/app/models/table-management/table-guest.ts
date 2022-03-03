@@ -5,4 +5,6 @@ export interface TableGuest {
     name?: string;
     code?: string;
     users?: User[];
+    pos_x?:number;
+    pos_y?:number;
 }
