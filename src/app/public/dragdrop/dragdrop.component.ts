@@ -1,5 +1,5 @@
-import { CdkDragDrop, CdkDragEnd } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
@@ -8,6 +8,10 @@ import { Chair } from 'src/app/models/table-management/chair';
 import { TableGuest } from 'src/app/models/table-management/table-guest';
 import { SweetMessageService } from 'src/app/services/message.service';
 import { UserService } from 'src/app/services/user/user.service';
+import panzoom from "panzoom";
+
+// import('src/assets/myJS/canvas.js');
+
 
 @Component({
   selector: 'app-dragdrop',
@@ -15,9 +19,17 @@ import { UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./dragdrop.component.scss']
 })
 export class DragdropComponent implements OnInit {
+  //=======================panzoom variables============================
+  @ViewChild('tableContainer', { static: false }) tableContainer: ElementRef;
+  panZoomController;
+  zoomLevels: number[];
+  currentZoomLevel: number;
+
+  //====================================================================
 
   subs = new Subscription();
   isToggled = {};
+  isHovered = {};
   users: User[];
   chairs: Chair[];
   tables: TableGuest[];
@@ -76,6 +88,13 @@ export class DragdropComponent implements OnInit {
     this.getGuests();
     this.getTables();
     this.getChairs();
+    
+  }
+
+  ngAfterViewChecked() {
+    if (this.tables) {
+      this.placeDiv(this.tables);      
+    }
   }
 
   ngOnDestroy() {
@@ -89,22 +108,22 @@ export class DragdropComponent implements OnInit {
       var x = table.pos_x;
       var y = table.pos_y;
       if (x != null && y != null) {
-        var d = document.getElementById('tbl' + table.id);
-        d.style.position = "absolute";
-        d.style.left = (x - 373) + 'px';
-        d.style.top = (y + 121) + 'px';
+        var d = document.getElementById(table.id.toString());
+        d.style.position = "relative";
+        d.style.left = x + 'px';
+        d.style.top = y + 'px';
       }
     });
   }
 
   dragEnd(event: CdkDragEnd) {
-    this.spinner.show();
-    console.log(event.dropPoint['x']);
-    console.log(event.dropPoint['y']);
-    console.log(event.source.element.nativeElement.textContent);
-    var x = event.dropPoint['x'];
-    var y = event.dropPoint['y'];
-    this.userService.update('update-table-position', event.dropPoint).subscribe(response => {
+    this.spinner.show();    
+    var id = event.source.element.nativeElement.id;
+    var pos_x = event.source.getFreeDragPosition()['x'];
+    var pos_y = event.source.getFreeDragPosition()['y'];
+    var data = {id: id, pos_x: pos_x, pos_y:pos_y};
+
+    this.userService.update('update-table-position', data).subscribe(response => {
       this.spinner.hide();
     });
   }
@@ -123,10 +142,9 @@ export class DragdropComponent implements OnInit {
   getTables() {
     this.userService.getTablesAndUsers().subscribe(response => {
       this.tables = response['data']
-      this.placeDiv(this.tables);
     });
   }
-
+  
   getChairs() {
     this.userService.getChairs().subscribe(response => {
       this.chairs = response['data']
@@ -169,5 +187,85 @@ export class DragdropComponent implements OnInit {
         }
       });
   }
+
+  resetTablesPosition() {
+    this.messageService.questionResetPosition({})
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.spinner.show();
+          this.userService.get('reset-tables-position')
+            .subscribe(response => {
+              this.getTables();
+              this.getGuests();
+              this.spinner.hide();
+            });
+        }
+      });
+  }
+
+  //=============================================================================================
+  //===============================panzoom=======================================================
+  //=============================================================================================
+
+  zoom() {
+    const isSmooth = false;
+    const scale = this.currentZoomLevel;
+
+
+    if (scale) {
+      const transform = this.panZoomController.getTransform();
+      const deltaX = transform.x;
+      const deltaY = transform.y;
+      const offsetX = scale + deltaX;
+      const offsetY = scale + deltaY;
+
+      if (isSmooth) {
+        this.panZoomController.smoothZoom(0, 0, scale);
+      } else {
+        this.panZoomController.zoomTo(offsetX, offsetY, scale);
+      }
+    }
+
+  }
+
+  zoomToggle(zoomIn: boolean) {
+    const idx = this.zoomLevels.indexOf(this.currentZoomLevel);
+    if (zoomIn) {
+      if (typeof this.zoomLevels[idx + 1] !== 'undefined') {
+        this.currentZoomLevel = this.zoomLevels[idx + 1];
+      }
+    } else {
+      if (typeof this.zoomLevels[idx - 1] !== 'undefined') {
+        this.currentZoomLevel = this.zoomLevels[idx - 1];
+      }
+    }
+    if (this.currentZoomLevel === 1) {
+      this.panZoomController.moveTo(0, 0);
+      this.panZoomController.zoomAbs(0, 0, 1);
+    } else {
+      this.zoom();
+    }
+  }
+
+  ngAfterViewInit() {
+
+    this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3];
+    this.currentZoomLevel = this.zoomLevels[4];
+    // this.panZoomController = panzoom(this.tableContainer.nativeElement);
+    this.panZoomController = panzoom(this.tableContainer.nativeElement, {
+      beforeMouseDown: function(e) {
+        // allow wheel-zoom only if altKey is pressed. Otherwise - ignore
+        var shouldIgnore = !e.ctrlKey;
+        return shouldIgnore;
+      },
+      zoomDoubleClickSpeed: 1,
+      maxZoom: 1.4,
+      minZoom: 0.2,
+    })
+  }
+
+  //================================================================
+  //======================fin de panzoom============================
+  //================================================================
 
 }

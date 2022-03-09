@@ -57,12 +57,13 @@
 // =================================SIDEBAR========================================
 // ================================================================================
 .sidebar {
-  position: static;
+  position: fixed;
   width: 230px;
-  height: calc(100vh - 10.5rem);
+  // height: calc(100vh - 10.5rem);
+  height: 460px;
   overflow-y: auto;
   user-select: none;
-  top: 17.5rem;
+  top: 21rem;
   left: 5rem;
   background-color: var(--surface-overlay);
   border-radius: 4px;
@@ -186,32 +187,39 @@ code {
   font: inherit;
 }
 
+// ===================================================================================
+// ===============================Onhover====================================
+// ===================================================================================
+
+
+
+///////////////////////////////////////////////////////////////////
+
 // ================================================================================
 // =================================CONTENEDOR CON GRADIENT========================
 // ================================================================================
 
-.canvas-container{
-  width: 83%;
-  margin-left:10px;
-  position: relative;
-  border-radius: 4px;
-  background: linear-gradient(
-    90deg, rgba(79,98,250,1) 0%,
-     rgba(233,88,44,1) 33%,
-      rgba(2,204,198,1) 66%,
-       rgba(97,132,232,1) 97%);
-  // background: linear-gradient(
-  //   90deg, rgba(146,254,157,1) 0%,
-  //    #00ff91 20%,
-  //     rgba(2,204,198,1) 40%,
-  //      #439ede 80%,
-  //       rgba(79,98,250,1) 100%);
-  animation: gradient 5s ease infinite;
-  background-size: 400% 400%;
-  padding: 2px;
-  height: auto;
-  box-sizing: border-box;
-}
+// .canvas-container{
+//   width: auto;
+//   height: auto;
+//   margin-left:10px;
+//   border-radius: 4px;
+//   background: linear-gradient(
+//     90deg, rgba(79,98,250,1) 0%,
+//      rgba(233,88,44,1) 33%,
+//       rgba(2,204,198,1) 66%,
+//        rgba(97,132,232,1) 97%);
+//   // background: linear-gradient(
+//   //   90deg, rgba(146,254,157,1) 0%,
+//   //    #00ff91 20%,
+//   //     rgba(2,204,198,1) 40%,
+//   //      #439ede 80%,
+//   //       rgba(79,98,250,1) 100%);
+//   animation: gradient 5s ease infinite;
+//   background-size: 400% 400%;
+//   padding: 2px;
+//   box-sizing: border-box;  
+// }
 
 @keyframes gradient{
 
@@ -227,24 +235,64 @@ code {
 
 }
 
-// ===========================================================================
+// ==============================Spacer================================
+
+.spacer {
+  height: 50px;
+  margin: 0 0 -50px 0;
+  /* margin: 20px 0 -50px 0; use this if you want #container to have a 'bottom padding', in this case of 20px */
+  background: transparent; /* you'll need this if #container's parent element has a different background from #container itself */
+}
+
+//=====================================================================
+.main-container {
+  position: relative;
+  margin-left:300px;
+  margin-bottom:50px;
+  width: 1000px;
+  height: 101%;
+  min-height: 520px;
+  min-width: 510px;
+  border: 3px solid;
+  border-color: #19bc8b;
+  border-radius: 4px;
+  // background-color: var(--surface-overlay);
+
+  box-sizing: border-box;
+  // min-height: 515px;
+  // min-width: 1071px;
+  // resize: both;
+  // overflow: auto;
+}
 
 .box-container {
-  width: auto;
-  height: auto;
-  border-radius: 4px;
-  background-color: var(--surface-overlay);
-  padding: 2rem;
-  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   min-height: 515px;
+  min-width: 500px;
+  border: 3px solid;
+  border-color: rgb(255, 255, 255);
+  // background-color: var(--surface-overlay);
+  background-color: #dddddd;
+  box-sizing: border-box; 
+  overflow: hidden;
+
+  // resize: both;
+  // overflow: auto;
 }
 
 .table-guest-container {
-  width: auto;
+  width: 100%;
+  height: 100%;
   min-width: 100%;
   max-width: 100%;
   display: inline-block;
   vertical-align: top;  
+}
+
+.tbl-counter {
+  color: rgba(79,98,250,1);
 }
 
 
@@ -293,11 +341,11 @@ code {
 }
 
 .example-list {
-  border: solid 1px #ccc;
+  border: solid 1px #02ccc6;
   margin-left: 10px;
   margin-right: 10px;
-  min-height: 60px;
-  background: white;
+  min-height: 30px;
+  background: #2b7573;
   border-radius: 4px;
   overflow: hidden;
   display: block;
@@ -305,15 +353,15 @@ code {
 
 .table-box {
   padding: 5px 5px;
-  border-bottom: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
+  border-bottom: solid 1px #02ccc6;
+  color: var(--hover);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
   cursor: move;
-  background: white;
+  background: #02ccc6;
   font-size: 13px;
   
 }
@@ -321,7 +369,7 @@ code {
 .example-handle {
   top: 10px;
   right: 10px;
-  color: #ccc;
+  color: rgb(65, 62, 62);
   cursor: move;
   width: 15px;
   height: 15px;
@@ -344,4 +392,11 @@ code {
     border-color: #ffa260;
     color: #ffa260;
   }
+
+  #canvas
+{
+  width: 100%;
+  height: 100%;
+  background: #111;
+}
 }

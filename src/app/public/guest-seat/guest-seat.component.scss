@@ -1,150 +1,398 @@
-@import '~compass-mixins/lib/compass/css3';
-@import 'node_modules/mathsass/dist/math';
+// =========================================================
+// =====================DRAGULA CSS=========================
+// =========================================================
 
-//vars
-$fg:rgb(52, 129, 230);
-$bg:blue;
-$pi:3.14;
+/* in-flight clone */
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+  pointer-events: none;
+}
+/* high-performance display:none; helper */
+.gu-hide {
+  left: -9999px !important;
+}
+/* added to mirrorContainer (default = body) while dragging */
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* added to the source element while its mirror is dragged */
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
 
-//config
-$menu-items:15+1;
-$open-distance:105px;
-$opening-angle:$pi*2;
-
-
-%goo{
-  filter:url('#goo');
-  // debug 
-  // background:rgba(255,0,0,0.2);
-}
-%ball{
-  background:$fg;
-  border-radius:100%;
-  width:80px;
-  height:80px;
-  margin-left:-65px;
-  position:absolute;
-  top:0px;
-  color:white;
-  text-align:center;
-  line-height:80px;
-  transform:translate3d(0,0,0);
-  transition:transform ease-out 200ms;
-}
-%item-ball{
-  background:$fg;
-  border-radius:100%;
-  width:30px;
-  height:30px;
-  margin-left:-40px;
-  position:absolute;
-  top:20px;
-  color:white;
-  text-align:center;
-  line-height:80px;
-  transform:translate3d(0,0,0);
-  transition:transform ease-out 200ms;
-}
-.menu-open{
-  display:none;
-}
-.menu-item{
-  @extend %item-ball;
-}
-// .hamburger{
-//   $width:25px;
-//   $height:3px;
-//   width:$width;
-//   height:$height;
-//   background:white;
-//   display:block;
-//   position:absolute;
-//   top:50%;
-//   left:50%;
-//   margin-left:-$width/2;
-//   margin-top:-$height/2;
-//   transition:transform 200ms;
-// }
-// $hamburger-spacing:8px;
-// .hamburger-1{
-//   transform:translate3d(0,-$hamburger-spacing,0);
-// }
-// .hamburger-2{
-//   transform:translate3d(0,0,0);
-// }
-// .hamburger-3{
-//   transform:translate3d(0,$hamburger-spacing,0);
-// }
-// .menu-open:checked+.menu-open-button{
-//   .hamburger-1{
-//     transform:translate3d(0,0,0) rotate(45deg); 
-//   }
-//   .hamburger-2{
-//     transform:translate3d(0,0,0) scale(0.1,1);
-//   }
-//   .hamburger-3{
-//     transform:translate3d(0,0,0) rotate(-45deg); 
-//   }
-// }
-.menu{
-  @extend %goo;
-  $width:380px;
-  $height:250px;
-  position:absolute;
-  left:50%;
-  margin-left:-$width/2;
-  padding-top:20px;
-  padding-left:$width/2;
-  width:$width;
-  height:$height;
-  box-sizing:border-box;
-  font-size:20px;
-  text-align:left;
+// ================================================================================
+// =========================Separador del header===================================
+// ================================================================================
+.boxHeader{ 
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg, rgba(79,98,250,1) 0%,
+     rgba(233,88,44,1) 33%,
+      rgba(2,204,198,1) 66%,
+       rgba(97,132,232,1) 97%);
+  // background: linear-gradient(
+  //   90deg, rgba(146,254,157,1) 0%,
+  //    #00ff91 20%,
+  //     rgba(2,204,198,1) 40%,
+  //      #439ede 80%,
+  //       rgba(79,98,250,1) 100%);
+  animation: gradient 5s ease infinite;
+  background-size: 400% 400%;
+  height: 1px
 }
 
 
-.menu-item{
-  &:hover{
-    background:white;
-    color:$fg;
-  }
-  @for $i from 1 through $menu-items{
-    &:nth-child(#{$i+2}){
-      transition-duration:180ms;
-    }
-  }
+
+// ================================================================================
+// =================================SIDEBAR========================================
+// ================================================================================
+.sidebar {
+  position: fixed;
+  width: 230px;
+  // height: calc(100vh - 10.5rem);
+  height: 460px;
+  overflow-y: auto;
+  user-select: none;
+  top: 21rem;
+  left: 5rem;
+  background-color: var(--surface-overlay);
+  border-radius: 4px;
+  padding-left:  1rem;
+  padding-right: 3rem;
 }
 
-.menu-open-button{
-  @extend %ball;
-  z-index:2;
-  transition-timing-function:cubic-bezier(0.175, 0.885, 0.320, 1.275);
-  transition-duration:400ms;
-  transform:scale(1.1,1.1) translate3d(0,0,0);
-  cursor:pointer;
-}
-.menu-open-button:hover{
-  transform:scale(1.2,1.2) translate3d(0,0,0);
-}
-.menu-open:checked+.menu-open-button{
-  transition-timing-function:linear;
-  transition-duration:200ms;
-  transform:scale(0.8,0.8) translate3d(0,0,0);
+////////////////////////////////////////////////////////////////  
+//////////////////Todos los botones/////////////////////////////
+////////////////////////////////////////////////////////////////
+
+// Animate the size, inside
+.fill:hover,
+.fill:focus {
+  box-shadow: inset 0 0 0 2em var(--hover);
 }
 
-.menu-open:checked~.menu-item{
-  transition-timing-function:cubic-bezier(0.935, 0.000, 0.340, 1.330);
-  @for $i from 1 through $menu-items{
-    $angle:(($pi - $opening-angle)/2)+(($opening-angle/($menu-items - 1))*($i - 1));
-    
-    &:nth-child(#{$i+2}){
-      transition-duration:80ms+(100ms*$i);
-      $cosAngle:cos($angle);
-      $sinAngle:sin($angle);
-      $x:$cosAngle*$open-distance;
-      $y:$sinAngle*$open-distance;
-      transform:translate3d($x,$y,0);
-    }
+// Animate the size, outside
+.pulse:hover, 
+.pulse:focus {
+  animation: pulse 0.5s;
+  box-shadow: 0 0 0 2em rgba(#fff,0);
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 var(--hover); }
+}
+
+// Stack multiple shadows, one from the left, the other from the right
+.close:hover,
+.close:focus {
+  box-shadow: 
+    inset -5.6em 0 0 0 var(--hover),
+    inset 5.6em 0 0 0 var(--hover);  
+}
+
+// Size can also be negative; see how it's smaller than the element
+.raise:hover,
+.raise:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em);
+}
+
+// Animating from the bottom
+.up:hover,
+.up:focus {
+  box-shadow: inset 0 -3.25em 0 0 var(--hover);
+}
+
+// And from the left
+.slide:hover,
+.slide:focus {
+  box-shadow: inset 5em 0 0 0 var(--hover);
+}
+
+// Multiple shadows, one on the outside, another on the inside
+.offset {  
+  box-shadow: 
+    0.2em 0.2em 0 0 var(--color),
+    inset 0.1em 0.1em 0 0 var(--color);
+  
+  &:hover,
+  &:focus {
+    box-shadow: 
+      0 0 0 0 var(--hover),
+      inset 6em 3.5em 0 0 var(--hover);
   }
 }
 
+//=== Set button colors
+// If you wonder why use Sass vars or CSS custom properties...
+  // Make a map with the class names and matching colors
+$colors: (
+  fill: #ff7f82,
+  pulse: #ef6eae, 
+  close: #a972cb, 
+  raise: #e4cb58, 
+  up: #ffa260, 
+  slide: #8fc866, 
+  offset: #19bc8b
+);
+
+// Sass variables compile to a static string; CSS variables are dynamic and inherited
+  // Loop through the map and set CSS custom properties using Sass variables
+@each $button, $color in $colors {
+  .#{$button} {
+    --color: #{$color};
+    --hover: #{adjust-hue($color, 45deg)};
+  }
+}
+
+// Now every button will have different colors as set above.
+// We get to use the same structure, only changing the custom properties.
+button {  
+  color: var(--color);
+  transition: 0.25s;
+  
+  &:hover,
+  &:focus { 
+    border-color: var(--hover);
+    color: #fff;
+  }
+}
+
+// Basic button styles
+button {
+  background: none;
+  border: 1px solid;
+  border-radius: 5px;
+  font: inherit;
+  line-height: 1;
+  margin: 0.5em;
+  padding: 1em 2em;
+}
+
+h1 { font-weight: 400; }
+
+code { 
+  color: #19bc8b;
+  //color: #02ccc6;
+  font: inherit;
+}
+
+// ===================================================================================
+// ===============================Onhover====================================
+// ===================================================================================
+
+
+
+///////////////////////////////////////////////////////////////////
+
+// ================================================================================
+// =================================CONTENEDOR CON GRADIENT========================
+// ================================================================================
+
+// .canvas-container{
+//   width: auto;
+//   height: auto;
+//   margin-left:10px;
+//   border-radius: 4px;
+//   background: linear-gradient(
+//     90deg, rgba(79,98,250,1) 0%,
+//      rgba(233,88,44,1) 33%,
+//       rgba(2,204,198,1) 66%,
+//        rgba(97,132,232,1) 97%);
+//   // background: linear-gradient(
+//   //   90deg, rgba(146,254,157,1) 0%,
+//   //    #00ff91 20%,
+//   //     rgba(2,204,198,1) 40%,
+//   //      #439ede 80%,
+//   //       rgba(79,98,250,1) 100%);
+//   animation: gradient 5s ease infinite;
+//   background-size: 400% 400%;
+//   padding: 2px;
+//   box-sizing: border-box;  
+// }
+
+@keyframes gradient{
+
+  0%{
+    background-position: 0% 50%;
+  }
+  50%{
+    background-position: 100% 50%;
+  }
+  100%{
+    background-position: 0% 50%;
+  }
+
+}
+
+// ==============================Spacer================================
+
+.spacer {
+  height: 50px;
+  margin: 0 0 -50px 0;
+  /* margin: 20px 0 -50px 0; use this if you want #container to have a 'bottom padding', in this case of 20px */
+  background: transparent; /* you'll need this if #container's parent element has a different background from #container itself */
+}
+
+//=====================================================================
+.main-container {
+  position: relative;
+  margin-left:300px;
+  margin-bottom:50px;
+  width: 1005px;
+  height: 1005px;
+  border: 3px solid;
+  border-color: #19bc8b;
+  border-radius: 4px;
+  // background-color: var(--surface-overlay);
+
+  box-sizing: border-box;
+  // min-height: 515px;
+  // min-width: 1071px;
+  // resize: both;
+  // overflow: auto;
+}
+
+.box-container {
+  position: absolute;
+  width: 1000px;
+  height: 1000px;
+  border: 3px solid;
+  border-color: rgb(255, 255, 255);
+  // background-color: var(--surface-overlay);
+  background-color: #dddddd;
+  box-sizing: border-box;
+  // min-height: 515px;
+  // min-width: 1071px;
+  // resize: both;
+  // overflow: auto;
+}
+
+.table-guest-container {
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: top;  
+}
+
+.tbl-counter {
+  color: rgba(79,98,250,1);
+}
+
+
+.guests-container {
+  width: auto;
+  max-width: 100%;
+  margin: 0 25px 25px 0;
+  display: inline-block;
+  vertical-align: top;  
+}
+
+.guest-list {
+  height: calc(100vh - 13.4rem);
+  margin-top: 10px;
+  width: 210px;
+  border: solid 1px rgb(204, 204, 204);
+  min-height: 60px;
+  background: rgb(255, 255, 255);
+  border-radius: 3px;
+  overflow: hidden;
+  display: block;
+}
+
+.guest-box {
+  padding: 7px 7px;
+  border-bottom: solid 1px rgb(204, 204, 204);
+  color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: move;
+  background: white;
+  font-size: 13px;
+}
+
+.tables-container {
+  width: auto;
+  min-width: 60px;
+  max-width: 100%;
+  margin: 0 25px 25px 0;
+  display: inline-block;
+  vertical-align: top;
+
+}
+
+.example-list {
+  border: solid 1px #02ccc6;
+  margin-left: 10px;
+  margin-right: 10px;
+  min-height: 30px;
+  background: #2b7573;
+  border-radius: 4px;
+  overflow: hidden;
+  display: block;
+}
+
+.table-box {
+  padding: 5px 5px;
+  border-bottom: solid 1px #02ccc6;
+  color: var(--hover);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: move;
+  background: #02ccc6;
+  font-size: 13px;
+  
+}
+
+.example-handle {
+  top: 10px;
+  right: 10px;
+  color: rgb(65, 62, 62);
+  cursor: move;
+  width: 15px;
+  height: 15px;
+}
+
+.contenedor-flexbox {
+  display: flex; /*Convertimos al menú en flexbox*/ 
+  justify-content: space-between; /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
+}
+
+.btn-table {
+  border: solid 2px;
+  border-color: #4caa2b;
+  color: #4caa2b;
+  border-radius: 100px;
+  transition: 0.25s;
+  
+  &:hover,
+  &:focus { 
+    border-color: #ffa260;
+    color: #ffa260;
+  }
+
+  #canvas
+{
+  width: 100%;
+  height: 100%;
+  background: #111;
+}
+}

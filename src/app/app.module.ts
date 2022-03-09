@@ -141,6 +141,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GuestSeatComponent } from './public/guest-seat/guest-seat.component';
 import { DragdropComponent } from './public/dragdrop/dragdrop.component';
 import { DragulaModule } from 'ng2-dragula';
+import { NgxPanZoomModule } from 'ngx-panzoom';
 
 @NgModule({
     imports: [
@@ -233,6 +234,7 @@ import { DragulaModule } from 'ng2-dragula';
         ReactiveFormsModule,
         NgxSpinnerModule,
         FontAwesomeModule,
+        NgxPanZoomModule,
         DragulaModule.forRoot()
     ],
     declarations: [
