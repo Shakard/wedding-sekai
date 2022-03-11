@@ -1,12 +1,15 @@
+<link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400" rel="stylesheet">
+<ngx-spinner></ngx-spinner>
 <div class="boxHeader">
 </div>
 <br>
 <div class="buttons">
   <h1>Llenar <code>Mesas</code></h1>
   <button (click)="clearAllUsers()" class="up">Limpiar mesas</button>
-  <button pButton icon="pi pi-send" label="Resetear posición" (click)="resetTablesPosition()"
-    style="color:#4f62fa"></button>
-  <button (click)="placeDiv(tables)" class="offset">cargar mesas</button>
+  <button pButton label="Resetear posición" (click)="resetTablesPosition()" style="color:#4f62fa"></button>
+  <button (click)="onSubmitDiningTable()" class="offset">Agregar mesa</button>
+  <button (click)="onSubmitBand()" class="offset">Agregar Banda</button>
+  <button (click)="openNewBathroom()" class="offset">Agregar baño</button>
 </div>
 <br>
 <div class="boxHeader">
@@ -22,24 +25,22 @@
     </div>
   </div>
 
-  <!-- <div class="canvas-container"> -->
-  <!-- <div id="canvas" class="box-container">
-    <div #tableContainer class="tableContainer" dragula="COLUMNS" [(dragulaModel)]="tables">
+</div>
+<div class="main-container">
+  <div class="box-container">
+    <!-- ========================Mesas con invitados=================================== -->
+    <div #tableContainer class="container-tables" dragula="COLUMNS" [(dragulaModel)]="tables">
       <div id="{{table.id}}" *ngFor="let table of tables; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" (mouseenter)="isHovered[i]=true"
-        (mouseleave)="isHovered[i]=false" cdkDrag>
+        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
         <div class="contenedor-flexbox">
-          <button class="btn-table" (click)="isToggled[i] = !isToggled[i]">
-            <div>{{table.name}}</div>
-            <small class="tbl-counter">{{table.users_count}} invitados</small>
-          </button>
-          <div class="example-handle" cdkDragHandle>
-            <svg width="15px" fill="currentColor" viewBox="0 0 24 24">
-              <path
-                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-              </path>
-              <path d="M0 0h24v24H0z" fill="none"></path>
-            </svg>
+          <div class="handle" cdkDragHandle>
+            <img src="assets/images/dining-table.png">
+            <div class="centered" style="color:rgb(1, 26, 26); font-size: 14px;">
+              {{table.name}}
+              <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
+                class="p-button-rounded p-button-danger" (click)="deleteElement(table)"></button>
+            </div>
+            <small (click)="isToggled[i] = !isToggled[i]" class="tbl-counter">{{table.users_count}} invitados</small>
           </div>
         </div>
         <div *ngIf="isToggled[i]" class="table-guest-container">
@@ -48,38 +49,61 @@
           </div>
         </div>
       </div>
-    </div>
-  </div> -->
-  <!-- </div> -->
 
-</div>
-<div class="main-container">
-  <div class="box-container">
-      <div #tableContainer class="container-tables" dragula="COLUMNS" [(dragulaModel)]="tables">
-        <div id="{{table.id}}" *ngFor="let table of tables; '$implicit.id' as i" class="tables-container"
-          cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" (mouseenter)="isHovered[i]=true"
-          (mouseleave)="isHovered[i]=false" cdkDrag>
-          <div class="contenedor-flexbox">
-            <button class="btn-table" (click)="isToggled[i] = !isToggled[i]">
-              <div>{{table.name}}</div>
-              <small class="tbl-counter">{{table.users_count}} invitados</small>
-            </button>
-            <div class="example-handle" cdkDragHandle>
-              <svg width="15px" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                </path>
-                <path d="M0 0h24v24H0z" fill="none"></path>
-              </svg>
-            </div>
-          </div>
-          <div *ngIf="isToggled[i]" class="table-guest-container">
-            <div dragula="SPILL" [(dragulaModel)]="table.users" class="example-list">
-              <div class="table-box" *ngFor="let user of table.users">{{user.first_name}} {{user.last_name}}</div>
-            </div>
+      <!-- ==================================Baños============================== -->
+      <div id="{{bathroom.id}}" *ngFor="let bathroom of bathrooms; '$implicit.id' as i" class="tables-container"
+        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
+        <div class="contenedor-flexbox">
+          <div class="handle" cdkDragHandle>
+            <img src="assets/images/bathroom.png">            
           </div>
         </div>
+        <div class="centered" 
+        style="color:rgb(1, 26, 26);
+         font-size: 14px;
+         transform: translate(-20%, -300%);"
+         >
+          {{bathroom.name}}
+          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
+            class="p-button-rounded p-button-danger" (click)="deleteElement(bathroom)"></button>
+        </div>
       </div>
+
+      <!-- ==================================Banda============================== -->
+      <div id="{{band.id}}" *ngFor="let band of bands; '$implicit.id' as i" class="tables-container"
+        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
+        <div class="contenedor-flexbox">
+          <div class="handle" cdkDragHandle>
+            <img src="assets/images/band.png">            
+          </div>
+        </div>
+        <div class="centered" 
+        style="color:rgb(1, 26, 26);
+         font-size: 14px;
+         transform: translate(-20%, -300%);"
+         >
+          {{band.name}}
+          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
+            class="p-button-rounded p-button-danger" (click)="deleteElement(band)"></button>
+        </div>
+      </div>
+
+    </div>
     <div class="spacer"></div>
   </div>
 </div>
+
+<p-dialog [(visible)]="bathroomDialog" [style]="{width: '450px'}" [modal]="true"
+	styleClass="p-fluid">
+	<ng-template pTemplate="content">
+		<form [formGroup]="formCanvasElement" (ngSubmit)="onSubmitBathroom()">
+			<div class="p-field">
+				<p-dropdown [options]="genders" formControlName="name" placeholder="Damas o Caballeros"
+					 [showClear]="true"></p-dropdown>
+			</div>
+      <br>
+      <button type="submit" pButton pRipple label="Aceptar" icon="pi pi-save"
+				class="p-button-success p-button-raised"></button>
+    </form> 
+  </ng-template>   
+</p-dialog>

@@ -59,6 +59,16 @@ export class UserService {
     return this.httpClient.get(url, { headers: headers });
   }
 
+  getCanvasElementWithGuests() { 
+    const url = this.url + 'tables-with-guests';
+    const headers = new HttpHeaders(
+      {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }  
+    );
+    return this.httpClient.get(url, { headers: headers });
+  }
+
   getChairs() {
     const url = this.url + 'chairs';
     const headers = new HttpHeaders(
@@ -81,8 +91,13 @@ export class UserService {
 
 
   post(url: string, data: any, params = new HttpParams()) {
+    const headers = new HttpHeaders(
+      {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }  
+    );
     url = this.url + url;
-    return this.httpClient.post(url, data, { params });
+    return this.httpClient.post(url, data, { params, headers: headers});
   }
 
   storeUser(url: string, data: any,) {

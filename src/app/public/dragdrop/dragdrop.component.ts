@@ -5,12 +5,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/models/auth/user';
 import { Chair } from 'src/app/models/table-management/chair';
-import { TableGuest } from 'src/app/models/table-management/table-guest';
 import { SweetMessageService } from 'src/app/services/message.service';
 import { UserService } from 'src/app/services/user/user.service';
 import panzoom from "panzoom";
-
-// import('src/assets/myJS/canvas.js');
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { CanvasElement } from 'src/app/models/table-management/canvas-element';
+import { Gender } from 'src/app/models/table-management/Gender';
 
 
 @Component({
@@ -28,19 +28,31 @@ export class DragdropComponent implements OnInit {
   //====================================================================
 
   subs = new Subscription();
+  formCanvasElement: FormGroup;
+
   isToggled = {};
   isHovered = {};
+  canvasElement: CanvasElement;
+  canvasElements: CanvasElement[];
   users: User[];
   chairs: Chair[];
-  tables: TableGuest[];
-  canvas: String[];
+  tables: CanvasElement[];
+  bathrooms: CanvasElement[];
+  bands: CanvasElement[];
+  bathroomDialog: boolean;
+  genders: string[];
 
   constructor(
     public userService: UserService,
     private dragulaService: DragulaService,
     private spinner: NgxSpinnerService,
-    private messageService: SweetMessageService
+    private messageService: SweetMessageService,
+    private formBuilder: FormBuilder
   ) {
+    this.genders = [
+       'Baño de Damas',
+      'Baño de Caballeros'
+  ];
 
     this.dragulaService.createGroup("COLUMNS", {
       direction: 'horizontal',
@@ -55,45 +67,56 @@ export class DragdropComponent implements OnInit {
       })
     );
 
-    this.subs.add(this.dragulaService.drag("VAMPIRES")
-      .subscribe(({ name, el, source }) => {
-        // ...
-      })
-    );
     this.subs.add(this.dragulaService.drop("SPILL")
       .subscribe(({ name, el, target, source, sibling }) => {
         this.saveChanges();
       })
     );
-
-    // some events have lots of properties, just pick the ones you need
-    this.subs.add(this.dragulaService.dropModel("ITEMS")
-      // WHOA
-      .subscribe(({ name, el, target, source, sibling, sourceModel, targetModel, item }) => {
-        //.subscribe(({ sourceModel, targetModel, item }) => {
-        // console.log(item);
-
-      })
-    );
-
-    // You can also get all events, not limited to a particular group
-    this.subs.add(this.dragulaService.drop()
-      .subscribe(({ name, el, target, source, sibling }) => {
-        // ...
-      })
-    );
   }
 
   ngOnInit(): void {
+    this.buildFormCanvasElement();
+    this.getAllElements();
     this.getGuests();
     this.getTables();
-    this.getChairs();
-    
+    this.getBathrooms();
+    this.getBands();
+  }
+
+  ngAfterViewInit() {
+    //===================panzoom library==================================
+    this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3];
+    this.currentZoomLevel = this.zoomLevels[4];
+    // this.panZoomController = panzoom(this.tableContainer.nativeElement);
+    this.panZoomController = panzoom(this.tableContainer.nativeElement, {
+      beforeWheel: function (e) {
+        // allow wheel-zoom only if altKey is pressed. Otherwise - ignore
+        var shouldIgnore = !e.ctrlKey;
+        return shouldIgnore;
+      },
+      beforeMouseDown: function (e) {
+        // allow wheel-zoom only if altKey is pressed. Otherwise - ignore
+        var shouldIgnore = !e.ctrlKey;
+        return shouldIgnore;
+      },
+      zoomDoubleClickSpeed: 1,
+      maxZoom: 1,
+      minZoom: 0.2,
+      initialZoom: 0.9
+    })
+    // =======================================================================
+
   }
 
   ngAfterViewChecked() {
     if (this.tables) {
-      this.placeDiv(this.tables);      
+      this.placeDiv(this.tables);
+    }
+    if (this.bathrooms) {
+      this.placeDiv(this.bathrooms)
+    }
+    if (this.bands) {
+      this.placeDiv(this.bands)
     }
   }
 
@@ -103,28 +126,54 @@ export class DragdropComponent implements OnInit {
     this.dragulaService.destroy("COLUMNS");
   }
 
-  placeDiv(tables: TableGuest[]) {
-    tables.forEach(table => {
-      var x = table.pos_x;
-      var y = table.pos_y;
-      if (x != null && y != null) {
-        var d = document.getElementById(table.id.toString());
-        d.style.position = "relative";
-        d.style.left = x + 'px';
-        d.style.top = y + 'px';
-      }
+  buildFormCanvasElement() {
+    this.formCanvasElement = this.formBuilder.group({
+      id: [null],
+      name: [null],
+      code: [null],
+      catalogue_id: [null]
     });
   }
 
+  placeDiv(canvasElements: CanvasElement[]) {
+    if (canvasElements) {
+      canvasElements.forEach(element => {
+        var x = element.pos_x;
+        var y = element.pos_y;
+
+        if (x != null && y != null) {
+          var d = document.getElementById(element.id.toString());
+          d.style.position = "relative";
+          d.style.left = x + 'px';
+          d.style.top = y + 'px';
+        }
+      });
+    }
+  }
+
+  placeCanvasElementById(id: any) {
+    var element = this.canvasElements.find(element => element.id == id);
+    var x = element.pos_x;
+    var y = element.pos_y;
+    if (x != null && y != null) {
+      var d = document.getElementById(element.id.toString());
+      d.style.position = "relative";
+      d.style.left = x + 'px';
+      d.style.top = y + 'px';
+    }
+
+  }
+
   dragEnd(event: CdkDragEnd) {
-    this.spinner.show();    
     var id = event.source.element.nativeElement.id;
     var pos_x = event.source.getFreeDragPosition()['x'];
     var pos_y = event.source.getFreeDragPosition()['y'];
-    var data = {id: id, pos_x: pos_x, pos_y:pos_y};
+    var data = { id: id, pos_x: pos_x, pos_y: pos_y };
 
-    this.userService.update('update-table-position', data).subscribe(response => {
-      this.spinner.hide();
+    this.userService.update('update-element-position', data).subscribe(response => {
+      this.placeCanvasElementById(id);
+      this.getTables();
+      this.getBathrooms();
     });
   }
 
@@ -135,16 +184,35 @@ export class DragdropComponent implements OnInit {
   public getGuests() {
     this.userService.getGuests().subscribe(response => {
       this.users = response['data']
-      console.log(this.users);
     });
   }
 
-  getTables() {
-    this.userService.getTablesAndUsers().subscribe(response => {
+  public getTables() {
+    this.userService.get('tables-with-guests').subscribe(response => {
       this.tables = response['data']
     });
   }
-  
+
+  public getAllElements() {
+    this.userService.get('all-elements').subscribe(response => {
+      this.canvasElements = response['data']
+    });
+  }
+
+  getBathrooms() {
+    this.userService.post('canvas-elements-by-type', 17).subscribe(response => {
+      this.bathrooms = response['data']
+    });
+
+  }
+
+  getBands() {
+    this.userService.post('canvas-elements-by-type', 19).subscribe(response => {
+      this.bands = response['data']
+    });
+
+  }
+
   getChairs() {
     this.userService.getChairs().subscribe(response => {
       this.chairs = response['data']
@@ -158,9 +226,9 @@ export class DragdropComponent implements OnInit {
     });
   }
 
-  updateTables(tables: TableGuest[]) {
+  updateTables(canvasElements: CanvasElement[]) {
     this.spinner.show();
-    this.userService.store('update-tables', { data: tables })
+    this.userService.store('update-canvas-element', { data: canvasElements })
       .subscribe(response => {
         this.getTables();
         this.getGuests();
@@ -193,11 +261,76 @@ export class DragdropComponent implements OnInit {
       .then((result) => {
         if (result.isConfirmed) {
           this.spinner.show();
-          this.userService.get('reset-tables-position')
+          this.userService.get('reset-element-position')
             .subscribe(response => {
               this.getTables();
               this.getGuests();
               this.spinner.hide();
+            });
+        }
+      });
+  }
+
+  storeCanvasElement(canvasElement: CanvasElement) {
+    this.userService.store('store-canvas-element', { 'canvas_element': canvasElement })
+      .subscribe(response => {
+        this.getAllElements();
+        this.getTables();
+        this.getBathrooms();
+      });
+  }
+
+  onSubmitDiningTable() {
+    this.formCanvasElement.patchValue({ name: 'Mesa ' });
+    this.formCanvasElement.patchValue({ code: 'M' });
+    this.formCanvasElement.patchValue({ catalogue_id: 18 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitBathroom() {
+    this.formCanvasElement.patchValue({ code: 'B' });
+    this.formCanvasElement.patchValue({ catalogue_id: 17 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+    this.bathroomDialog= false;
+  }
+
+  onSubmitBand() {
+    this.formCanvasElement.patchValue({ name: 'Banda ' });
+    this.formCanvasElement.patchValue({ code: 'Bda' });
+    this.formCanvasElement.patchValue({ catalogue_id: 19 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitTable() {
+    this.spinner.show();
+    this.userService.store('store-table-by-number', { 'number': 1 })
+      .subscribe(response => {
+        this.getTables();
+        this.spinner.hide();
+      });
+  }
+
+  deleteElement(canvasElement: CanvasElement) {
+    this.messageService.questionDelete({})
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.spinner.show();
+          this.userService.delete('canvas-element/' + canvasElement.id)
+            .subscribe(response => {
+              this.getGuests();
+              this.getTables();
+              this.getBathrooms();
+              this.spinner.hide();
+              this.messageService.success(response);
+            }, error => {
+              this.getGuests();
+              this.getTables();
+              this.getBathrooms();
+              this.spinner.hide();
+              this.messageService.error(error);
             });
         }
       });
@@ -246,26 +379,13 @@ export class DragdropComponent implements OnInit {
       this.zoom();
     }
   }
-
-  ngAfterViewInit() {
-
-    this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3];
-    this.currentZoomLevel = this.zoomLevels[4];
-    // this.panZoomController = panzoom(this.tableContainer.nativeElement);
-    this.panZoomController = panzoom(this.tableContainer.nativeElement, {
-      beforeMouseDown: function(e) {
-        // allow wheel-zoom only if altKey is pressed. Otherwise - ignore
-        var shouldIgnore = !e.ctrlKey;
-        return shouldIgnore;
-      },
-      zoomDoubleClickSpeed: 1,
-      maxZoom: 1.4,
-      minZoom: 0.2,
-    })
-  }
-
   //================================================================
   //======================fin de panzoom============================
   //================================================================
+
+  openNewBathroom() {
+    this.formCanvasElement.reset();
+    this.bathroomDialog = true;
+  }
 
 }

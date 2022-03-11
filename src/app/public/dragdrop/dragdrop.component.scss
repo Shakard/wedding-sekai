@@ -1,3 +1,17 @@
+img {
+  height: 80px;
+  width: 80px;
+  width: 100%;
+  padding: 1px;
+}
+
+.centered {
+  position: static;
+  display: flex;
+  width: auto;
+  transform: translate(5%, -260%);
+  font-weight: 400;
+}
 // =========================================================
 // =====================DRAGULA CSS=========================
 // =========================================================
@@ -254,7 +268,8 @@ code {
   min-height: 520px;
   min-width: 510px;
   border: 3px solid;
-  border-color: #19bc8b;
+  // border-color: #19bc8b;
+  border-color: #2b7573;
   border-radius: 4px;
   // background-color: var(--surface-overlay);
 
@@ -283,16 +298,22 @@ code {
 }
 
 .table-guest-container {
-  width: 100%;
+  position: fixed;
+  width: auto;
   height: 100%;
-  min-width: 100%;
-  max-width: 100%;
+  min-width: 100px;
   display: inline-block;
   vertical-align: top;  
+  z-index: 999;
+  transform: translate(-8%, -30%);
+  font-weight: 400;
 }
 
 .tbl-counter {
   color: rgba(79,98,250,1);
+  position: absolute;
+  transform: translate(15%, -305%);
+  cursor: pointer;
 }
 
 
@@ -375,6 +396,10 @@ code {
   height: 15px;
 }
 
+.handle {  
+  cursor: move;
+}
+
 .contenedor-flexbox {
   display: flex; /*Convertimos al menú en flexbox*/ 
   justify-content: space-between; /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
@@ -399,4 +424,24 @@ code {
   height: 100%;
   background: #111;
 }
+
 }
+
+//======================FONT STYLE==========================
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+.w100 {
+  font-weight: 100;
+}
+.w200 {
+  font-weight: 200;
+}
+.w300 {
+  font-weight: 300;
+}
+.w400 {
+  font-weight: 400;
+}
+
+//============================================================
