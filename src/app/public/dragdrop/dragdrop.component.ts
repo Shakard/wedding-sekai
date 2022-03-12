@@ -10,7 +10,6 @@ import { UserService } from 'src/app/services/user/user.service';
 import panzoom from "panzoom";
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CanvasElement } from 'src/app/models/table-management/canvas-element';
-import { Gender } from 'src/app/models/table-management/Gender';
 
 
 @Component({
@@ -39,6 +38,18 @@ export class DragdropComponent implements OnInit {
   tables: CanvasElement[];
   bathrooms: CanvasElement[];
   bands: CanvasElement[];
+  danceFloors: CanvasElement[];
+  loungeRooms: CanvasElement[];
+  entrances: CanvasElement[];
+  exits: CanvasElement[];
+  candyBars: CanvasElement[];
+  weddingCakes: CanvasElement[];
+  emergencyExits: CanvasElement[];
+  caterings: CanvasElement[];
+  cofeeStations: CanvasElement[];
+  photoBooths: CanvasElement[];
+  cocktailTables: CanvasElement[];
+  photoAreas: CanvasElement[];
   bathroomDialog: boolean;
   genders: string[];
 
@@ -50,9 +61,9 @@ export class DragdropComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {
     this.genders = [
-       'Baño de Damas',
+      'Baño de Damas',
       'Baño de Caballeros'
-  ];
+    ];
 
     this.dragulaService.createGroup("COLUMNS", {
       direction: 'horizontal',
@@ -81,6 +92,19 @@ export class DragdropComponent implements OnInit {
     this.getTables();
     this.getBathrooms();
     this.getBands();
+    this.getDanceFloors();
+    this.getLoungeRooms();
+    this.getEntrances();
+    this.getExits();
+    this.getCandyBars();
+    this.getWeddingCakes();
+    this.getCocktailTables();
+    this.getEmergencyExits();
+    this.getCaterings();
+    this.getCofeeStations();
+    this.getPhotoBooths();
+    this.getPhotoAreas();
+
   }
 
   ngAfterViewInit() {
@@ -102,7 +126,7 @@ export class DragdropComponent implements OnInit {
       zoomDoubleClickSpeed: 1,
       maxZoom: 1,
       minZoom: 0.2,
-      initialZoom: 0.9
+      initialZoom: 0.8
     })
     // =======================================================================
 
@@ -118,6 +142,45 @@ export class DragdropComponent implements OnInit {
     if (this.bands) {
       this.placeDiv(this.bands)
     }
+
+    if (this.danceFloors) {
+      this.placeDiv(this.danceFloors)
+    }
+
+    if (this.loungeRooms) {
+      this.placeDiv(this.loungeRooms)
+    }
+    if (this.entrances) {
+      this.placeDiv(this.entrances)
+    }
+    if (this.exits) {
+      this.placeDiv(this.exits)
+    }
+    if (this.candyBars) {
+      this.placeDiv(this.candyBars)
+    }
+    if (this.weddingCakes) {
+      this.placeDiv(this.weddingCakes)
+    }
+    if (this.emergencyExits) {
+      this.placeDiv(this.emergencyExits)
+    }
+    if (this.caterings) {
+      this.placeDiv(this.caterings)
+    }
+    if (this.cofeeStations) {
+      this.placeDiv(this.cofeeStations)
+    }
+    if (this.photoBooths) {
+      this.placeDiv(this.caterings)
+    }
+    if (this.cocktailTables) {
+      this.placeDiv(this.caterings)
+    }
+    if (this.photoAreas) {
+      this.placeDiv(this.caterings)
+    }
+
   }
 
   ngOnDestroy() {
@@ -172,8 +235,22 @@ export class DragdropComponent implements OnInit {
 
     this.userService.update('update-element-position', data).subscribe(response => {
       this.placeCanvasElementById(id);
+      this.getAllElements();
       this.getTables();
       this.getBathrooms();
+      this.getBands();
+      this.getDanceFloors();
+      this.getLoungeRooms();
+      this.getEntrances();
+      this.getExits();
+      this.getCandyBars();
+      this.getWeddingCakes();
+      this.getCocktailTables();
+      this.getEmergencyExits();
+      this.getCaterings();
+      this.getCofeeStations();
+      this.getPhotoBooths();
+      this.getPhotoAreas();
     });
   }
 
@@ -213,6 +290,90 @@ export class DragdropComponent implements OnInit {
 
   }
 
+  getDanceFloors() {
+    this.userService.post('canvas-elements-by-type', 20).subscribe(response => {
+      this.danceFloors = response['data']
+    });
+
+  }
+
+  getLoungeRooms() {
+    this.userService.post('canvas-elements-by-type', 21).subscribe(response => {
+      this.loungeRooms = response['data']
+    });
+
+  }
+
+  getEntrances() {
+    this.userService.post('canvas-elements-by-type', 22).subscribe(response => {
+      this.entrances = response['data']
+    });
+
+  }
+
+  getExits() {
+    this.userService.post('canvas-elements-by-type', 23).subscribe(response => {
+      this.exits = response['data']
+    });
+
+  }
+
+  getCandyBars() {
+    this.userService.post('canvas-elements-by-type', 24).subscribe(response => {
+      this.candyBars = response['data']
+    });
+
+  }
+
+  getWeddingCakes() {
+    this.userService.post('canvas-elements-by-type', 25).subscribe(response => {
+      this.weddingCakes = response['data']
+    });
+
+  }
+
+  getEmergencyExits() {
+    this.userService.post('canvas-elements-by-type', 26).subscribe(response => {
+      this.emergencyExits = response['data']
+    });
+
+  }
+
+  getCaterings() {
+    this.userService.post('canvas-elements-by-type', 27).subscribe(response => {
+      this.caterings = response['data']
+    });
+
+  }
+
+  getCofeeStations() {
+    this.userService.post('canvas-elements-by-type', 28).subscribe(response => {
+      this.cofeeStations = response['data']
+    });
+
+  }
+
+  getPhotoBooths() {
+    this.userService.post('canvas-elements-by-type', 29).subscribe(response => {
+      this.photoBooths = response['data']
+    });
+
+  }
+
+  getCocktailTables() {
+    this.userService.post('canvas-elements-by-type', 30).subscribe(response => {
+      this.cocktailTables = response['data']
+    });
+
+  }
+
+  getPhotoAreas() {
+    this.userService.post('canvas-elements-by-type', 31).subscribe(response => {
+      this.photoAreas = response['data']
+    });
+
+  }
+
   getChairs() {
     this.userService.getChairs().subscribe(response => {
       this.chairs = response['data']
@@ -224,6 +385,8 @@ export class DragdropComponent implements OnInit {
     this.userService.update('clear-user-table-id/' + id, { id }).subscribe(response => {
       this.spinner.hide();
     });
+
+
   }
 
   updateTables(canvasElements: CanvasElement[]) {
@@ -263,7 +426,22 @@ export class DragdropComponent implements OnInit {
           this.spinner.show();
           this.userService.get('reset-element-position')
             .subscribe(response => {
+              this.getAllElements();
               this.getTables();
+              this.getBathrooms();
+              this.getBands();
+              this.getDanceFloors();
+              this.getLoungeRooms();
+              this.getEntrances();
+              this.getExits();
+              this.getCandyBars();
+              this.getWeddingCakes();
+              this.getCocktailTables();
+              this.getEmergencyExits();
+              this.getCaterings();
+              this.getCofeeStations();
+              this.getPhotoBooths();
+              this.getPhotoAreas();
               this.getGuests();
               this.spinner.hide();
             });
@@ -277,29 +455,138 @@ export class DragdropComponent implements OnInit {
         this.getAllElements();
         this.getTables();
         this.getBathrooms();
+        this.getBands();
+        this.getDanceFloors();
+        this.getLoungeRooms();
+        this.getEntrances();
+        this.getExits();
+        this.getCandyBars();
+        this.getWeddingCakes();
+        this.getCocktailTables();
+        this.getEmergencyExits();
+        this.getCaterings();
+        this.getCofeeStations();
+        this.getPhotoBooths();
+        this.getPhotoAreas();
       });
   }
 
   onSubmitDiningTable() {
     this.formCanvasElement.patchValue({ name: 'Mesa ' });
-    this.formCanvasElement.patchValue({ code: 'M' });
+    this.formCanvasElement.patchValue({ code: 'Msa' });
     this.formCanvasElement.patchValue({ catalogue_id: 18 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
   }
 
   onSubmitBathroom() {
-    this.formCanvasElement.patchValue({ code: 'B' });
+    this.formCanvasElement.patchValue({ code: 'Bño' });
     this.formCanvasElement.patchValue({ catalogue_id: 17 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
-    this.bathroomDialog= false;
+    this.bathroomDialog = false;
   }
 
   onSubmitBand() {
     this.formCanvasElement.patchValue({ name: 'Banda ' });
     this.formCanvasElement.patchValue({ code: 'Bda' });
     this.formCanvasElement.patchValue({ catalogue_id: 19 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitDanceFloor() {
+    this.formCanvasElement.patchValue({ name: 'Pista de baile ' });
+    this.formCanvasElement.patchValue({ code: 'Ppb' });
+    this.formCanvasElement.patchValue({ catalogue_id: 20 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitLoungeRoom() {
+    this.formCanvasElement.patchValue({ name: 'Salon' });
+    this.formCanvasElement.patchValue({ code: 'Sln' });
+    this.formCanvasElement.patchValue({ catalogue_id: 21 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitEntrance() {
+    this.formCanvasElement.patchValue({ name: 'Ingreso' });
+    this.formCanvasElement.patchValue({ code: 'Igso' });
+    this.formCanvasElement.patchValue({ catalogue_id: 22 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitExit() {
+    this.formCanvasElement.patchValue({ name: 'Salida' });
+    this.formCanvasElement.patchValue({ code: 'Slda' });
+    this.formCanvasElement.patchValue({ catalogue_id: 23 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitCandyBar() {
+    this.formCanvasElement.patchValue({ name: 'Mesa de dulces' });
+    this.formCanvasElement.patchValue({ code: 'dlce' });
+    this.formCanvasElement.patchValue({ catalogue_id: 24 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitWeddingCake() {
+    this.formCanvasElement.patchValue({ name: 'Pastel de Bodas' });
+    this.formCanvasElement.patchValue({ code: 'Pstl' });
+    this.formCanvasElement.patchValue({ catalogue_id: 25 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitEmergencyExit() {
+    this.formCanvasElement.patchValue({ name: 'Salida de emergencia' });
+    this.formCanvasElement.patchValue({ code: 'Emrgncy' });
+    this.formCanvasElement.patchValue({ catalogue_id: 26 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitCatering() {
+    this.formCanvasElement.patchValue({ name: 'Catering' });
+    this.formCanvasElement.patchValue({ code: 'Ctrg' });
+    this.formCanvasElement.patchValue({ catalogue_id: 27 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitCoffeStation() {
+    this.formCanvasElement.patchValue({ name: 'Estación de café' });
+    this.formCanvasElement.patchValue({ code: 'Cfee' });
+    this.formCanvasElement.patchValue({ catalogue_id: 28 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitPhotoBooth() {
+    this.formCanvasElement.patchValue({ name: 'Photo booth' });
+    this.formCanvasElement.patchValue({ code: 'bth' });
+    this.formCanvasElement.patchValue({ catalogue_id: 29 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitCocktailTable() {
+    this.formCanvasElement.patchValue({ name: 'Mesa de cocteles' });
+    this.formCanvasElement.patchValue({ code: 'ctl' });
+    this.formCanvasElement.patchValue({ catalogue_id: 30 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitPhotoArea() {
+    this.formCanvasElement.patchValue({ name: 'Area de fotos' });
+    this.formCanvasElement.patchValue({ code: 'Ftoa' });
+    this.formCanvasElement.patchValue({ catalogue_id: 31 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
   }
