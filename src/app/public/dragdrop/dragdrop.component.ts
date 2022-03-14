@@ -50,6 +50,8 @@ export class DragdropComponent implements OnInit {
   photoBooths: CanvasElement[];
   cocktailTables: CanvasElement[];
   photoAreas: CanvasElement[];
+  playgrounds: CanvasElement[];
+  nurseries: CanvasElement[];
   bathroomDialog: boolean;
   genders: string[];
 
@@ -90,21 +92,22 @@ export class DragdropComponent implements OnInit {
     this.getAllElements();
     this.getGuests();
     this.getTables();
-    this.getBathrooms();
-    this.getBands();
-    this.getDanceFloors();
-    this.getLoungeRooms();
-    this.getEntrances();
-    this.getExits();
-    this.getCandyBars();
-    this.getWeddingCakes();
-    this.getCocktailTables();
-    this.getEmergencyExits();
-    this.getCaterings();
-    this.getCofeeStations();
-    this.getPhotoBooths();
-    this.getPhotoAreas();
-
+    // this.getBathrooms();
+    // this.getBands();
+    // this.getDanceFloors();
+    // this.getLoungeRooms();
+    // this.getEntrances();
+    // this.getExits();
+    // this.getCandyBars();
+    // this.getWeddingCakes();
+    // this.getCocktailTables();
+    // this.getEmergencyExits();
+    // this.getCaterings();
+    // this.getCofeeStations();
+    // this.getPhotoBooths();
+    // this.getPhotoAreas();
+    // this.getPlaygrounds();
+    // this.getNurseries();
   }
 
   ngAfterViewInit() {
@@ -133,53 +136,64 @@ export class DragdropComponent implements OnInit {
   }
 
   ngAfterViewChecked() {
-    if (this.tables) {
+    if (this.canvasElements) {
       this.placeDiv(this.tables);
-    }
-    if (this.bathrooms) {
-      this.placeDiv(this.bathrooms)
-    }
-    if (this.bands) {
-      this.placeDiv(this.bands)
+      this.placeDiv(this.canvasElements);
     }
 
-    if (this.danceFloors) {
-      this.placeDiv(this.danceFloors)
-    }
+    // if (this.tables) {
+    //   this.placeDiv(this.tables);
+    // }
+    // if (this.bathrooms) {
+    //   this.placeDiv(this.bathrooms)
+    // }
+    // if (this.bands) {
+    //   this.placeDiv(this.bands)
+    // }
 
-    if (this.loungeRooms) {
-      this.placeDiv(this.loungeRooms)
-    }
-    if (this.entrances) {
-      this.placeDiv(this.entrances)
-    }
-    if (this.exits) {
-      this.placeDiv(this.exits)
-    }
-    if (this.candyBars) {
-      this.placeDiv(this.candyBars)
-    }
-    if (this.weddingCakes) {
-      this.placeDiv(this.weddingCakes)
-    }
-    if (this.emergencyExits) {
-      this.placeDiv(this.emergencyExits)
-    }
-    if (this.caterings) {
-      this.placeDiv(this.caterings)
-    }
-    if (this.cofeeStations) {
-      this.placeDiv(this.cofeeStations)
-    }
-    if (this.photoBooths) {
-      this.placeDiv(this.caterings)
-    }
-    if (this.cocktailTables) {
-      this.placeDiv(this.caterings)
-    }
-    if (this.photoAreas) {
-      this.placeDiv(this.caterings)
-    }
+    // if (this.danceFloors) {
+    //   this.placeDiv(this.danceFloors)
+    // }
+
+    // if (this.loungeRooms) {
+    //   this.placeDiv(this.loungeRooms)
+    // }
+    // if (this.entrances) {
+    //   this.placeDiv(this.entrances)
+    // }
+    // if (this.exits) {
+    //   this.placeDiv(this.exits)
+    // }
+    // if (this.candyBars) {
+    //   this.placeDiv(this.candyBars)
+    // }
+    // if (this.weddingCakes) {
+    //   this.placeDiv(this.weddingCakes)
+    // }
+    // if (this.emergencyExits) {
+    //   this.placeDiv(this.emergencyExits)
+    // }
+    // if (this.caterings) {
+    //   this.placeDiv(this.caterings)
+    // }
+    // if (this.cofeeStations) {
+    //   this.placeDiv(this.cofeeStations)
+    // }
+    // if (this.photoBooths) {
+    //   this.placeDiv(this.photoBooths)
+    // }
+    // if (this.cocktailTables) {
+    //   this.placeDiv(this.cocktailTables)
+    // }
+    // if (this.photoAreas) {
+    //   this.placeDiv(this.photoAreas)
+    // }
+    // if (this.playgrounds) {
+    //   this.placeDiv(this.playgrounds)
+    // }
+    // if (this.nurseries) {
+    //   this.placeDiv(this.nurseries)
+    // }
 
   }
 
@@ -194,6 +208,7 @@ export class DragdropComponent implements OnInit {
       id: [null],
       name: [null],
       code: [null],
+      image: [null],
       catalogue_id: [null]
     });
   }
@@ -203,28 +218,58 @@ export class DragdropComponent implements OnInit {
       canvasElements.forEach(element => {
         var x = element.pos_x;
         var y = element.pos_y;
-
         if (x != null && y != null) {
           var d = document.getElementById(element.id.toString());
-          d.style.position = "relative";
-          d.style.left = x + 'px';
-          d.style.top = y + 'px';
+          if (d != null) {
+            d.style.position = "relative";
+            d.style.left = x + 'px';
+            d.style.top = y + 'px';
+          }
         }
       });
+
     }
   }
 
   placeCanvasElementById(id: any) {
-    var element = this.canvasElements.find(element => element.id == id);
-    var x = element.pos_x;
-    var y = element.pos_y;
-    if (x != null && y != null) {
-      var d = document.getElementById(element.id.toString());
-      d.style.position = "relative";
-      d.style.left = x + 'px';
-      d.style.top = y + 'px';
+    try {
+      var element = this.canvasElements.find(element => element.id == id);
+      var x = element.pos_x;
+      var y = element.pos_y;
+      if (x != null && y != null) {
+        var d = document.getElementById(element.id.toString());
+        d.style.position = "relative";
+        d.style.left = x + 'px';
+        d.style.top = y + 'px';
+      }
+    } catch (error) {
+      var element = this.tables.find(element => element.id == id);
+      var x = element.pos_x;
+      var y = element.pos_y;
+      if (x != null && y != null) {
+        var d = document.getElementById(element.id.toString());
+        d.style.position = "relative";
+        d.style.left = x + 'px';
+        d.style.top = y + 'px';
+      } 
     }
+    // var element = this.canvasElements.find(element => element.id == id);
+    // console.log(element);
+    // var x = element.pos_x;
+    // var y = element.pos_y;
+    // if (x != null && y != null) {
+    //   var d = document.getElementById(element.id.toString());
+    //   d.style.position = "relative";
+    //   d.style.left = x + 'px';
+    //   d.style.top = y + 'px';
+    // }
 
+  }
+
+  getCanvasElementsById(type: number) {
+    this.userService.post('canvas-elements-by-type', type).subscribe(response => {
+      this.canvasElements = response['data']
+    });
   }
 
   dragEnd(event: CdkDragEnd) {
@@ -235,22 +280,25 @@ export class DragdropComponent implements OnInit {
 
     this.userService.update('update-element-position', data).subscribe(response => {
       this.placeCanvasElementById(id);
+      // this.getCanvasElementsById(Number(type));
       this.getAllElements();
       this.getTables();
-      this.getBathrooms();
-      this.getBands();
-      this.getDanceFloors();
-      this.getLoungeRooms();
-      this.getEntrances();
-      this.getExits();
-      this.getCandyBars();
-      this.getWeddingCakes();
-      this.getCocktailTables();
-      this.getEmergencyExits();
-      this.getCaterings();
-      this.getCofeeStations();
-      this.getPhotoBooths();
-      this.getPhotoAreas();
+      // this.getBathrooms();
+      // this.getBands();
+      // this.getDanceFloors();
+      // this.getLoungeRooms();
+      // this.getEntrances();
+      // this.getExits();
+      // this.getCandyBars();
+      // this.getWeddingCakes();
+      // this.getCocktailTables();
+      // this.getEmergencyExits();
+      // this.getCaterings();
+      // this.getCofeeStations();
+      // this.getPhotoBooths();
+      // this.getPhotoAreas();
+      // this.getPlaygrounds();
+      // this.getNurseries();
     });
   }
 
@@ -374,6 +422,20 @@ export class DragdropComponent implements OnInit {
 
   }
 
+  getPlaygrounds() {
+    this.userService.post('canvas-elements-by-type', 32).subscribe(response => {
+      this.playgrounds = response['data']
+    });
+
+  }
+
+  getNurseries() {
+    this.userService.post('canvas-elements-by-type', 33).subscribe(response => {
+      this.nurseries = response['data']
+    });
+
+  }
+
   getChairs() {
     this.userService.getChairs().subscribe(response => {
       this.chairs = response['data']
@@ -385,8 +447,6 @@ export class DragdropComponent implements OnInit {
     this.userService.update('clear-user-table-id/' + id, { id }).subscribe(response => {
       this.spinner.hide();
     });
-
-
   }
 
   updateTables(canvasElements: CanvasElement[]) {
@@ -427,22 +487,6 @@ export class DragdropComponent implements OnInit {
           this.userService.get('reset-element-position')
             .subscribe(response => {
               this.getAllElements();
-              this.getTables();
-              this.getBathrooms();
-              this.getBands();
-              this.getDanceFloors();
-              this.getLoungeRooms();
-              this.getEntrances();
-              this.getExits();
-              this.getCandyBars();
-              this.getWeddingCakes();
-              this.getCocktailTables();
-              this.getEmergencyExits();
-              this.getCaterings();
-              this.getCofeeStations();
-              this.getPhotoBooths();
-              this.getPhotoAreas();
-              this.getGuests();
               this.spinner.hide();
             });
         }
@@ -454,26 +498,27 @@ export class DragdropComponent implements OnInit {
       .subscribe(response => {
         this.getAllElements();
         this.getTables();
-        this.getBathrooms();
-        this.getBands();
-        this.getDanceFloors();
-        this.getLoungeRooms();
-        this.getEntrances();
-        this.getExits();
-        this.getCandyBars();
-        this.getWeddingCakes();
-        this.getCocktailTables();
-        this.getEmergencyExits();
-        this.getCaterings();
-        this.getCofeeStations();
-        this.getPhotoBooths();
-        this.getPhotoAreas();
+        // this.getBathrooms();
+        // this.getBands();
+        // this.getDanceFloors();
+        // this.getLoungeRooms();
+        // this.getEntrances();
+        // this.getExits();
+        // this.getCandyBars();
+        // this.getWeddingCakes();
+        // this.getCocktailTables();
+        // this.getEmergencyExits();
+        // this.getCaterings();
+        // this.getCofeeStations();
+        // this.getPhotoBooths();
+        // this.getPhotoAreas();
       });
   }
 
   onSubmitDiningTable() {
     this.formCanvasElement.patchValue({ name: 'Mesa ' });
     this.formCanvasElement.patchValue({ code: 'Msa' });
+    this.formCanvasElement.patchValue({ image: 'dining-table.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 18 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -481,6 +526,7 @@ export class DragdropComponent implements OnInit {
 
   onSubmitBathroom() {
     this.formCanvasElement.patchValue({ code: 'Bño' });
+    this.formCanvasElement.patchValue({ image: 'bathroom.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 17 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -490,6 +536,7 @@ export class DragdropComponent implements OnInit {
   onSubmitBand() {
     this.formCanvasElement.patchValue({ name: 'Banda ' });
     this.formCanvasElement.patchValue({ code: 'Bda' });
+    this.formCanvasElement.patchValue({ image: 'band.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 19 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -498,6 +545,7 @@ export class DragdropComponent implements OnInit {
   onSubmitDanceFloor() {
     this.formCanvasElement.patchValue({ name: 'Pista de baile ' });
     this.formCanvasElement.patchValue({ code: 'Ppb' });
+    this.formCanvasElement.patchValue({ image: 'dance-floor.jpg' });
     this.formCanvasElement.patchValue({ catalogue_id: 20 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -506,6 +554,7 @@ export class DragdropComponent implements OnInit {
   onSubmitLoungeRoom() {
     this.formCanvasElement.patchValue({ name: 'Salon' });
     this.formCanvasElement.patchValue({ code: 'Sln' });
+    this.formCanvasElement.patchValue({ image: 'lounge.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 21 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -514,6 +563,7 @@ export class DragdropComponent implements OnInit {
   onSubmitEntrance() {
     this.formCanvasElement.patchValue({ name: 'Ingreso' });
     this.formCanvasElement.patchValue({ code: 'Igso' });
+    this.formCanvasElement.patchValue({ image: 'entrance.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 22 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -522,6 +572,7 @@ export class DragdropComponent implements OnInit {
   onSubmitExit() {
     this.formCanvasElement.patchValue({ name: 'Salida' });
     this.formCanvasElement.patchValue({ code: 'Slda' });
+    this.formCanvasElement.patchValue({ image: 'exit.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 23 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -530,6 +581,7 @@ export class DragdropComponent implements OnInit {
   onSubmitCandyBar() {
     this.formCanvasElement.patchValue({ name: 'Mesa de dulces' });
     this.formCanvasElement.patchValue({ code: 'dlce' });
+    this.formCanvasElement.patchValue({ image: 'candy-bar.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 24 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -538,6 +590,7 @@ export class DragdropComponent implements OnInit {
   onSubmitWeddingCake() {
     this.formCanvasElement.patchValue({ name: 'Pastel de Bodas' });
     this.formCanvasElement.patchValue({ code: 'Pstl' });
+    this.formCanvasElement.patchValue({ image: 'wedding-cake.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 25 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -546,6 +599,7 @@ export class DragdropComponent implements OnInit {
   onSubmitEmergencyExit() {
     this.formCanvasElement.patchValue({ name: 'Salida de emergencia' });
     this.formCanvasElement.patchValue({ code: 'Emrgncy' });
+    this.formCanvasElement.patchValue({ image: 'emergency-exit.jpg' });
     this.formCanvasElement.patchValue({ catalogue_id: 26 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -554,6 +608,7 @@ export class DragdropComponent implements OnInit {
   onSubmitCatering() {
     this.formCanvasElement.patchValue({ name: 'Catering' });
     this.formCanvasElement.patchValue({ code: 'Ctrg' });
+    this.formCanvasElement.patchValue({ image: 'catering.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 27 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -562,6 +617,7 @@ export class DragdropComponent implements OnInit {
   onSubmitCoffeStation() {
     this.formCanvasElement.patchValue({ name: 'Estación de café' });
     this.formCanvasElement.patchValue({ code: 'Cfee' });
+    this.formCanvasElement.patchValue({ image: 'cofee-station.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 28 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -570,6 +626,7 @@ export class DragdropComponent implements OnInit {
   onSubmitPhotoBooth() {
     this.formCanvasElement.patchValue({ name: 'Photo booth' });
     this.formCanvasElement.patchValue({ code: 'bth' });
+    this.formCanvasElement.patchValue({ image: 'photo-booth.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 29 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -578,6 +635,7 @@ export class DragdropComponent implements OnInit {
   onSubmitCocktailTable() {
     this.formCanvasElement.patchValue({ name: 'Mesa de cocteles' });
     this.formCanvasElement.patchValue({ code: 'ctl' });
+    this.formCanvasElement.patchValue({ image: 'cocktail-area.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 30 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -586,7 +644,26 @@ export class DragdropComponent implements OnInit {
   onSubmitPhotoArea() {
     this.formCanvasElement.patchValue({ name: 'Area de fotos' });
     this.formCanvasElement.patchValue({ code: 'Ftoa' });
+    this.formCanvasElement.patchValue({ image: 'photo-area.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 31 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitPlayground() {
+    this.formCanvasElement.patchValue({ name: 'Area de juegos' });
+    this.formCanvasElement.patchValue({ code: 'Jgos' });
+    this.formCanvasElement.patchValue({ image: 'playground.png' });
+    this.formCanvasElement.patchValue({ catalogue_id: 32 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitNursery() {
+    this.formCanvasElement.patchValue({ name: 'Guardería' });
+    this.formCanvasElement.patchValue({ code: 'Gdria' });
+    this.formCanvasElement.patchValue({ image: 'nursery.png' });
+    this.formCanvasElement.patchValue({ catalogue_id: 33 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
   }
@@ -609,13 +686,36 @@ export class DragdropComponent implements OnInit {
             .subscribe(response => {
               this.getGuests();
               this.getTables();
-              this.getBathrooms();
+              this.getAllElements();
               this.spinner.hide();
               this.messageService.success(response);
             }, error => {
               this.getGuests();
               this.getTables();
-              this.getBathrooms();
+              this.getAllElements();
+              this.spinner.hide();
+              this.messageService.error(error);
+            });
+        }
+      });
+  }
+
+  deleteAllElements() {
+    this.messageService.questionDelete({})
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.spinner.show();
+          this.userService.delete('destroy-all-canvas-elements')
+            .subscribe(response => {
+              this.getGuests();
+              this.getTables();
+              this.getAllElements();
+              this.spinner.hide();
+              this.messageService.success(response);
+            }, error => {
+              this.getGuests();
+              this.getTables();
+              this.getAllElements();
               this.spinner.hide();
               this.messageService.error(error);
             });

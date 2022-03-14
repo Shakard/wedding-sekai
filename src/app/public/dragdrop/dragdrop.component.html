@@ -6,6 +6,7 @@
 <div class="buttons">
   <h1>Llenar <code>Mesas</code></h1>
   <button (click)="clearAllUsers()" class="up">Limpiar mesas</button>
+  <button (click)="deleteAllElements()" class="up">Destruir elementos</button>
   <button pButton label="Resetear posición" (click)="resetTablesPosition()" style="color:#4f62fa"></button>
   <button (click)="openNewBathroom()" class="offset">Agregar baño</button>
   <button (click)="onSubmitDiningTable()" class="offset">Agregar mesa</button>
@@ -22,6 +23,8 @@
   <button (click)="onSubmitPhotoBooth()" class="offset">Agregar Photo Booth</button>
   <button (click)="onSubmitCocktailTable()" class="offset">Agregar Mesa de Cocteles</button>
   <button (click)="onSubmitPhotoArea()" class="offset">Agregar Área de Fotos</button>
+  <button (click)="onSubmitPlayground()" class="offset">Agregar Área de Juegos</button>
+  <button (click)="onSubmitNursery()" class="offset">Agregar Guardería</button>
 
 </div>
 <br>
@@ -47,7 +50,7 @@
         cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
         <div class="contenedor-flexbox">
           <div class="handle" cdkDragHandle>
-            <img src="assets/images/dining-table.png">
+            <img src="assets/images/{{table.image}}">
             <div class="centered" style="color:rgb(1, 26, 26); font-size: 14px;">
               {{table.name}}
               <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
@@ -61,245 +64,25 @@
             <div class="table-box" *ngFor="let user of table.users">{{user.first_name}} {{user.last_name}}</div>
           </div>
         </div>
-      </div>
+      </div>   
 
-      <!-- ==================================Baños============================== -->
-      <div id="{{bathroom.id}}" *ngFor="let bathroom of bathrooms; '$implicit.id' as i" class="tables-container"
+        <!-- ==================================Elementos del lienzo============================== -->
+        <div id="{{canvasElement.id}}" *ngFor="let canvasElement of canvasElements; '$implicit.id' as i" class="tables-container"
         cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
         <div class="contenedor-flexbox">
           <div class="handle" cdkDragHandle>
-            <img src="assets/images/bathroom.png">
-          </div>
-        </div>
-        <div class="centered" style="color:rgb(1, 26, 26);
-         font-size: 14px;
-         transform: translate(-20%, -300%);">
-          {{bathroom.name}}
-          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(bathroom)"></button>
-        </div>
-      </div>
-
-      <!-- ==================================Banda============================== -->
-      <div id="{{band.id}}" *ngFor="let band of bands; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
-        <div class="contenedor-flexbox">
-          <div class="handle" cdkDragHandle>
-            <img src="assets/images/band.png">
-          </div>
-        </div>
-        <div class="centered" style="color:rgb(1, 26, 26);
-         font-size: 14px;
-         transform: translate(-20%, -300%);">
-          {{band.name}}
-          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(band)"></button>
-        </div>
-      </div>
-
-      <!-- ==================================Pista de Baile============================== -->
-      <div id="{{danceFloor.id}}" *ngFor="let danceFloor of danceFloors; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
-        <div class="contenedor-flexbox">
-          <div class="handle" cdkDragHandle>
-            <img src="assets/images/dance-floor.jpg">
-          </div>
-        </div>
-        <div class="centered" style="color:rgb(1, 26, 26);
-        font-size: 14px;
-        transform: translate(-20%, -300%);">
-          {{danceFloor.name}}
-          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(band)"></button>
-        </div>
-      </div>
-
-      <!-- ==================================Salón============================== -->
-      <div id="{{loungeRoom.id}}" *ngFor="let loungeRoom of loungeRooms; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
-        <div class="contenedor-flexbox">
-          <div class="handle" cdkDragHandle>
-            <img src="assets/images/lounge.png">
-          </div>
-        </div>
-        <div class="centered" style="color:rgb(1, 26, 26);
-      font-size: 14px;
-      transform: translate(-20%, -300%);">
-          {{loungeRoom.name}}
-          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(band)"></button>
-        </div>
-      </div>
-
-      <!-- ==================================Ingreso============================== -->
-      <div id="{{entrance.id}}" *ngFor="let entrance of entrances; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
-        <div class="contenedor-flexbox">
-          <div class="handle" cdkDragHandle>
-            <img src="assets/images/entrance.png">
-          </div>
-        </div>
-        <div class="centered" style="color:rgb(1, 26, 26);
-    font-size: 14px;
-    transform: translate(-20%, -300%);">
-          {{entrance.name}}
-          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(band)"></button>
-        </div>
-      </div>
-
-      <!-- ==================================Salida============================== -->
-      <div id="{{exit.id}}" *ngFor="let exit of exits; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
-        <div class="contenedor-flexbox">
-          <div class="handle" cdkDragHandle>
-            <img src="assets/images/exit.png">
-          </div>
-        </div>
-        <div class="centered" style="color:rgb(1, 26, 26);
-  font-size: 14px;
-  transform: translate(-20%, -300%);">
-          {{exit.name}}
-          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(band)"></button>
-        </div>
-      </div>
-
-      <!-- ==================================Mesa de dulces============================== -->
-      <div id="{{candyBar.id}}" *ngFor="let candyBar of candyBars; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
-        <div class="contenedor-flexbox">
-          <div class="handle" cdkDragHandle>
-            <img src="assets/images/candy-bar.png">
+            <img src="assets/images/{{canvasElement.image}}">
           </div>
         </div>
         <div class="centered" style="color:rgb(1, 26, 26);
  font-size: 14px;
  transform: translate(-20%, -300%);">
-          {{candyBar.name}}
+          {{canvasElement.name}}
           <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(band)"></button>
+            class="p-button-rounded p-button-danger" (click)="deleteElement(canvasElement)"></button>
         </div>
       </div>
 
-      <!-- ==================================Pastel de bodas============================== -->
-      <div id="{{weddingCake.id}}" *ngFor="let weddingCake of weddingCakes; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
-        <div class="contenedor-flexbox">
-          <div class="handle" cdkDragHandle>
-            <img src="assets/images/wedding-cake.png">
-          </div>
-        </div>
-        <div class="centered" style="color:rgb(1, 26, 26);
- font-size: 14px;
- transform: translate(-20%, -300%);">
-          {{weddingCake.name}}
-          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(band)"></button>
-        </div>
-      </div>
-
-      <!-- ==================================Salida de emergencia============================== -->
-      <div id="{{emergencyExit.id}}" *ngFor="let emergencyExit of emergencyExits; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
-        <div class="contenedor-flexbox">
-          <div class="handle" cdkDragHandle>
-            <img src="assets/images/emergency-exit.jpg">
-          </div>
-        </div>
-        <div class="centered" style="color:rgb(1, 26, 26);
- font-size: 14px;
- transform: translate(-20%, -300%);">
-          {{emergencyExit.name}}
-          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(band)"></button>
-        </div>
-      </div>
-
-      <!-- ==================================Catering============================== -->
-      <div id="{{catering.id}}" *ngFor="let catering of caterings; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
-        <div class="contenedor-flexbox">
-          <div class="handle" cdkDragHandle>
-            <img src="assets/images/catering.png">
-          </div>
-        </div>
-        <div class="centered" style="color:rgb(1, 26, 26);
- font-size: 14px;
- transform: translate(-20%, -300%);">
-          {{catering.name}}
-          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(band)"></button>
-        </div>
-      </div>
-
-      <!-- ==================================Estación de Café=================================== -->
-      <div id="{{cofeeStation.id}}" *ngFor="let cofeeStation of cofeeStations; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
-        <div class="contenedor-flexbox">
-          <div class="handle" cdkDragHandle>
-            <img src="assets/images/cofee-station.png">
-          </div>
-        </div>
-        <div class="centered" style="color:rgb(1, 26, 26);
- font-size: 14px;
- transform: translate(-20%, -300%);">
-          {{cofeeStation.name}}
-          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(band)"></button>
-        </div>
-      </div>
-
-      <!-- ==================================Photo Booth============================== -->
-      <div id="{{photoBooth.id}}" *ngFor="let photoBooth of photoBooths; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
-        <div class="contenedor-flexbox">
-          <div class="handle" cdkDragHandle>
-            <img src="assets/images/photo-booth.png">
-          </div>
-        </div>
-        <div class="centered" style="color:rgb(1, 26, 26);
- font-size: 14px;
- transform: translate(-20%, -300%);">
-          {{photoBooth.name}}
-          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(band)"></button>
-        </div>
-      </div>
-
-      <!-- ==================================Mesa de Cocteles=================================== -->
-      <div id="{{cocktailTable.id}}" *ngFor="let cocktailTable of cocktailTables; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
-        <div class="contenedor-flexbox">
-          <div class="handle" cdkDragHandle>
-            <img src="assets/images/cocktail-area.png">
-          </div>
-        </div>
-        <div class="centered" style="color:rgb(1, 26, 26);
- font-size: 14px;
- transform: translate(-20%, -300%);">
-          {{cocktailTable.name}}
-          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(band)"></button>
-        </div>
-      </div>
-
-      <!-- ==================================Área de fotos============================== -->
-      <div id="{{photoArea.id}}" *ngFor="let photoArea of photoAreas; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" cdkDrag>
-        <div class="contenedor-flexbox">
-          <div class="handle" cdkDragHandle>
-            <img src="assets/images/photo-area.png">
-          </div>
-        </div>
-        <div class="centered" style="color:rgb(1, 26, 26);
- font-size: 14px;
- transform: translate(-20%, -300%);">
-          {{photoArea.name}}
-          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(band)"></button>
-        </div>
-      </div>
 
     </div>
     <div class="spacer"></div>

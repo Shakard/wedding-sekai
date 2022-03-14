@@ -166,4 +166,14 @@ export class UserService {
     return this.httpClient.get(url, { headers: headers });
   }
 
+  getById(url: string, data: any) {
+    const headers = new HttpHeaders(
+      {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    );
+    url = this.url + url;
+    return this.httpClient.post(url, data, { headers: headers });
+  }
+
 }
