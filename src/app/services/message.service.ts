@@ -87,7 +87,7 @@ export class SweetMessageService {
         });
     }
 
-    questionResetPosition({title = '¿Restaurar la posición de las mesas?'}) {
+    questionResetPosition({title = '¿Restaurar la posición?'}) {
         return Swal.fire({
             title,
             icon: 'warning',

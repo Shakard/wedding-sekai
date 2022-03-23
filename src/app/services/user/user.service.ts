@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class UserService {
-  url = environment.URL_API_LOCAL;
+  url = environment.URL_API_REMOTE;
   constructor(private httpClient: HttpClient) { }
 
   getLoggedUser() {

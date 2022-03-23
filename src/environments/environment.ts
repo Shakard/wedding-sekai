@@ -6,7 +6,7 @@ export const URL_API = 'http://localhost/Wedding-backend/public/api/';
 export const environment = {
   production: false,
   URL_API_LOCAL : 'http://localhost/Wedding-backend/public/api/',
-  API_URL_TABLE_MANAGEMENT: URL_API + 'table-management/',
+  URL_API_REMOTE: 'http://18.223.20.35/api/',
 };
 
 /*

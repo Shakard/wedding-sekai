@@ -65,9 +65,9 @@
 			</th>
 			<th pSortableColumn="email">Correo<p-sortIcon field="email"></p-sortIcon>
 			</th>
-			<th>Mesa</th>
+			<!-- <th>Mesa</th>
 			<th>Silla</th>
-			<th></th>
+			<th></th> -->
 			<th></th>
 			<th></th>
 		</tr>
@@ -88,7 +88,7 @@
 				<p-columnFilter type="text" field="email" [matchMode]="'contains'" placeholder="Buscar...">
 				</p-columnFilter>
 			</th>
-			<th>
+			<!-- <th>
 				<p-dropdown [options]="tables" (onChange)="dt.filter($event.value, 'chair.table.name', 'equals')"
 					autoWidth="false" [style]="{'width':'120px'}" styleClass="p-column-filter" placeholder="Buscar..."
 					[showClear]="true">
@@ -105,7 +105,7 @@
 						<span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
 					</ng-template>
 				</p-dropdown>
-			</th>
+			</th> -->
 			<th></th>
 			<th></th>
 		</tr>
@@ -119,23 +119,23 @@
 			<td>{{user.last_name}}</td>
 			<td>{{user.email}}</td>
 			<!-- columnas de la mesa -->
-			<td *ngIf="user?.chair">{{user.chair.table.name}}</td>
+			<!-- <td *ngIf="user?.chair">{{user.chair.table.name}}</td>
 			<td *ngIf="user?.chair==null">
 				<div style="font-size: 13px"> </div>
-			</td>
+			</td> -->
 			<!-- columnas de la silla -->
-			<td *ngIf="user?.chair">
+			<!-- <td *ngIf="user?.chair">
 				<p>{{user.chair.name}}
 					<button pButton pRipple icon="pi pi-minus" style="width: 20px; height:10px; color: #fc1f1f;"
-						class="p-button-outlined" (click)="removeChair(user)"></button>
+						class="p-button-outlined" (click)="removeChair(user)"></button> -->
 					<!-- <button class="addSeat" style="width: 25px; height:25px; padding: 0.5em 0.2em;"
 						(click)="removeChair(user)"></button> -->
-				</p>
+				<!-- </p>
 			</td>
 			<td *ngIf="user?.chair==null">
 				<button pButton pRipple icon="pi pi-plus" style="width: 20px; height:10px; color: #02ccc6;"
 					class="p-button-outlined" (click)="addChair(user)"></button>
-			</td>
+			</td> -->
 			<!-- columnas de crud -->
 			<td>
 				<button pButton pRipple icon="pi pi-pencil" style="width: 20px; height:10px; color: #4f62fa;"

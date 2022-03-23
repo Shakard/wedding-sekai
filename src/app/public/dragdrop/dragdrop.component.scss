@@ -6,11 +6,16 @@ img {
 }
 
 .centered {
-  position: static;
+  position: fixed;
+  border: 1px solid;
+  border-color: #2b6777;
+  background-color: #c8d8e4;
+  border-radius: 5px;
   display: flex;
   width: auto;
-  transform: translate(5%, -260%);
+  padding: 5px;
   font-weight: 400;
+  z-index: 999;
 }
 // =========================================================
 // =====================DRAGULA CSS=========================
@@ -77,8 +82,8 @@ img {
   height: 250px;
   overflow-y: auto;
   user-select: none;
-  top: 31rem;
-  left: 5rem;
+  top: 30rem;
+  left: 8rem;
   background-color: var(--surface-overlay);
   border-radius: 4px;
   padding-left:  1rem;
@@ -261,9 +266,9 @@ code {
 //=====================================================================
 .main-container {
   position: relative;
-  margin-left:300px;
+  margin-left:5px;
   margin-bottom:50px;
-  width: 1000px;
+  width: 95%;
   height: 101%;
   min-height: 520px;
   min-width: 510px;
@@ -281,7 +286,7 @@ code {
 }
 
 .box-container {
-  position: absolute;
+  position: relative;
   width: 100%;
   height: 100%;
   min-height: 515px;
@@ -305,14 +310,15 @@ code {
   display: inline-block;
   vertical-align: top;  
   z-index: 999;
-  transform: translate(-8%, -30%);
+  transform: translate(-8%, 10%);
   font-weight: 400;
 }
 
 .tbl-counter {
   color: rgba(79,98,250,1);
   position: absolute;
-  transform: translate(15%, -305%);
+  width: 70px;
+  transform: translate(-100%, 400%);
   cursor: pointer;
 }
 
@@ -352,13 +358,13 @@ code {
 }
 
 .tables-container {
+  position: fixed;
   width: auto;
   min-width: 60px;
   max-width: 100%;
   margin: 0 25px 25px 0;
   display: inline-block;
   vertical-align: top;
-
 }
 
 .example-list {
@@ -401,7 +407,7 @@ code {
 }
 
 .contenedor-flexbox {
-  display: flex; /*Convertimos al menú en flexbox*/ 
+  display: flex; /*Convertimos al menú en flexbox*/   
   justify-content: space-between; /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
 }
 
@@ -444,4 +450,284 @@ code {
   font-weight: 400;
 }
 
-//============================================================
+//======================Toolbar clustering=======================
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.toolbar {
+  position: absolute;
+  z-index: 999;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 4rem;
+  height: 4rem;
+  border-radius: .3rem;
+  background: #171a2e;
+  overflow: hidden;
+  box-shadow: 0 .1rem .3rem 0 rgba(0,0,0,.3);
+  transition: all 70ms cubic-bezier(0.455, 0.030, 0.515, 0.955);
+    -webkit-user-drag:element;  
+}
+.toolbar:-webkit-drag {
+  opacity: 1;
+}
+
+.toolbar:hover {
+  width: 14.4rem;
+  height: auto;
+}
+.toolbar li {
+  opacity: 0;
+  order: 0;
+  display: none;
+  transition: opacity .2s cubic-bezier(0.455, 0.030, 0.515, 0.955);
+}
+.toolbar:hover li {
+  opacity: .5;
+}
+.toolbar:hover li:hover {
+  opacity: .9;
+}
+.toolbar:hover li:hover a {
+  background-position: 50% 25%;
+}
+.toolbar li.active {
+  opacity: 1;
+  order: -1;
+
+/*  -webkit-animation: splat 900ms linear both;*/
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+}
+.toolbar li,
+.toolbar li a {
+  display: block;
+  width: 4.8rem;
+  height: 4.8rem;
+  line-height: 4.8rem;
+  text-align: center;
+}
+.toolbar li a {
+  text-decoration: none;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 50%;
+  transition: background-position .1s cubic-bezier(0.455, 0.030, 0.515, 0.955);
+}
+.toolbar li:hover a:before {
+  content: '';
+  width: 2rem;
+  height: 1.2rem;
+  background: rgba(255,255,255,.1);
+  border-radius: .3rem;
+  padding: .1rem .4rem;
+  font-size: 1.2rem;
+  color: #eee;
+  text-decoration: none;
+  position: relative;
+  top: 1.3rem;
+}
+#tool-move {
+  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/49364/ico-move_3.svg);
+}
+
+#tool-move:hover:before {
+  content: ':)';
+}
+
+#tool-dining-table {
+  background-image: url(/assets/images/svg_toolbar_icons/dinner-table.png);
+}
+
+#tool-dining-table:hover:before {
+  content: 'mesa';
+}
+
+#tool-bathroom-man {
+  background-image: url(/assets/images/svg_toolbar_icons/man.png);
+}
+
+#tool-bathroom-man:hover:before {
+  content: 'Caballeros';
+}
+
+#tool-bathroom-woman {
+  background-image: url(/assets/images/svg_toolbar_icons/woman.png);
+}
+
+#tool-bathroom-woman:hover:before {
+  content: 'Damas';
+}
+
+#tool-stage {
+  background-image: url(/assets/images/svg_toolbar_icons/club.png);
+}
+
+#tool-stage:hover:before {
+  content: 'Escenario';
+}
+
+#tool-dance-floor {
+  background-image: url(/assets/images/svg_toolbar_icons/dance-floor.png);
+}
+
+#tool-dance-floor:hover:before {
+  content: 'Pista';
+}
+
+#tool-lounge {
+  background-image: url(/assets/images/svg_toolbar_icons/lounge.png);
+}
+
+#tool-lounge:hover:before {
+  content: 'Salón';
+}
+
+#tool-entrance {
+  background-image: url(/assets/images/svg_toolbar_icons/entrance.png);
+}
+
+#tool-entrance:hover:before {
+  content: 'Ingreso';
+}
+
+#tool-exit {
+  background-image: url(/assets/images/svg_toolbar_icons/exit.png);
+}
+
+#tool-exit:hover:before {
+  content: 'Salida';
+}
+
+#tool-candy-table {
+  background-image: url(/assets/images/svg_toolbar_icons/candy-table.png);
+}
+
+#tool-candy-table:hover:before {
+  content: 'Sweets';
+}
+
+#tool-wedding-cake {
+  background-image: url(/assets/images/svg_toolbar_icons/wedding-cake.png);
+}
+
+#tool-wedding-cake:hover:before {
+  content: 'Cake';
+}
+
+#tool-emergency-exit {
+  background-image: url(/assets/images/svg_toolbar_icons/emergency-exit.png);
+}
+
+#tool-emergency-exit:hover:before {
+  content: 'Emergencia';
+}
+
+#tool-catering {
+  background-image: url(/assets/images/svg_toolbar_icons/catering.png);
+}
+
+#tool-catering:hover:before {
+  content: 'Catering';
+}
+
+#tool-coffee-station {
+  background-image: url(/assets/images/svg_toolbar_icons/coffee-station.png);
+}
+
+#tool-coffee-station:hover:before {
+  content: 'Café';
+}
+
+#tool-photo-booth {
+  background-image: url(/assets/images/svg_toolbar_icons/photo-booth.png);
+}
+
+#tool-photo-booth:hover:before {
+  content: 'Fotos';
+}
+
+#tool-bar {
+  background-image: url(/assets/images/svg_toolbar_icons/bar.png);
+}
+
+#tool-bar:hover:before {
+  content: 'Bar';
+}
+
+#tool-photo-area {
+  background-image: url(/assets/images/svg_toolbar_icons/photo-area.png);
+}
+
+#tool-photo-area:hover:before {
+  content: 'Área';
+}
+
+#tool-playground {
+  background-image: url(/assets/images/svg_toolbar_icons/playground.png);
+}
+
+#tool-playground:hover:before {
+  content: 'Juegos';
+}
+
+#tool-nursery {
+  background-image: url(/assets/images/svg_toolbar_icons/nursery.png);
+}
+
+#tool-nursery:hover:before {
+  content: 'Guardería';
+}
+
+// #tool-rectangle {
+//   background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/49364/ico-rect_1.svg);
+// }
+// #tool-rectangle:hover:before {
+//   content: 'r';
+// }
+// #tool-circle {
+//   background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/49364/ico-circle_2.svg);
+// }
+// #tool-circle:hover:before {
+//   content: 'o';
+// }
+// #tool-text {
+//   background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/49364/ico-text_1.svg);
+// }
+// #tool-grid {
+//   background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/49364/ico-grid_1.svg);
+// }
+// #tool-bluepencil {
+//   background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/49364/ico-blue-pencil.svg);
+// }
+// #tool-grid:hover:before {
+//   content: 'shift g';
+// }
+
+// #tool-text:hover:before {
+//   content: 't';
+// }
+// #tool-bluepencil:hover:before {
+//   content: 'shift p';
+// }
+
+::focus {
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+}
+
+//=============================================

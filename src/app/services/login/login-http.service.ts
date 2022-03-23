@@ -6,17 +6,12 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class LoginHttpService {
-  url = environment.URL_API_LOCAL;  
+  url = environment.URL_API_REMOTE;  
 
   constructor(private httpClient: HttpClient) { }
 
   get(params = new HttpParams()) {
     const url = this.url + 'units';
-  }
-
-  post(url: string, data: any, params = new HttpParams()) {
-    url = environment.API_URL_TABLE_MANAGEMENT + url;
-    return this.httpClient.post(url, data, { params });
   }
 
   logout() {

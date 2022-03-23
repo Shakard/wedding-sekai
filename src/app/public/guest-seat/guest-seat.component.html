@@ -1,37 +1,3 @@
-<div class="container" style="overflow: hidden">
-  <div class="main-container" style="overflow: hidden">
-    <div class="box-container" style="overflow: hidden">
-        <div #tableContainer class="container-tables" dragula="COLUMNS" [(dragulaModel)]="tables">
-          <div id="{{table.id}}" *ngFor="let table of tables; '$implicit.id' as i" class="tables-container"
-            cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)" (mouseenter)="isHovered[i]=true"
-            (mouseleave)="isHovered[i]=false" cdkDrag>
-            <div class="contenedor-flexbox">
-              <button class="btn-table" (click)="isToggled[i] = !isToggled[i]">
-                <div>{{table.name}}</div>
-                <small class="tbl-counter">{{table.users_count}} invitados</small>
-              </button>
-              <div class="example-handle" cdkDragHandle>
-                <svg width="15px" fill="currentColor" viewBox="0 0 24 24">
-                  <path
-                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                  </path>
-                  <path d="M0 0h24v24H0z" fill="none"></path>
-                </svg>
-              </div>
-            </div>
-            <div *ngIf="isToggled[i]" class="table-guest-container">
-              <div dragula="SPILL" [(dragulaModel)]="table.users" class="example-list">
-                <div class="table-box" *ngFor="let user of table.users">{{user.first_name}} {{user.last_name}}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      <div class="spacer"></div>
-    </div>
-  </div>
-</div>
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
 
-<br/>
-      <button class="transparent-button" (click)="zoomToggle(false)">-</button>
-      <span>{{currentZoomLevel * 100}}%</span>
-      <button class="transparent-button" (click)="zoomToggle(true)">+</button>
+    <div class="container" id="first-block"></div>
