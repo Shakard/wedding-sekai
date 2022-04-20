@@ -12,23 +12,14 @@ export class AdminGuardGuard implements CanActivate {
   
   constructor(public loginHttpService: LoginHttpService, public router: Router) {}
 
-  canActivate(): boolean {
-    // this.loginHttpService.getLoggedUser().subscribe({
-    //   next: (response) => this.loggedUser = response['data'],        
-    //   // next: () => this.messageService.successConfirmation(),
-    //   // error: (response) => this.messageService.errorUploadFile(response.error.errors.image),
-    //   complete: () => console.log(this.loggedUser)
-    // });      
-
-    // console.log(this.loggedUser);
-    
-    // // if (this.loggedUser.roles[0].name != 'Admin') {
-    // //   this.router.navigate(['']);
-    // //   console.log('false');   
-    // //   return false;
-    // // }
-    // // console.log('true');
-    return false;
+  async canActivate(): Promise<boolean> {
+    const res = await this.loginHttpService.getLoggedUser().toPromise();     
+    this.loggedUser = res['data'];    
+    if (this.loggedUser.roles[0]?.name != 'Admin') {
+      this.router.navigate(['']);
+      return false;
+    }
+    return true;
   }
   
 }

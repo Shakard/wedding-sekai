@@ -43,9 +43,9 @@ import { AdminGuardGuard as AdminGuard} from './services/login/admin-guard.guard
                 children: [
                     {path: 'dashboard', component: DashboardComponent},                    
                     {path: 'home', component: HomeComponent, canActivate: [AuthGuard]}, 
-                    {path: 'table', component: TableGuestComponent, canActivate: [AuthGuard]}, 
-                    {path: 'seat', component: GuestSeatComponent, canActivate: [AuthGuard]}, 
-                    {path: 'drag-drop', component: DragdropComponent, canActivate: [AuthGuard]}, 
+                    {path: 'table', component: TableGuestComponent, canActivate: [AuthGuard, AdminGuard]}, 
+                    {path: 'seat', component: GuestSeatComponent, canActivate: [AuthGuard, AdminGuard]}, 
+                    {path: 'drag-drop', component: DragdropComponent, canActivate: [AuthGuard, AdminGuard]}, 
                     {path: 'uikit/formlayout', component: FormLayoutComponent},                    
                     {path: 'uikit/input', component: InputComponent},
                     {path: 'uikit/floatlabel', component: FloatLabelComponent},
