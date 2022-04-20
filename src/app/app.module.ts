@@ -142,6 +142,8 @@ import { GuestSeatComponent } from './public/guest-seat/guest-seat.component';
 import { DragdropComponent } from './public/dragdrop/dragdrop.component';
 import { DragulaModule } from 'ng2-dragula';
 import { NgxPanZoomModule } from 'ngx-panzoom';
+import { AngularResizeEventModule } from 'angular-resize-event';
+import { AngularResizeElementModule } from 'angular-resize-element';
 
 @NgModule({
     imports: [
@@ -235,6 +237,8 @@ import { NgxPanZoomModule } from 'ngx-panzoom';
         NgxSpinnerModule,
         FontAwesomeModule,
         NgxPanZoomModule,
+        AngularResizeEventModule,
+        AngularResizeElementModule,
         DragulaModule.forRoot()
     ],
     declarations: [

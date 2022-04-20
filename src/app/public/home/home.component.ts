@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   faTrash = faTrash;
   importedData: any[];
   convertedJson!: string;
-  user: User;
+  loggedUser: User;
   selectedUsers: User[];
   users: User[];
   tables: TableGuest[];
@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   chairDialog: boolean;
   setPassword: boolean;
   statuses: any[];
+  
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,9 +52,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.getLoggedUser();
     this.buildFormUser();
     this.buildFormTable();
     this.buildFormChair();
+    this.statuses = [
+      {label: 'Confirmado', value: 1},
+      {label: 'Por confirmar', value: 0}
+    ]
   }
 
   buildFormUser() {
@@ -133,7 +139,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   public getLoggedUser() {
     this.userService.getLoggedUser().subscribe(response => {
-      this.user = response['data']
+      this.loggedUser = response['data']
     });
   }
 
@@ -146,7 +152,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   getChairs() {
     this.spinner.show();
-    this.userService.get('unique-chairs').subscribe(response => {
+    this.userService.get('dd-tables').subscribe(response => {
       this.chairs = response['data'];
       this.spinner.hide();
     });

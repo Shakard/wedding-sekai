@@ -19,7 +19,7 @@ export class AppTopBarComponent implements OnDestroy, OnInit {
     subscription: Subscription;
     loggedIn: any;
     items: MenuItem[];
-    user: User;
+    loggedUser: User;
 
     constructor(public app: AppComponent, public appMain: AppMainComponent,
         private loginComponent: LoginComponent,
@@ -37,13 +37,19 @@ export class AppTopBarComponent implements OnDestroy, OnInit {
         }
     }
 
+    // public getLoggedUser() {
+    //     this.spinner.show();
+    //     firstValueFrom(this.userService.getLoggedUser()).then(response => {
+    //         this.loggedUser = response['data']
+    //         this.spinner.hide();
+    //     });
+    // }
+
     public getLoggedUser() {
-        this.spinner.show();
-        firstValueFrom(this.userService.getLoggedUser()).then(response => {
-            this.user = response['data']
-            this.spinner.hide();
+        this.userService.getLoggedUser().subscribe(response => {
+          this.loggedUser = response['data']
         });
-    }
+      }
 
     logout(): void {
         this.loginComponent.logout();

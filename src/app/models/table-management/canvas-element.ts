@@ -9,4 +9,6 @@ export interface CanvasElement {
     users?: User[];
     pos_x?:number;
     pos_y?:number;
+    width?:number;
+    height?:number;
 }

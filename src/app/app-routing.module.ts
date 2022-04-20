@@ -31,6 +31,7 @@ import { TableComponent } from './components/table/table.component';
 import { TableGuestComponent } from './public/table-guest/table-guest.component';
 import { GuestSeatComponent } from './public/guest-seat/guest-seat.component';
 import { DragdropComponent } from './public/dragdrop/dragdrop.component';
+import { AdminGuardGuard as AdminGuard} from './services/login/admin-guard.guard';
 
 
 

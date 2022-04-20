@@ -1,6 +1,6 @@
 img {
-  height: 80px;
-  width: 80px;
+  // height: 80px;
+  // width: 80px; 
   width: 100%;
   padding: 1px;
 }
@@ -315,10 +315,10 @@ code {
 }
 
 .tbl-counter {
-  color: rgba(79,98,250,1);
+  color: rgb(185, 46, 174);
   position: absolute;
-  width: 70px;
-  transform: translate(-100%, 400%);
+  width: 90px;
+  transform: translate(10%, 100%);
   cursor: pointer;
 }
 
@@ -368,7 +368,7 @@ code {
 }
 
 .example-list {
-  border: solid 1px #02ccc6;
+  border: solid 1px #2a5755;
   margin-left: 10px;
   margin-right: 10px;
   min-height: 30px;
@@ -380,15 +380,15 @@ code {
 
 .table-box {
   padding: 5px 5px;
-  border-bottom: solid 1px #02ccc6;
+  border-bottom: solid 1px #1b6e6a;
   color: var(--hover);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  cursor: move;
-  background: #02ccc6;
+  cursor: grab;
+  background: #461F00;
   font-size: 13px;
   
 }
@@ -397,16 +397,18 @@ code {
   top: 10px;
   right: 10px;
   color: rgb(65, 62, 62);
-  cursor: move;
+  cursor: grab;
   width: 15px;
   height: 15px;
 }
 
 .handle {  
-  cursor: move;
+  cursor: grab;
 }
 
 .contenedor-flexbox {
+  resize: both;
+  overflow: auto;
   display: flex; /*Convertimos al menú en flexbox*/   
   justify-content: space-between; /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
 }

@@ -1,6 +1,6 @@
 <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400" rel="stylesheet">
 <ngx-spinner></ngx-spinner>
-<div class="boxHeader">
+<div class="boxHeader"  style="height:2px">
 </div>
 <br>
 <div class="buttons">
@@ -58,66 +58,33 @@
       </div>
     </div>
 
-
     <div #tableContainer class="container-tables" dragula="COLUMNS" [(dragulaModel)]="tables">
       <!-- ==================================Elementos del lienzo============================== -->
       <div id="{{canvasElement.id}}" *ngFor="let canvasElement of canvasElements; '$implicit.id' as i"
-        class="tables-container" cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)"
+        class="tables-container" cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event, canvasElement.id)"
         (mouseover)="isHovered[i] = true" (mouseout)="onHoverOut(i)" cdkDrag>
-        <div class="contenedor-flexbox">
+        <div class="contenedor-flexbox" (resized)="onResized($event)">
           <div class="handle" cdkDragHandle>
-            <img src="assets/images/svg_toolbar_icons/{{canvasElement.image}}">
+            <img id="img{{canvasElement.id}}" src="assets/images/svg_toolbar_icons/{{canvasElement.image}}">
           </div>
         </div>
         <div *ngIf="isHovered[i]" class="centered" style="color: #2b6777;
                   font-size: 14px;
                   transform: translate(30%, -240%);">
           {{canvasElement.name}}
-          <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-            class="p-button-rounded p-button-danger" (click)="deleteElement(canvasElement)"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+           (click)="deleteElement(canvasElement)"></button>
+           <button pButton pRipple icon="pi pi-save" class="p-button-rounded p-button-success"
+           (click)="resizeDiv(canvasElement.id)"></button>
         </div>
-      </div>
-
-      <!-- ========================Mesas con invitados=================================== -->
-      <div id="{{table.id}}" *ngFor="let table of tables; '$implicit.id' as i" class="tables-container"
-        cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event)"
-        (mouseover)="isHovered[i] = true" (mouseout)="onHoverOut(i)" cdkDrag>
-        <div class="contenedor-flexbox">
-          <div class="handle" cdkDragHandle>
-            <img src="assets/images/svg_toolbar_icons/{{table.image}}">
-            <div *ngIf="isHovered[i]" class="centered" style="color:#2b6777;
-                  font-size: 14px;
-                  transform: translate(60%, -230%);">
-              <p>{{table.name}}</p>
-              <button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px; bottom: 8px;"
-                class="p-button-rounded p-button-danger" (click)="deleteElement(table)"></button>
-            </div>
-            <small (click)="isToggled[i] = !isToggled[i]" class="tbl-counter">{{table.users_count}} invitados</small>
-          </div>
-        </div>
+        <strong *ngIf='canvasElement.catalogue_id == 18' (click)="isToggled[i] = !isToggled[i]" class="tbl-counter">Invitados: <code style="color: rgb(233, 131, 35);">{{canvasElement.users_count}}</code></strong>
         <div *ngIf="isToggled[i]" class="table-guest-container">
-          <div dragula="SPILL" [(dragulaModel)]="table.users" class="example-list">
-            <div class="table-box" *ngFor="let user of table.users">{{user.first_name}} {{user.last_name}}</div>
+          <div dragula="SPILL" [(dragulaModel)]="canvasElement.users" class="example-list">
+            <div class="table-box" *ngFor="let user of canvasElement.users">{{user.first_name}} {{user.last_name}}</div>
           </div>
         </div>
       </div>
-
-
     </div>
     <div class="spacer"></div>
   </div>
 </div>
-
-<p-dialog [(visible)]="bathroomDialog" [style]="{width: '450px'}" [modal]="true" styleClass="p-fluid">
-  <ng-template pTemplate="content">
-    <form [formGroup]="formCanvasElement" (ngSubmit)="onSubmitBathroom()">
-      <div class="p-field">
-        <p-dropdown [options]="genders" formControlName="name" placeholder="Damas o Caballeros" [showClear]="true">
-        </p-dropdown>
-      </div>
-      <br>
-      <button type="submit" pButton pRipple label="Aceptar" icon="pi pi-save"
-        class="p-button-success p-button-raised"></button>
-    </form>
-  </ng-template>
-</p-dialog>

@@ -5,8 +5,8 @@ export const URL_API = 'http://localhost/Wedding-backend/public/api/';
 
 export const environment = {
   production: false,
-  URL_API_LOCAL : 'http://localhost/Wedding-backend/public/api/',
-  URL_API_REMOTE: 'http://18.223.20.35/api/',
+  URL_API_REMOTE: 'http://localhost/Wedding-backend/public/api/',
+  URL_API_LOCAL: 'https://backend.wedding-solvit.com/api/',  
 };
 
 /*
@@ -17,3 +17,4 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+ 

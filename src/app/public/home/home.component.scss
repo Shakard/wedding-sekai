@@ -5,14 +5,33 @@ ng-template {
   font-family: 'Montserrat', sans-serif;
 }
 
-// Separador del header
-.boxHeader{
+// ================================================================================
+// =========================Separador del header===================================
+// ================================================================================
+.boxHeader{ 
+  border-radius: 4px;
   background: linear-gradient(
-    90deg,
-      rgba(2,204,198,1) 0%,
-       #439ede 50%,
-        rgba(79,98,250,1) 100%);
-  background-size: 100% 100%;
+    90deg, rgba(79,98,250,1) 0%,
+     rgba(233,88,44,1) 33%,
+      rgba(2,204,198,1) 66%,
+       rgba(97,132,232,1) 97%);
+  animation: gradient 5s ease infinite;
+  background-size: 400% 400%;
+  height: 1px
+}
+
+@keyframes gradient{
+  
+  0%{
+    background-position: 0% 50%;
+  }
+  50%{
+    background-position: 100% 50%;
+  }
+  100%{
+    background-position: 0% 50%;
+  }
+
 }
 
 ////////////////////////////////////////////////////////////////  
@@ -129,4 +148,12 @@ code {
   color: #e4cb58;
   //color: #02ccc6;
   font: inherit;
+}
+
+.pi-check-circle{
+  color: #02ccc6;
+}
+
+.pi-times-circle{
+  color: red;
 }

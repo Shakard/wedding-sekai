@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,19 @@ import { environment } from '../../../environments/environment';
 export class UserService {
   url = environment.URL_API_REMOTE;
   constructor(private httpClient: HttpClient) { }
+
+  upload(file: File): Observable<HttpEvent<any>> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    const req = new HttpRequest('POST', `${this.url}upload`, formData, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+    return this.httpClient.request(req);
+  }
+  getFiles(): Observable<any> {
+    return this.httpClient.get(`${this.url}files`);
+  }
 
   getLoggedUser() {
     const url = this.url + 'logged-user';

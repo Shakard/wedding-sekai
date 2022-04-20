@@ -34,6 +34,16 @@ export class LoginHttpService {
     return this.httpClient.post(url, credentials, { params });
   }
 
+  getLoggedUser() {
+    const url = this.url + 'logged-user';
+    const headers = new HttpHeaders(
+      {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    );
+    return this.httpClient.get(url, { headers: headers });
+  }
+
   public isAuthenticated(): boolean {    
     const token = localStorage.getItem('token');   
     if (!token) {
@@ -41,5 +51,4 @@ export class LoginHttpService {
     }
     return true;
   }
-
 }

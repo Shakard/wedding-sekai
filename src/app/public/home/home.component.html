@@ -4,12 +4,13 @@
 
 
 <!-- Listado de invitados -->
-<div class="boxHeader" style="color: #02011b; height:2px">
-	.
+<div class="boxHeader" style="height:2px">	
 </div>
 <br>
-<div class="buttons">
-	<h1>Administrar <code>Invitados</code></h1>
+<h1>Administrar <code>Invitados</code></h1>
+<div class="boxHeader" style="height:2px">	
+</div>
+<div *ngIf="loggedUser?.roles[0]?.name=='Admin'" class="buttons">
 	<!-- <button class="pulse">Pulse</button>
 	<button class="close">Close</button>
 	<button class="raise">Raise</button> -->
@@ -18,45 +19,14 @@
 	<button (click)="openImportData()" class="offset">Importar Invitados</button>
 </div>
 <br>
-<!-- <p-toolbar class="tb1" styleClass="p-mb-4">
-	<ng-template pTemplate="left">
-		<button pButton pRipple type="button" label="Agregar invitado" class="p-button-text p-button-plain"
-			(click)="openNewUser()"></button>
-	</ng-template>
-	<ng-template pTemplate="right">
-		<button pButton pRipple type="button" label="Importar invitados" class="p-button-text p-button-plain"
-			(click)="openImportData()"></button>
-	</ng-template>
-</p-toolbar> -->
 
-<p-table #dt [value]="users" [rows]="10" [paginator]="true"
-	[globalFilterFields]="['chair.name', 'chair.table.name' , 'name', 'email']" responsiveLayout="scroll"
+<p-table #dt [value]="users" [rows]="10" [paginator]="true" responsiveLayout="scroll"
 	[(selection)]="selectedUsers" [rowHover]="true" dataKey="id"
 	currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
-	<!-- <ng-template pTemplate="caption">
-		<div class="p-d-flex p-ai-center p-jc-between">
-			<p-toolbar class="tb2" styleClass="p-mb-4">
-				<ng-template pTemplate="left">
-					<div class="box-2">
-						<div *ngIf="selectedUsers?.length > 0" (click)="deleteSelectedUsers()" class="btn btn-two"
-							style="width: 100px;">
-							<span>Eliminar</span>
-						</div>
-					</div>
-				</ng-template>
-				<ng-template pTemplate="right">
-					<div class="box-1">
-						<div (click)="sendUsersMail()" class="btn btn-one" style="width: 100px;">
-							<span>Enviar correos</span>
-						</div>
-					</div>
-				</ng-template>
-			</p-toolbar>
-		</div>
-	</ng-template> -->
+
 	<ng-template pTemplate="header">
 		<tr>
-			<th style="width: 3rem">
+			<th *ngIf="loggedUser?.roles[0]?.name=='Admin'" style="width: 3rem">
 				<p-tableHeaderCheckbox></p-tableHeaderCheckbox>
 			</th>
 			<th pSortableColumn="first_name">Nombres<p-sortIcon field="first_name"></p-sortIcon>
@@ -65,16 +35,17 @@
 			</th>
 			<th pSortableColumn="email">Correo<p-sortIcon field="email"></p-sortIcon>
 			</th>
-			<!-- <th>Mesa</th>
-			<th>Silla</th>
-			<th></th> -->
+			<th>Mesa</th>
+			<th style="width: 6rem">Confirmados</th>
+			<th>Certificado</th>
 			<th></th>
 			<th></th>
+
 		</tr>
 		<tr>
-			<th>
-				<button pButton icon="pi pi-trash" *ngIf="selectedUsers?.length > 0"
-					(click)="deleteSelectedUsers()" class="p-button-outlined p-button-danger" style="color: #c52424"></button>
+			<th *ngIf="loggedUser?.roles[0]?.name=='Admin'">
+				<button pButton icon="pi pi-trash" *ngIf="selectedUsers?.length > 0" (click)="deleteSelectedUsers()"
+					class="p-button-outlined p-button-danger" style="color: #c52424"></button>
 			</th>
 			<th>
 				<p-columnFilter type="text" field="first_name" [matchMode]="'contains'" placeholder="Buscar...">
@@ -88,9 +59,9 @@
 				<p-columnFilter type="text" field="email" [matchMode]="'contains'" placeholder="Buscar...">
 				</p-columnFilter>
 			</th>
-			<!-- <th>
-				<p-dropdown [options]="tables" (onChange)="dt.filter($event.value, 'chair.table.name', 'equals')"
-					autoWidth="false" [style]="{'width':'120px'}" styleClass="p-column-filter" placeholder="Buscar..."
+			<th>
+				<p-dropdown [options]="chairs" (onChange)="dt.filter($event.value, 'canvas_element.name', 'equals')"
+					autoWidth="false" [style]="{'width':'120px'}" styleClass="p-column-filter" placeholder="Todos"
 					[showClear]="true">
 					<ng-template let-option pTemplate="item">
 						<span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
@@ -98,52 +69,45 @@
 				</p-dropdown>
 			</th>
 			<th>
-				<p-dropdown [options]="chairs" (onChange)="dt.filter($event.value, 'chair.name', 'equals')"
-					autoWidth="false" [style]="{'width':'120px'}" styleClass="p-column-filter" placeholder="Buscar..."
-					[showClear]="true">
-					<ng-template let-option pTemplate="item">
-						<span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
-					</ng-template>
-				</p-dropdown>
-			</th> -->
+				<p-columnFilter type="boolean" field="confirmation"></p-columnFilter>
+			</th>
 			<th></th>
 			<th></th>
+			<th></th>
+
 		</tr>
 	</ng-template>
 	<ng-template pTemplate="body" let-user>
 		<tr>
-			<td>
+			<td *ngIf="loggedUser?.roles[0]?.name=='Admin'">
 				<p-tableCheckbox [value]="user"></p-tableCheckbox>
 			</td>
 			<td>{{user.first_name}}</td>
 			<td>{{user.last_name}}</td>
 			<td>{{user.email}}</td>
 			<!-- columnas de la mesa -->
-			<!-- <td *ngIf="user?.chair">{{user.chair.table.name}}</td>
-			<td *ngIf="user?.chair==null">
-				<div style="font-size: 13px"> </div>
-			</td> -->
-			<!-- columnas de la silla -->
-			<!-- <td *ngIf="user?.chair">
-				<p>{{user.chair.name}}
-					<button pButton pRipple icon="pi pi-minus" style="width: 20px; height:10px; color: #fc1f1f;"
-						class="p-button-outlined" (click)="removeChair(user)"></button> -->
-					<!-- <button class="addSeat" style="width: 25px; height:25px; padding: 0.5em 0.2em;"
-						(click)="removeChair(user)"></button> -->
-				<!-- </p>
+			<td>{{user.canvas_element?.name}}</td>
+			<!-- columna de la confirmación -->
+			<td>
+				<i class="pi"
+					[ngClass]="{'true-icon pi-check-circle': user.confirmation, 'false-icon pi-times-circle': !user.confirmation}"></i>
 			</td>
-			<td *ngIf="user?.chair==null">
-				<button pButton pRipple icon="pi pi-plus" style="width: 20px; height:10px; color: #02ccc6;"
-					class="p-button-outlined" (click)="addChair(user)"></button>
-			</td> -->
+			<td *ngIf="!user.file"></td>
+			<td *ngIf="user.file && user.file?.substring(user.file.lastIndexOf('.') + 1)!='pdf'">
+				<p-image src="{{'https://backend.wedding-solvit.com/assets/files/' + user.file}}" alt=""
+					[preview]="true" width="50"></p-image>
+			</td>
+			<td *ngIf="user.file?.substring(user.file.lastIndexOf('.') + 1)=='pdf'">
+				<a href="{{'https://backend.wedding-solvit.com/assets/files/' + user.file}}">view</a>
+			</td>
 			<!-- columnas de crud -->
 			<td>
-				<button pButton pRipple icon="pi pi-pencil" style="width: 20px; height:10px; color: #4f62fa;"
-					class="p-button-outlined" (click)="editUser(user)"></button>
+				<button *ngIf="loggedUser?.roles[0]?.name=='Admin'" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text"
+					style="color: #4f62fa" (click)="editUser(user)"></button>
 			</td>
 			<td>
-				<button pButton pRipple icon="pi pi-trash" style="width: 20px; height:10px"
-					class="p-button-outlined p-button-danger" (click)="deleteUser(user)"></button>
+				<button *ngIf="loggedUser?.roles[0]?.name=='Admin'" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-text"
+					style="color: red" (click)="deleteUser(user)"></button>
 			</td>
 		</tr>
 	</ng-template>
@@ -208,7 +172,6 @@
 </p-dialog>
 
 <!-- import data dialog -->
-
 <p-dialog [(visible)]="importDataDialog" header="Import Data" [style]="{width: '50vw'}" [modal]="true"
 	styleClass="p-fluid">
 	<ng-template pTemplate="content">
