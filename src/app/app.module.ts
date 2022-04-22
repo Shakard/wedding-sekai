@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
+import { CommonModule } from '@angular/common';
 
 import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -144,10 +145,13 @@ import { DragulaModule } from 'ng2-dragula';
 import { NgxPanZoomModule } from 'ngx-panzoom';
 import { AngularResizeEventModule } from 'angular-resize-event';
 import { AngularResizeElementModule } from 'angular-resize-element';
+import { GalleryComponent } from './public/gallery/gallery.component';
+import { DataComponent } from './public/data/data.component';
 
 @NgModule({
     imports: [
         BrowserModule,
+        CommonModule,
         FormsModule,
         AppRoutingModule,
         HttpClientModule,
@@ -283,7 +287,9 @@ import { AngularResizeElementModule } from 'angular-resize-element';
         HomeComponent,
         TableGuestComponent,
         GuestSeatComponent,
-        DragdropComponent
+        DragdropComponent,
+        GalleryComponent,
+        DataComponent
     ],
     
     providers: [

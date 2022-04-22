@@ -47,7 +47,6 @@ export class GuestSeatComponent {
   }
 
   uploads(event) {
-    console.log(event);
     this.docs = <File>event.target.files;
     this.length = <File>event.target.files.length;
   }
@@ -94,6 +93,8 @@ export class GuestSeatComponent {
       formdata.append('images' + [i], this.docs[i], this.docs[i].name);
       formdata.append('length', this.length);
         }
+    console.log(formdata);
+        
     this.storeFile(formdata);
   }
 

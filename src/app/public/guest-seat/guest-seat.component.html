@@ -11,11 +11,6 @@
 <div class="gallery">
   <figure *ngFor="let item of images">
     <img [src]="item.url">
-    <button (click)="deleteImage(item.id)">delete</button>
+    <figcaption (click)="deleteImage(item.id)">Delete</figcaption>
   </figure>
-
-  <!-- <figure>
-    <img src="https://images.unsplash.com/photo-1514921865419-4e9c1990d06e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1528&q=80" alt="A wood front door with a black and white cat passing by" title="Photo by Justin Luebke for Unsplash">
-    <figcaption>Back to Home</figcaption>
-  </figure> -->
 </div>

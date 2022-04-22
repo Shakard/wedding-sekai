@@ -28,10 +28,12 @@ export class AppMenuComponent implements OnInit {
             {
                 label: '',
                 items:[   
+                    {label: 'data',icon: 'pi pi-fw pi-data', routerLink: ['data']}, 
                     {label: 'Invitados',icon: 'pi pi-fw pi-home', routerLink: ['home']}, 
                     // {label: 'Mesas',icon: 'pi pi-fw pi-cog', routerLink: ['table']}, 
                     {label: 'Imágenes',icon: 'pi pi-fw pi-image', routerLink: ['seat']}, 
                     {label: 'Drag-drop',icon: 'pi pi-fw pi-cog', routerLink: ['drag-drop']}, 
+                    {label: 'Gallería',icon: 'pi pi-fw pi-image', routerLink: ['gallery']}, 
                 ]
             },
            /* {

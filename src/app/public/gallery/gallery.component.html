@@ -1,0 +1,15 @@
+<!-- <p-fileUpload name="images" url="http://localhost/Wedding-backend/public/api/upload-images" [customUpload]="true" (uploadHandler)="myUploader($event)"
+            multiple="multiple" accept="image/*" maxFileSize="1000000"> -->
+<p-fileUpload name="images[]" url="http://localhost/Wedding-backend/public/api/upload-images" (onUpload)="onUpload($event)"
+            [headers]="headers" multiple="multiple" accept="image/*" maxFileSize="1000000">            
+            <ng-template pTemplate="content">
+                <ul style="min-height: 400px">
+                    <div class="gallery">
+                        <figure *ngFor="let item of images">
+                          <p-image class="img" [src]="item.url" width="270" alt="Image" [preview]="true"></p-image>
+                          <!-- <figcaption (click)="deleteImage(item.id)">Delete</figcaption> -->
+                        </figure>
+                      </div>
+                </ul>
+            </ng-template>
+    </p-fileUpload>

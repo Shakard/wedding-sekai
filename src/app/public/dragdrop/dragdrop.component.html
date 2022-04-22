@@ -5,21 +5,31 @@
 <br>
 <div class="buttons">
   <h1>Llenar <code>Mesas</code></h1>
-  <button (click)="clearAllUsers()" class="up">Limpiar mesas</button>
+  <!-- <button (click)="clearAllUsers()" class="up">Limpiar mesas</button>
   <button (click)="deleteAllElements()" class="up">Destruir elementos</button>
-  <button pButton label="Resetear posición" (click)="resetTablesPosition()" style="color:#4f62fa"></button>
+  <button pButton label="Resetear posición" (click)="resetTablesPosition()" style="color:#4f62fa"></button> -->
 </div>
-<br>
+<!-- <br>
 <div class="boxHeader">
 </div>
-<br>
+<br> -->
+
+<p-menubar [model]="items">
+  <ng-template pTemplate="start">
+        
+  </ng-template>
+  <ng-template pTemplate="end">
+      <input type="text" pInputText placeholder="Search">
+  </ng-template>
+</p-menubar>
 
 <div class="main-container">
   <div class="box-container" >    
     <!-- =============================Toolbar============================= -->
-    <ul id="toolbar" class="toolbar">
+    <!-- <ul id="toolbar" class="toolbar">
       <li class="active"><a id="tool-move"></a></li>
-      <li><a id="tool-dining-table" (click)="onSubmitDiningTable()"></a></li>
+      <li><a id="tool-square-table" (click)="onSubmitSquareTable()"></a></li>
+      <li><a id="tool-round-table" (click)="onSubmitRoundTable()"></a></li>
       <li><a id="tool-bathroom-man" (click)="onSubmitBathroomMan()"></a></li>
       <li><a id="tool-bathroom-woman" (click)="onSubmitBathroomWoman()"></a></li>
       <li><a id="tool-stage" (click)="onSubmitBand()"></a></li>
@@ -37,11 +47,11 @@
       <li><a id="tool-photo-area" (click)="onSubmitPhotoArea()"></a></li>
       <li><a id="tool-playground" (click)="onSubmitPlayground()"></a></li>
       <li><a id="tool-nursery" (click)="onSubmitNursery()"></a></li>
-    </ul>
+    </ul> -->
 
 
     <!-- =============================Sidebar============================= -->
-    <div style="margin-left: 50px;
+    <!-- <div style="margin-left: 50px;
     border: 1px solid black;
     width: 65px;
     padding:5px;
@@ -56,7 +66,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div #tableContainer class="container-tables" dragula="COLUMNS" [(dragulaModel)]="tables">
       <!-- ==================================Elementos del lienzo============================== -->

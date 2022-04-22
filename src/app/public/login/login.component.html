@@ -3,27 +3,54 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400&display=swap" rel="stylesheet">
 
 
-<div id="container" class="card p-field col-6 md:col-6" style="margin:auto; text-align:center; margin-top:50px">
+<!-- <div id="container" class="card p-field col-6 md:col-6" style="margin:auto; text-align:center; margin-top:50px">
 	<form [formGroup]="formLogin" (ngSubmit)="login()" class="form mt-3">
 		<div class="box">
-			<img src="assets/layout/images/logo-solvit-light.png" alt="logo"> 
+			<img src="assets/layout/images/logo-solvit-light.png" alt="logo">
 		</div>
 		<br>
-		<!-- <img src="assets/layout/images/logo-solvit-light.png" alt="logo">     -->
 		<div class="p-fluid md:col-8" style="margin:auto">
-			<input formControlName="email" class="form-control" type="text" pInputText placeholder="Correo">
+			<input formControlName="email" class="form-control" type="text" name="name" placeholder="Email" pInputText
+				id="name">
 		</div>
 		<div class="p-fluid md:col-8" style="margin:auto">
-			<p-password formControlName="password" class="form-control" [toggleMask]="true" [feedback]="false" type="password" placeholder="Contraseña">
+			<p-password formControlName="password" class="form-control" [toggleMask]="false" [feedback]="false"
+				type="password" placeholder="Contraseña">
 			</p-password>
 		</div>
 		<br>
 		<div class="p-field">
-			<button id="btnlogin" pButton pRipple type="button" label="Login"
-				class="p-button-text p-button-plain" type="submit"></button>
+			<button pButton pRipple type="button" label="Login" class="p-button-rounded mr-2 mb-2"
+				type="submit"></button>
 		</div>
 	</form>
+</div> -->
+<!-- <button id="btnlogin" pButton pRipple type="button" label="Login" class="p-button-text p-button-plain"
+				type="submit"></button> -->
+<div class="login-page">
+	<div class="box" style="
+	max-height: 430px;
+    padding: 2px;
+    border-radius: 3px;
+	">
+		<div class="form" style="border-radius: 3px;">
+			<div class="box">
+				<img src="assets/layout/images/logo-solvit-light.png" alt="logo">
+			</div><br>
+			<!-- <form class="register-form">
+				<input type="text" placeholder="name" />
+				<input type="password" placeholder="password" />
+				<input type="text" placeholder="email address" />
+				<button>create</button>
+				<p class="message">Already registered? <a href="#">Sign In</a></p>
+			</form> -->
+			<form [formGroup]="formLogin" (ngSubmit)="login()">
+				<input formControlName="email" class="form-control" type="text" placeholder="Email" pInputText>
+				<input formControlName="password" class="form-control" type="password" placeholder="Contraseña" pInputText>
+				<button pButton pRipple type="button" label="Login" class="p-button mr-2 mb-2"
+					type="submit"></button>
+				<p class="message">Not registered? <a href="#">Create an account</a></p>
+			</form>
+		</div>
+	</div>	
 </div>
-<br>
-
-<div class="elem"></div>

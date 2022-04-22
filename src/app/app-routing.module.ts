@@ -32,6 +32,8 @@ import { TableGuestComponent } from './public/table-guest/table-guest.component'
 import { GuestSeatComponent } from './public/guest-seat/guest-seat.component';
 import { DragdropComponent } from './public/dragdrop/dragdrop.component';
 import { AdminGuardGuard as AdminGuard} from './services/login/admin-guard.guard';
+import { GalleryComponent } from './public/gallery/gallery.component';
+import { DataComponent } from './public/data/data.component';
 
 
 
@@ -44,6 +46,8 @@ import { AdminGuardGuard as AdminGuard} from './services/login/admin-guard.guard
                     {path: 'dashboard', component: DashboardComponent},                    
                     {path: 'home', component: HomeComponent, canActivate: [AuthGuard]}, 
                     {path: 'table', component: TableGuestComponent, canActivate: [AuthGuard, AdminGuard]}, 
+                    {path: 'gallery', component: GalleryComponent, canActivate: [AuthGuard, AdminGuard]}, 
+                    {path: 'data', component: DataComponent, canActivate: [AuthGuard, AdminGuard]}, 
                     {path: 'seat', component: GuestSeatComponent, canActivate: [AuthGuard, AdminGuard]}, 
                     {path: 'drag-drop', component: DragdropComponent, canActivate: [AuthGuard, AdminGuard]}, 
                     {path: 'uikit/formlayout', component: FormLayoutComponent},                    

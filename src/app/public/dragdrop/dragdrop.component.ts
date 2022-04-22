@@ -11,6 +11,7 @@ import panzoom from "panzoom";
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CanvasElement } from 'src/app/models/table-management/canvas-element';
 import { ResizedEvent } from 'angular-resize-event';
+import { MenuItem } from 'primeng/api';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class DragdropComponent implements OnInit {
 
   //====================================================================
 
+  items: MenuItem[];
   subs = new Subscription();
   formCanvasElement: FormGroup;
 
@@ -92,6 +94,46 @@ export class DragdropComponent implements OnInit {
     this.getAllElements();
     this.getGuests();
     this.getTables();
+    this.items = [
+      {
+          label: 'Elementos',
+          items: [{
+                  label: 'New', 
+                  icon: 'pi pi-fw pi-plus',
+                  items: [
+                      {label: 'Mesa', command: () => this.onSubmitSquareTable()},
+                      {label: 'Mesa redonda', command: () => this.onSubmitRoundTable()},
+                      {label: 'Baño caballeros', command: () => this.onSubmitBathroomMan()},
+                      {label: 'Baño damas', command: () => this.onSubmitBathroomWoman()},
+                      {label: 'Mesa de dulces', command: () => this.onSubmitCandyBar()},
+                      {label: 'Bar', command: () => this.onSubmitBar()},
+                      {label: 'Área de catering', command: () => this.onSubmitCatering()},
+                      {label: 'Estación de café', command: () => this.onSubmitCoffeeStation()},
+                      {label: 'Pista de baile', command: () => this.onSubmitDanceFloor()},
+                      {label: 'Salida de emergencia', command: () => this.onSubmitEmergencyExit()},
+                      {label: 'Ingreso', command: () => this.onSubmitEntrance()},
+                      {label: 'Salida', command: () => this.onSubmitExit()},
+                      {label: 'Sala', command: () => this.onSubmitLoungeRoom()},
+                      {label: 'Guardería', command: () => this.onSubmitNursery()},
+                      {label: 'Área de fotos', command: () => this.onSubmitPhotoArea()},
+                      {label: 'Cabina de fotos', command: () => this.onSubmitPhotoBooth()},
+                      {label: 'Área de juegos', command: () => this.onSubmitPlayground()},
+                      {label: 'Escenario', command: () => this.onSubmitBand()},
+                      {label: 'Pastel de Bodas', command: () => this.onSubmitWeddingCake()},                                      
+                  ]
+              }
+          ]
+      },
+      {
+          label: 'Edit',
+          icon: 'pi pi-fw pi-pencil',
+          items: [
+              {label: 'Eliminar todo', icon: 'pi pi-fw pi-trash', command: () => this.deleteAllElements()},
+              {label: 'Vaciar mesas ', icon: 'pi pi-fw pi-refresh', command: () => this.clearAllUsers()},
+              {label: 'Resetear posición', icon: 'pi pi-fw pi-refresh', command: () => this.resetTablesPosition()}
+          ]
+      }
+  ];
   }
 
   ngAfterViewInit() {
@@ -434,6 +476,24 @@ export class DragdropComponent implements OnInit {
     this.formCanvasElement.patchValue({ name: 'Mesa ' });
     this.formCanvasElement.patchValue({ code: 'Msa' });
     this.formCanvasElement.patchValue({ image: 'dinner-table.png' });
+    this.formCanvasElement.patchValue({ catalogue_id: 18 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitRoundTable() {
+    this.formCanvasElement.patchValue({ name: 'Mesa ' });
+    this.formCanvasElement.patchValue({ code: 'rnd-tbl' });
+    this.formCanvasElement.patchValue({ image: 'round-table.png' });
+    this.formCanvasElement.patchValue({ catalogue_id: 18 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitSquareTable() {
+    this.formCanvasElement.patchValue({ name: 'Mesa ' });
+    this.formCanvasElement.patchValue({ code: 'sqr-tbl' });
+    this.formCanvasElement.patchValue({ image: 'square-table.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 18 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();

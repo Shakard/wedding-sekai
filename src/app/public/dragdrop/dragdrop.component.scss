@@ -558,6 +558,22 @@ code {
   content: 'mesa';
 }
 
+#tool-square-table {
+  background-image: url(/assets/images/svg_toolbar_icons/square-table.png);
+}
+
+#tool-square-table:hover:before {
+  content: 'mesa';
+}
+
+#tool-round-table {
+  background-image: url(/assets/images/svg_toolbar_icons/round-table.png);
+}
+
+#tool-round-table:hover:before {
+  content: 'mesa';
+}
+
 #tool-bathroom-man {
   background-image: url(/assets/images/svg_toolbar_icons/man.png);
 }

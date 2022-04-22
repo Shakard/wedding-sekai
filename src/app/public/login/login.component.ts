@@ -6,6 +6,7 @@ import { User } from 'src/app/models/auth/user';
 import { LoginHttpService } from 'src/app/services/login/login-http.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { SweetMessageService } from 'src/app/services/message.service';
+import '../../../assets/myJS/test.js'
 
 @Component({
   selector: 'app-login',

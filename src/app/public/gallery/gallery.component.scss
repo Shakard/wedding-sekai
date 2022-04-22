@@ -1,0 +1,42 @@
+
+  /* GALLERY */
+  .gallery {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 3fr));
+    grid-template-rows: auto;
+    justify-items: center;
+    align-items: center;
+  }
+  
+  figure .img {
+    width: 270px;
+    height: 370px;
+    border-radius: 4px;
+    box-shadow: var(--shadow-elevation-high);
+    cursor: pointer;
+  }
+
+  :root {
+    --shadow-color: 0deg 0% 60%;
+    --shadow-elevation-low:
+      0.3px 0.3px 0.5px hsl(var(--shadow-color) / 0.34),
+      0.5px 0.6px 0.9px -1.2px hsl(var(--shadow-color) / 0.34),
+      1.1px 1.3px 1.9px -2.5px hsl(var(--shadow-color) / 0.34);
+    --shadow-elevation-medium:
+      0.3px 0.3px 0.5px hsl(var(--shadow-color) / 0.36),
+      0.9px 1.1px 1.6px -0.8px hsl(var(--shadow-color) / 0.36),
+      2.3px 2.8px 4.1px -1.7px hsl(var(--shadow-color) / 0.36),
+      5.7px 6.7px 9.9px -2.5px hsl(var(--shadow-color) / 0.36);
+    --shadow-elevation-high:
+      0.3px 0.3px 0.5px hsl(var(--shadow-color) / 0.34),
+      1.7px 2px 3px -0.4px hsl(var(--shadow-color) / 0.34),
+      3.1px 3.7px 5.4px -0.7px hsl(var(--shadow-color) / 0.34),
+      5.1px 6px 8.9px -1.1px hsl(var(--shadow-color) / 0.34),
+      8.1px 9.6px 14.1px -1.4px hsl(var(--shadow-color) / 0.34),
+      12.6px 15.1px 22.1px -1.8px hsl(var(--shadow-color) / 0.34),
+      19.2px 22.9px 33.6px -2.1px hsl(var(--shadow-color) / 0.34),
+      28.3px 33.7px 49.5px -2.5px hsl(var(--shadow-color) / 0.34);
+  }
+  
+ 
