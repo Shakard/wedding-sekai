@@ -70,4 +70,23 @@ export class GalleryComponent implements OnInit {
       });
   }
 
+  deleteImage(id: any) {
+    this.messageService.questionDelete({})
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.spinner.show();
+          this.userService.delete('file/' + id)
+            .subscribe(response => {
+              this.getImages();              
+              this.spinner.hide();
+              this.messageService.success(response);
+            }, error => {
+              this.getImages();            
+              this.spinner.hide();
+              this.messageService.error(error);
+            });
+        }
+      });
+  }
+
 }

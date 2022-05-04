@@ -8,10 +8,18 @@ import { Chair } from 'src/app/models/table-management/chair';
 import { SweetMessageService } from 'src/app/services/message.service';
 import { UserService } from 'src/app/services/user/user.service';
 import panzoom from "panzoom";
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { CanvasElement } from 'src/app/models/table-management/canvas-element';
 import { ResizedEvent } from 'angular-resize-event';
 import { MenuItem } from 'primeng/api';
+import { Input, AfterViewInit, HostListener } from '@angular/core';
+
+const enum Status {
+  OFF = 0,
+  RESIZE = 1,
+  MOVE = 2
+}
+
 
 
 @Component({
@@ -19,7 +27,19 @@ import { MenuItem } from 'primeng/api';
   templateUrl: './dragdrop.component.html',
   styleUrls: ['./dragdrop.component.scss']
 })
-export class DragdropComponent implements OnInit {
+export class DragdropComponent implements OnInit, AfterViewInit {
+  // @Input('width') public width: number;
+  // @Input('height') public height: number;
+  // @Input('left') public left: number;
+  // @Input('top') public top: number;
+
+
+  @ViewChild("box") public box: ElementRef;
+  private boxPosition: { left: number, top: number };
+  // private containerPos: { left: number, top: number, right: number, bottom: number };
+  public mouse: { x: number, y: number }
+  public status: Status = Status.OFF;
+  private mouseClick: { x: number, y: number, left: number, top: number }
   //=======================panzoom variables============================
   @ViewChild('tableContainer', { static: false }) tableContainer: ElementRef;
   panZoomController;
@@ -27,17 +47,29 @@ export class DragdropComponent implements OnInit {
   currentZoomLevel: number;
 
   //====================================================================
+  //============================prueba====================================
+  numberOfChairs: 5;
+  numberOfElements = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+  initialRender = this.numberOfElements.slice(0, 18); //de prueba
+  angles: number[] = [];
+  //================================================================
 
+  names: string;
+  mail: string;
+  surname: string;
   items: MenuItem[];
   subs = new Subscription();
   formCanvasElement: FormGroup;
-
+  formFilters: FormGroup;
+  tableByNumberDialog: boolean;
+  submitted: boolean;
   isToggled = {};
   isHovered = {};
   guestDeployed: boolean;
   canvasElement: CanvasElement;
   canvasElements: CanvasElement[];
   users: User[];
+  allUsers: User[];
   chairs: Chair[];
   tables: CanvasElement[];
   bathrooms: CanvasElement[];
@@ -57,8 +89,11 @@ export class DragdropComponent implements OnInit {
   playgrounds: CanvasElement[];
   nurseries: CanvasElement[];
   genders: string[];
+  number:number=1;
+  chairsNumber:number=4;
   width = 0;
   height = 0;
+
 
   constructor(
     public userService: UserService,
@@ -90,53 +125,56 @@ export class DragdropComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.buildFormCanvasElement();
+    this.buildFormCanvasElement(this.angles);
+    this.buildFormFilters();
     this.getAllElements();
     this.getGuests();
     this.getTables();
     this.items = [
       {
-          label: 'Elementos',
-          items: [{
-                  label: 'New', 
-                  icon: 'pi pi-fw pi-plus',
-                  items: [
-                      {label: 'Mesa', command: () => this.onSubmitSquareTable()},
-                      {label: 'Mesa redonda', command: () => this.onSubmitRoundTable()},
-                      {label: 'Baño caballeros', command: () => this.onSubmitBathroomMan()},
-                      {label: 'Baño damas', command: () => this.onSubmitBathroomWoman()},
-                      {label: 'Mesa de dulces', command: () => this.onSubmitCandyBar()},
-                      {label: 'Bar', command: () => this.onSubmitBar()},
-                      {label: 'Área de catering', command: () => this.onSubmitCatering()},
-                      {label: 'Estación de café', command: () => this.onSubmitCoffeeStation()},
-                      {label: 'Pista de baile', command: () => this.onSubmitDanceFloor()},
-                      {label: 'Salida de emergencia', command: () => this.onSubmitEmergencyExit()},
-                      {label: 'Ingreso', command: () => this.onSubmitEntrance()},
-                      {label: 'Salida', command: () => this.onSubmitExit()},
-                      {label: 'Sala', command: () => this.onSubmitLoungeRoom()},
-                      {label: 'Guardería', command: () => this.onSubmitNursery()},
-                      {label: 'Área de fotos', command: () => this.onSubmitPhotoArea()},
-                      {label: 'Cabina de fotos', command: () => this.onSubmitPhotoBooth()},
-                      {label: 'Área de juegos', command: () => this.onSubmitPlayground()},
-                      {label: 'Escenario', command: () => this.onSubmitBand()},
-                      {label: 'Pastel de Bodas', command: () => this.onSubmitWeddingCake()},                                      
-                  ]
-              }
+        label: 'Elementos',
+        items: [{
+          label: 'New',
+          icon: 'pi pi-fw pi-plus',
+          items: [
+            { label: 'Mesas redondas', command: () => this.openNewTableByNumber() },
+            { label: 'Mesa redonda', command: () => this.onSubmitRoundTable() },
+            { label: 'Silla', command: () => this.onSubmitChair() },
+            { label: 'Baño caballeros', command: () => this.onSubmitBathroomMan() },
+            { label: 'Baño damas', command: () => this.onSubmitBathroomWoman() },
+            { label: 'Mesa de dulces', command: () => this.onSubmitCandyBar() },
+            { label: 'Bar', command: () => this.onSubmitBar() },
+            { label: 'Área de catering', command: () => this.onSubmitCatering() },
+            { label: 'Estación de café', command: () => this.onSubmitCoffeeStation() },
+            { label: 'Pista de baile', command: () => this.onSubmitDanceFloor() },
+            { label: 'Salida de emergencia', command: () => this.onSubmitEmergencyExit() },
+            { label: 'Ingreso', command: () => this.onSubmitEntrance() },
+            { label: 'Salida', command: () => this.onSubmitExit() },
+            { label: 'Sala', command: () => this.onSubmitLoungeRoom() },
+            { label: 'Guardería', command: () => this.onSubmitNursery() },
+            { label: 'Área de fotos', command: () => this.onSubmitPhotoArea() },
+            { label: 'Cabina de fotos', command: () => this.onSubmitPhotoBooth() },
+            { label: 'Área de juegos', command: () => this.onSubmitPlayground() },
+            { label: 'Escenario', command: () => this.onSubmitBand() },
+            { label: 'Pastel de Bodas', command: () => this.onSubmitWeddingCake() },
           ]
+        }
+        ]
       },
       {
-          label: 'Edit',
-          icon: 'pi pi-fw pi-pencil',
-          items: [
-              {label: 'Eliminar todo', icon: 'pi pi-fw pi-trash', command: () => this.deleteAllElements()},
-              {label: 'Vaciar mesas ', icon: 'pi pi-fw pi-refresh', command: () => this.clearAllUsers()},
-              {label: 'Resetear posición', icon: 'pi pi-fw pi-refresh', command: () => this.resetTablesPosition()}
-          ]
+        label: 'Edit',
+        icon: 'pi pi-fw pi-pencil',
+        items: [
+          { label: 'Eliminar todo', icon: 'pi pi-fw pi-trash', command: () => this.deleteAllElements() },
+          { label: 'Vaciar mesas ', icon: 'pi pi-fw pi-refresh', command: () => this.clearAllUsers() },
+          { label: 'Resetear posición', icon: 'pi pi-fw pi-refresh', command: () => this.resetTablesPosition() }
+        ]
       }
-  ];
+    ];
   }
 
   ngAfterViewInit() {
+
     //===================panzoom library==================================
     this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3];
     this.currentZoomLevel = this.zoomLevels[4];
@@ -173,14 +211,51 @@ export class DragdropComponent implements OnInit {
     this.dragulaService.destroy("COLUMNS");
   }
 
-  buildFormCanvasElement() {
+  buildFormFilters() {
+    this.formFilters = this.formBuilder.group({
+      first_name: [null],
+      last_name: [null],
+      email: [null],
+      confirmation: [null],
+    });
+  }
+
+  buildFormCanvasElement(angles) {
     this.formCanvasElement = this.formBuilder.group({
       id: [null],
       name: [null],
       code: [null],
       image: [null],
+      chairs: this.formBuilder.array(angles),
       catalogue_id: [null]
     });
+  }
+
+  milestone = { status: null };
+  checkMilestone(milestone) {
+    switch (milestone.status) {
+      case true: {
+        milestone.status = null;
+        this.getGuests();
+        break;
+      }
+      case null: {
+        milestone.status = false;
+        this.formFilters.patchValue({ confirmation: milestone?.status });
+        this.searchGuest();
+        break;
+      }
+      case false: {
+        milestone.status = true;
+        this.formFilters.patchValue({ confirmation: milestone?.status });
+        this.searchGuest();
+        break;
+      }
+    }
+  }
+
+  searchMail(value: string): void {
+    this.users = this.users.filter((val) => val.email.toLowerCase().includes(value.toLocaleLowerCase()));
   }
 
   onResized(event: ResizedEvent): void {
@@ -188,19 +263,20 @@ export class DragdropComponent implements OnInit {
     this.height = event.newRect.height - 5;
   }
 
-  resizeDiv(id:any) {
-    var data = { id: id, width: this.width, height: this.height };
-    this.userService.update('update-element-size', data).subscribe(response => {
-      this.placeCanvasElementById(id);
-      this.getAllElements();
-  });
-
-
-    // var img = document.getElementById('img' + id.toString());
-    //  if (img != null) {
-    //    img.style.height = this.height + "px";
-    //    img.style.width = this.width + "px";
-    //  }
+  resizeDiv(id: any, catalogue_id: any) {
+    if (catalogue_id == 18) {
+      var data = { id: id, width: this.width, height: this.width };
+      this.userService.update('update-element-size', data).subscribe(response => {
+        this.placeCanvasElementById(id);
+        this.getAllElements();
+      });
+    } else {
+      var data = { id: id, width: this.width, height: this.height };
+      this.userService.update('update-element-size', data).subscribe(response => {
+        this.placeCanvasElementById(id);
+        this.getAllElements();
+      });
+    }
   }
 
   placeDiv(canvasElements: CanvasElement[]) {
@@ -235,7 +311,7 @@ export class DragdropComponent implements OnInit {
       var y = element.pos_y;
       if (x != null && y != null) {
         var d = document.getElementById(element.id.toString());
-        d.style.position = "relative";
+        d.style.position = "flex";
         d.style.left = x + 'px';
         d.style.top = y + 'px';
       }
@@ -245,7 +321,7 @@ export class DragdropComponent implements OnInit {
       var y = element.pos_y;
       if (x != null && y != null) {
         var d = document.getElementById(element.id.toString());
-        d.style.position = "relative";
+        d.style.position = "flex";
         d.style.left = x + 'px';
         d.style.top = y + 'px';
       }
@@ -276,8 +352,15 @@ export class DragdropComponent implements OnInit {
       this.isHovered[$i] = false
     }, 2000);
   }
+
   public getGuests() {
     this.userService.getGuests().subscribe(response => {
+      this.users = response['data']
+    });
+  }
+
+  public searchGuest() {
+    this.userService.post('search-guests-by-filters', this.formFilters.value).subscribe(response => {
       this.users = response['data']
     });
   }
@@ -291,6 +374,8 @@ export class DragdropComponent implements OnInit {
   public getAllElements() {
     this.userService.get('all-elements').subscribe(response => {
       this.canvasElements = response['data']
+      // this.angles = this.renderAngle(this.numberOfElements, 5);
+      // console.log(this.renderAngle(this.numberOfElements, 5));      
     });
   }
 
@@ -464,6 +549,17 @@ export class DragdropComponent implements OnInit {
       });
   }
 
+  storeRoundTableByNumber(number: Number, canvasElement: CanvasElement) {
+    this.userService.store('store-round-table-by-number', { 'number': number, 'canvas_element': canvasElement })
+      .subscribe(response => {
+        this.tableByNumberDialog = false;
+        this.number = 1;
+        this.chairsNumber = 4;
+        this.getAllElements();
+        this.getTables();
+      });
+  }
+
   storeCanvasElement(canvasElement: CanvasElement) {
     this.userService.store('store-canvas-element', { 'canvas_element': canvasElement })
       .subscribe(response => {
@@ -472,12 +568,21 @@ export class DragdropComponent implements OnInit {
       });
   }
 
-  onSubmitDiningTable() {
+  onSubmitDiningTableByNumberWithChairs(numberOfChairs: number, number: number) {
+    const data = [];
+    for (let index = 1; index < numberOfChairs; index++) {
+      data.push(index);
+    }
+    var angles = [0];
+    data.forEach(function (item, index) {
+      angles.push((angles[index] + (360 / numberOfChairs)) % 360);
+    })
+    this.buildFormCanvasElement(angles);
     this.formCanvasElement.patchValue({ name: 'Mesa ' });
     this.formCanvasElement.patchValue({ code: 'Msa' });
-    this.formCanvasElement.patchValue({ image: 'dinner-table.png' });
+    this.formCanvasElement.patchValue({ image: 'round-table.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 18 });
-    this.storeCanvasElement(this.formCanvasElement.value);
+    this.storeRoundTableByNumber(number, this.formCanvasElement.value);    
     this.formCanvasElement.reset();
   }
 
@@ -494,6 +599,15 @@ export class DragdropComponent implements OnInit {
     this.formCanvasElement.patchValue({ name: 'Mesa ' });
     this.formCanvasElement.patchValue({ code: 'sqr-tbl' });
     this.formCanvasElement.patchValue({ image: 'square-table.png' });
+    this.formCanvasElement.patchValue({ catalogue_id: 18 });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
+  onSubmitChair() {
+    this.formCanvasElement.patchValue({ name: 'Silla ' });
+    this.formCanvasElement.patchValue({ code: 'Chr' });
+    this.formCanvasElement.patchValue({ image: 'dinner-table.png' });
     this.formCanvasElement.patchValue({ catalogue_id: 18 });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
@@ -753,4 +867,31 @@ export class DragdropComponent implements OnInit {
   //================================================================
   //======================fin de panzoom============================
   //================================================================
+  openNewTableByNumber() {
+    this.submitted = false;
+    this.tableByNumberDialog = true;
+  }
+  //================================================================
+  //======================Inicio de brueba==========================
+  //================================================================ 
+
+  renderAngle(data, numberOfChairs) {
+    var angles = [120];
+    data.forEach(function (item, index) {
+      angles.push((angles[index] + (360 / numberOfChairs)) % 360);      // TAKIT: Added modulo
+    })
+    // return angles;  
+    console.log(angles);
+  }
+
+  // generateHtml() {
+  //   var html = '';
+  //   var angles = this.renderAngle(this.initialRender,8);
+  //   angles.forEach(function(item, index) {
+  //     // TAKIT: Added use of a CSS var here, so all the CSS is in the CSS!
+  //     html += '<div class="shapes' + '" style="--deg:' + item + 'deg;">' + item + '</div>';
+  //   });
+  //   document.querySelector('.circle').innerHTML = html; // TAKIT: Moved it here, after the loop
+  // }
+
 }

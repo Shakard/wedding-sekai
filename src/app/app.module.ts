@@ -147,6 +147,9 @@ import { AngularResizeEventModule } from 'angular-resize-event';
 import { AngularResizeElementModule } from 'angular-resize-element';
 import { GalleryComponent } from './public/gallery/gallery.component';
 import { DataComponent } from './public/data/data.component';
+import { ResizableDraggableComponent } from './public/guest-seat/resizable-draggable/resizable-draggable.component';
+import { SearchFilterPipe } from './search-filter.pipe';
+import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 
 @NgModule({
     imports: [
@@ -243,6 +246,7 @@ import { DataComponent } from './public/data/data.component';
         NgxPanZoomModule,
         AngularResizeEventModule,
         AngularResizeElementModule,
+        TriStateCheckboxModule,
         DragulaModule.forRoot()
     ],
     declarations: [
@@ -289,7 +293,9 @@ import { DataComponent } from './public/data/data.component';
         GuestSeatComponent,
         DragdropComponent,
         GalleryComponent,
-        DataComponent
+        DataComponent,
+        ResizableDraggableComponent,
+        SearchFilterPipe
     ],
     
     providers: [

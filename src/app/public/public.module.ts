@@ -6,6 +6,7 @@ import { GuestSeatComponent } from './guest-seat/guest-seat.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { DataComponent } from './data/data.component';
+import { ResizableDraggableComponent } from './guest-seat/resizable-draggable/resizable-draggable.component';
 
 
 @NgModule({

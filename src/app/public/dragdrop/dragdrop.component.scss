@@ -1,6 +1,6 @@
 img {
   // height: 80px;
-  // width: 80px; 
+  // width: 80px;
   width: 100%;
   padding: 1px;
 }
@@ -17,6 +17,7 @@ img {
   font-weight: 400;
   z-index: 999;
 }
+
 // =========================================================
 // =====================DRAGULA CSS=========================
 // =========================================================
@@ -31,10 +32,12 @@ img {
   filter: alpha(opacity=80);
   pointer-events: none;
 }
+
 /* high-performance display:none; helper */
 .gu-hide {
   left: -9999px !important;
 }
+
 /* added to mirrorContainer (default = body) while dragging */
 .gu-unselectable {
   -webkit-user-select: none !important;
@@ -42,6 +45,7 @@ img {
   -ms-user-select: none !important;
   user-select: none !important;
 }
+
 /* added to the source element while its mirror is dragged */
 .gu-transit {
   opacity: 0.2;
@@ -52,13 +56,12 @@ img {
 // ================================================================================
 // =========================Separador del header===================================
 // ================================================================================
-.boxHeader{ 
+.boxHeader {
   border-radius: 4px;
-  background: linear-gradient(
-    90deg, rgba(79,98,250,1) 0%,
-     rgba(233,88,44,1) 33%,
-      rgba(2,204,198,1) 66%,
-       rgba(97,132,232,1) 97%);
+  background: linear-gradient(90deg, rgba(79, 98, 250, 1) 0%,
+      rgba(233, 88, 44, 1) 33%,
+      rgba(2, 204, 198, 1) 66%,
+      rgba(97, 132, 232, 1) 97%);
   // background: linear-gradient(
   //   90deg, rgba(146,254,157,1) 0%,
   //    #00ff91 20%,
@@ -76,21 +79,19 @@ img {
 // =================================SIDEBAR========================================
 // ================================================================================
 .sidebar {
-  position: fixed;
-  width: 230px;
+  position: flex;
+  width: 250px;
   // height: calc(100vh - 10.5rem);
-  height: 250px;
+  height: auto;
   overflow-y: auto;
   user-select: none;
-  top: 30rem;
-  left: 8rem;
   background-color: var(--surface-overlay);
   border-radius: 4px;
-  padding-left:  1rem;
+  padding-left: 1rem;
   padding-right: 3rem;
 }
 
-////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////
 //////////////////Todos los botones/////////////////////////////
 ////////////////////////////////////////////////////////////////
 
@@ -101,22 +102,24 @@ img {
 }
 
 // Animate the size, outside
-.pulse:hover, 
+.pulse:hover,
 .pulse:focus {
   animation: pulse 0.5s;
-  box-shadow: 0 0 0 2em rgba(#fff,0);
+  box-shadow: 0 0 0 2em rgba(#fff, 0);
 }
 
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 var(--hover); }
+  0% {
+    box-shadow: 0 0 0 0 var(--hover);
+  }
 }
 
 // Stack multiple shadows, one from the left, the other from the right
 .close:hover,
 .close:focus {
-  box-shadow: 
+  box-shadow:
     inset -5.6em 0 0 0 var(--hover),
-    inset 5.6em 0 0 0 var(--hover);  
+    inset 5.6em 0 0 0 var(--hover);
 }
 
 // Size can also be negative; see how it's smaller than the element
@@ -139,14 +142,14 @@ img {
 }
 
 // Multiple shadows, one on the outside, another on the inside
-.offset {  
-  box-shadow: 
+.offset {
+  box-shadow:
     0.2em 0.2em 0 0 var(--color),
     inset 0.1em 0.1em 0 0 var(--color);
-  
+
   &:hover,
   &:focus {
-    box-shadow: 
+    box-shadow:
       0 0 0 0 var(--hover),
       inset 6em 3.5em 0 0 var(--hover);
   }
@@ -154,20 +157,19 @@ img {
 
 //=== Set button colors
 // If you wonder why use Sass vars or CSS custom properties...
-  // Make a map with the class names and matching colors
-$colors: (
-  fill: #ff7f82,
-  pulse: #ef6eae, 
-  close: #a972cb, 
-  raise: #e4cb58, 
-  up: #ffa260, 
-  slide: #8fc866, 
-  offset: #19bc8b
-);
+// Make a map with the class names and matching colors
+$colors: (fill: #ff7f82,
+  pulse: #ef6eae,
+  close: #a972cb,
+  raise: #e4cb58,
+  up: #ffa260,
+  slide: #8fc866,
+  offset: #19bc8b);
 
 // Sass variables compile to a static string; CSS variables are dynamic and inherited
-  // Loop through the map and set CSS custom properties using Sass variables
-@each $button, $color in $colors {
+// Loop through the map and set CSS custom properties using Sass variables
+@each $button,
+$color in $colors {
   .#{$button} {
     --color: #{$color};
     --hover: #{adjust-hue($color, 45deg)};
@@ -176,12 +178,12 @@ $colors: (
 
 // Now every button will have different colors as set above.
 // We get to use the same structure, only changing the custom properties.
-button {  
+button {
   color: var(--color);
   transition: 0.25s;
-  
+
   &:hover,
-  &:focus { 
+  &:focus {
     border-color: var(--hover);
     color: #fff;
   }
@@ -198,9 +200,11 @@ button {
   padding: 1em 2em;
 }
 
-h1 { font-weight: 400; }
+h1 {
+  font-weight: 400;
+}
 
-code { 
+code {
   color: #19bc8b;
   //color: #02ccc6;
   font: inherit;
@@ -218,37 +222,18 @@ code {
 // =================================CONTENEDOR CON GRADIENT========================
 // ================================================================================
 
-// .canvas-container{
-//   width: auto;
-//   height: auto;
-//   margin-left:10px;
-//   border-radius: 4px;
-//   background: linear-gradient(
-//     90deg, rgba(79,98,250,1) 0%,
-//      rgba(233,88,44,1) 33%,
-//       rgba(2,204,198,1) 66%,
-//        rgba(97,132,232,1) 97%);
-//   // background: linear-gradient(
-//   //   90deg, rgba(146,254,157,1) 0%,
-//   //    #00ff91 20%,
-//   //     rgba(2,204,198,1) 40%,
-//   //      #439ede 80%,
-//   //       rgba(79,98,250,1) 100%);
-//   animation: gradient 5s ease infinite;
-//   background-size: 400% 400%;
-//   padding: 2px;
-//   box-sizing: border-box;  
-// }
 
-@keyframes gradient{
+@keyframes gradient {
 
-  0%{
+  0% {
     background-position: 0% 50%;
   }
-  50%{
+
+  50% {
     background-position: 100% 50%;
   }
-  100%{
+
+  100% {
     background-position: 0% 50%;
   }
 
@@ -260,19 +245,22 @@ code {
   height: 50px;
   margin: 0 0 -50px 0;
   /* margin: 20px 0 -50px 0; use this if you want #container to have a 'bottom padding', in this case of 20px */
-  background: transparent; /* you'll need this if #container's parent element has a different background from #container itself */
+  background: transparent;
+  /* you'll need this if #container's parent element has a different background from #container itself */
 }
 
 //=====================================================================
 .main-container {
   position: relative;
-  margin-left:5px;
-  margin-bottom:50px;
+  margin-left: 5px;
+  margin-bottom: 50px;
   width: 95%;
   height: 101%;
   min-height: 520px;
   min-width: 510px;
   border: 3px solid;
+  display: grid;
+  grid-template-columns: 19% auto;
   // border-color: #19bc8b;
   border-color: #2b7573;
   border-radius: 4px;
@@ -285,21 +273,15 @@ code {
   // overflow: auto;
 }
 
-.box-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 515px;
-  min-width: 500px;
-  border: 3px solid;
-  border-color: rgb(255, 255, 255);
-  // background-color: var(--surface-overlay);
-  background-color: #dddddd;
-  box-sizing: border-box; 
-  overflow: hidden;
+.filters{
+  width: 90%;
+  height: 120%;
+}
 
-  // resize: both;
-  // overflow: auto;
+.box-container {
+  overflow: hidden;
+  // border: 3px solid black;
+  background-color: #dddddd;
 }
 
 .table-guest-container {
@@ -308,18 +290,17 @@ code {
   height: 100%;
   min-width: 100px;
   display: inline-block;
-  vertical-align: top;  
+  vertical-align: top;
   z-index: 999;
-  transform: translate(-8%, 10%);
+  transform: translate(-10%, 10%);
   font-weight: 400;
 }
 
 .tbl-counter {
-  color: rgb(185, 46, 174);
+  color: #1b6e6a;
   position: absolute;
-  width: 90px;
-  transform: translate(10%, 100%);
-  cursor: pointer;
+  width: 200px;
+  transform: translate(0%, 30%);
 }
 
 
@@ -328,7 +309,7 @@ code {
   max-width: 100%;
   margin: 0 25px 25px 0;
   display: inline-block;
-  vertical-align: top;  
+  vertical-align: top;
 }
 
 .guest-list {
@@ -347,7 +328,7 @@ code {
   padding: 7px 7px;
   border-bottom: solid 1px rgb(204, 204, 204);
   color: rgba(0, 0, 0, 0.87);
-  display: flex;
+  display: block;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -355,6 +336,7 @@ code {
   cursor: move;
   background: white;
   font-size: 13px;
+  width: auto;
 }
 
 .tables-container {
@@ -368,7 +350,7 @@ code {
 }
 
 .example-list {
-  border: solid 1px #2a5755;
+  border: solid 1px #1b3f6e;
   margin-left: 10px;
   margin-right: 10px;
   min-height: 30px;
@@ -380,7 +362,9 @@ code {
 
 .table-box {
   padding: 5px 5px;
-  border-bottom: solid 1px #1b6e6a;
+  border-bottom: solid 1px #1b3f6e;
+  width: 100%;
+  min-width: 140px;
   color: var(--hover);
   display: flex;
   flex-direction: row;
@@ -388,9 +372,9 @@ code {
   justify-content: space-between;
   box-sizing: border-box;
   cursor: grab;
-  background: #461F00;
+  background: #dddddd;
   font-size: 13px;
-  
+
 }
 
 .example-handle {
@@ -402,15 +386,17 @@ code {
   height: 15px;
 }
 
-.handle {  
+.handle {
   cursor: grab;
 }
 
 .contenedor-flexbox {
   resize: both;
   overflow: auto;
-  display: flex; /*Convertimos al menú en flexbox*/   
-  justify-content: space-between; /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
+  display: flex;
+  /*Convertimos al menú en flexbox*/
+  justify-content: space-between;
+  /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
 }
 
 .btn-table {
@@ -419,19 +405,18 @@ code {
   color: #4caa2b;
   border-radius: 100px;
   transition: 0.25s;
-  
+
   &:hover,
-  &:focus { 
+  &:focus {
     border-color: #ffa260;
     color: #ffa260;
   }
 
-  #canvas
-{
-  width: 100%;
-  height: 100%;
-  background: #111;
-}
+  #canvas {
+    width: 100%;
+    height: 100%;
+    background: #111;
+  }
 
 }
 
@@ -439,15 +424,19 @@ code {
 * {
   font-family: 'Montserrat', sans-serif;
 }
+
 .w100 {
   font-weight: 100;
 }
+
 .w200 {
   font-weight: 200;
 }
+
 .w300 {
   font-weight: 300;
 }
+
 .w400 {
   font-weight: 400;
 }
@@ -477,10 +466,11 @@ code {
   border-radius: .3rem;
   background: #171a2e;
   overflow: hidden;
-  box-shadow: 0 .1rem .3rem 0 rgba(0,0,0,.3);
+  box-shadow: 0 .1rem .3rem 0 rgba(0, 0, 0, .3);
   transition: all 70ms cubic-bezier(0.455, 0.030, 0.515, 0.955);
-    -webkit-user-drag:element;  
+  -webkit-user-drag: element;
 }
+
 .toolbar:-webkit-drag {
   opacity: 1;
 }
@@ -489,30 +479,36 @@ code {
   width: 14.4rem;
   height: auto;
 }
+
 .toolbar li {
   opacity: 0;
   order: 0;
   display: none;
   transition: opacity .2s cubic-bezier(0.455, 0.030, 0.515, 0.955);
 }
+
 .toolbar:hover li {
   opacity: .5;
 }
+
 .toolbar:hover li:hover {
   opacity: .9;
 }
+
 .toolbar:hover li:hover a {
   background-position: 50% 25%;
 }
+
 .toolbar li.active {
   opacity: 1;
   order: -1;
 
-/*  -webkit-animation: splat 900ms linear both;*/
+  /*  -webkit-animation: splat 900ms linear both;*/
   border: 0;
   outline: 0;
   box-shadow: none;
 }
+
 .toolbar li,
 .toolbar li a {
   display: block;
@@ -521,6 +517,7 @@ code {
   line-height: 4.8rem;
   text-align: center;
 }
+
 .toolbar li a {
   text-decoration: none;
   background-color: transparent;
@@ -529,11 +526,12 @@ code {
   background-size: 50%;
   transition: background-position .1s cubic-bezier(0.455, 0.030, 0.515, 0.955);
 }
+
 .toolbar li:hover a:before {
   content: '';
   width: 2rem;
   height: 1.2rem;
-  background: rgba(255,255,255,.1);
+  background: rgba(255, 255, 255, .1);
   border-radius: .3rem;
   padding: .1rem .4rem;
   font-size: 1.2rem;
@@ -542,6 +540,7 @@ code {
   position: relative;
   top: 1.3rem;
 }
+
 #tool-move {
   background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/49364/ico-move_3.svg);
 }
@@ -749,3 +748,79 @@ code {
 }
 
 //=============================================
+//==============Mesas y sillas=================
+//=============================================
+
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  /* TAKIT: reduced only for snippet */
+}
+
+.circle {
+  // background: #2b6777;
+  // border: 2px solid;
+  // border-color: #111;
+  height: 10%;
+  width: 10%;
+  z-index: 3;
+  // border-radius: 50%;
+  //  object-fit: fill;
+  position: flex;
+}
+
+.shapes {
+  position: absolute;
+  top: calc(50% - var(--top));
+  /* TAKIT: position at center, 25px is half the height */
+  left: calc(50% - var(--left));
+  /* TAKIT: position at center, 3px is half the width */
+  width: var(--width);
+  height: var(--height);
+  border-radius: 50%;
+  background: #171a2e;
+  /* TAKIT: Using CSS var is cool for the rotation
+            Using translate here to shift it from the center */
+  transform: rotate(var(--deg)) translate(-50%, var(--distance));
+}
+
+
+// =================================================================================================================
+// =================================================================================================================
+// =================================================================================================================
+// =================================================================================================================
+
+.tables-container {
+  outline: 2px dashed green;
+
+  &.active {
+    outline-style: solid;
+    background-color: #80ff800d;
+  }
+
+  &:hover {
+    cursor: all-scroll;
+  }
+
+  span:first-of-type {
+    position: absolute;
+    left: 50%;
+    transform: translate3d(-50%, -100%, 0);
+  }
+
+  span:nth-of-type(2) {
+    position: absolute;
+    top: 50%;
+    transform: translate3d(-100%, -50%, 0);
+  }
+
+  span:nth-of-type(3) {
+    position: absolute;
+    transform: translate3d(-100%, -100%, 0);
+  }
+}
+
+// ============================================================================================================

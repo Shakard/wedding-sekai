@@ -7,7 +7,7 @@
                     <div class="gallery">
                         <figure *ngFor="let item of images">
                           <p-image class="img" [src]="item.url" width="270" alt="Image" [preview]="true"></p-image>
-                          <!-- <figcaption (click)="deleteImage(item.id)">Delete</figcaption> -->
+                          <figcaption (click)="deleteImage(item.id)">Delete</figcaption>
                         </figure>
                       </div>
                 </ul>

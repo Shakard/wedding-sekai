@@ -1,16 +1,5 @@
-<input type="file" required name="images" (change)="uploads($event)" multiple>
-<button (click)="submitForm()">upload</button><br>
-
-<!-- <p-galleria [(value)]="images" [responsiveOptions]="responsiveOptions" [containerStyle]="{'max-width': '800px'}" 
-[numVisible]="7" [showItemNavigators]="true" [showItemNavigatorsOnHover]="true" [showThumbnails]="false"> 
-  <ng-template pTemplate="item" let-item>
-      <img [src]="item.url" style="width: 100%; display: block;"/>
-  </ng-template>
-</p-galleria> -->
-
-<div class="gallery">
-  <figure *ngFor="let item of images">
-    <img [src]="item.url">
-    <figcaption (click)="deleteImage(item.id)">Delete</figcaption>
-  </figure>
+<div class="box-container">
+    <span>500px</span>
+    <span>120px</span>
+    <app-resizable-draggable  ></app-resizable-draggable>
 </div>

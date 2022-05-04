@@ -7,6 +7,7 @@ export interface User {
     id?: number;
     first_name?: string;
     last_name?: string;
+    confirmation?:boolean;
     email?: string;
     password?: string;
     password_confirmation?: string;

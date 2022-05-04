@@ -230,6 +230,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.setPassword = false;
   }
 
+  confirmGuest(user: User) {
+    this.formUser.patchValue(user);
+    this.formUser.patchValue({ confirmation: !user.confirmation });    
+    this.updateUser(this.formUser.value);
+    this.formUser.reset();
+  }
+
   addChair(user: User) {
     this.formChair.patchValue({ user: user });
     this.submitted = false;

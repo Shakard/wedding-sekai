@@ -1,100 +1,154 @@
 <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400" rel="stylesheet">
 <ngx-spinner></ngx-spinner>
-<div class="boxHeader"  style="height:2px">
+<div class="boxHeader" style="height:2px">
 </div>
 <br>
 <div class="buttons">
   <h1>Llenar <code>Mesas</code></h1>
-  <!-- <button (click)="clearAllUsers()" class="up">Limpiar mesas</button>
-  <button (click)="deleteAllElements()" class="up">Destruir elementos</button>
-  <button pButton label="Resetear posición" (click)="resetTablesPosition()" style="color:#4f62fa"></button> -->
 </div>
-<!-- <br>
-<div class="boxHeader">
-</div>
-<br> -->
-
 <p-menubar [model]="items">
   <ng-template pTemplate="start">
-        
+    <button (click)="openNewTableByNumber()">test</button>
   </ng-template>
-  <ng-template pTemplate="end">
-      <input type="text" pInputText placeholder="Search">
-  </ng-template>
+  <!-- <ng-template pTemplate="end">
+    <input type="text" pInputText placeholder="Search">
+  </ng-template> -->
 </p-menubar>
 
 <div class="main-container">
-  <div class="box-container" >    
-    <!-- =============================Toolbar============================= -->
-    <!-- <ul id="toolbar" class="toolbar">
-      <li class="active"><a id="tool-move"></a></li>
-      <li><a id="tool-square-table" (click)="onSubmitSquareTable()"></a></li>
-      <li><a id="tool-round-table" (click)="onSubmitRoundTable()"></a></li>
-      <li><a id="tool-bathroom-man" (click)="onSubmitBathroomMan()"></a></li>
-      <li><a id="tool-bathroom-woman" (click)="onSubmitBathroomWoman()"></a></li>
-      <li><a id="tool-stage" (click)="onSubmitBand()"></a></li>
-      <li><a id="tool-dance-floor" (click)="onSubmitDanceFloor()"></a></li>
-      <li><a id="tool-lounge" (click)="onSubmitLoungeRoom()"></a></li>
-      <li><a id="tool-entrance" (click)="onSubmitEntrance()"></a></li>
-      <li><a id="tool-exit" (click)="onSubmitExit()"></a></li>
-      <li><a id="tool-candy-table" (click)="onSubmitCandyBar()"></a></li>
-      <li><a id="tool-wedding-cake" (click)="onSubmitWeddingCake()"></a></li>
-      <li><a id="tool-emergency-exit" (click)="onSubmitEmergencyExit()"></a></li>
-      <li><a id="tool-catering" (click)="onSubmitCatering()"></a></li>
-      <li><a id="tool-coffee-station" (click)="onSubmitCoffeeStation()"></a></li>
-      <li><a id="tool-photo-booth" (click)="onSubmitPhotoBooth()"></a></li>
-      <li><a id="tool-bar" (click)="onSubmitBar()"></a></li>
-      <li><a id="tool-photo-area" (click)="onSubmitPhotoArea()"></a></li>
-      <li><a id="tool-playground" (click)="onSubmitPlayground()"></a></li>
-      <li><a id="tool-nursery" (click)="onSubmitNursery()"></a></li>
-    </ul> -->
-
-
-    <!-- =============================Sidebar============================= -->
-    <!-- <div style="margin-left: 50px;
-    border: 1px solid black;
-    width: 65px;
-    padding:5px;
-    ">
-      <small (click)="guestDeployed = !guestDeployed" style="color:black">invitados</small>
-    </div>
-    <div *ngIf="guestDeployed" class="contenedor-flexbox">
-      <div class="sidebar">
-        <div class="guests-container">
-          <div id="invitados" dragula="SPILL" [(dragulaModel)]="users" class="guest-list">
-            <div class="guest-box" *ngFor="let user of users">{{user.first_name}} {{user.last_name}}</div>
+  <div class="sidebar">
+    <div class="guests-container"><br>
+      <div class="guest-header" style="display: grid;
+      grid-template-columns: 94% 6%;">
+        <form style="display: grid;
+        grid-template-columns: 33% 33% 33%;" [formGroup]="formFilters">
+          <input class="filters" pInputText type="text" name="filters" placeholder="Nombres"
+            formControlName="first_name" (input)="searchGuest()" />
+          <input class="filters" pInputText type="text" name="filters" placeholder="Apellidos"
+            formControlName="last_name" (input)="searchGuest()" />
+          <input class="filters" pInputText type="text" name="filters" placeholder="Correo" formControlName="email"
+            (input)="searchGuest()" />
+        </form>
+        <input type="checkbox" [indeterminate]="milestone?.status === false" [ngModel]="milestone?.status === true"
+          (ngModelChange)="checkMilestone(milestone)">
+      </div>
+      <div id="invitados" dragula="SPILL" [(dragulaModel)]="users" class="guest-list">
+        <div class="guest-box" *ngFor="let user of users">
+          <div style="display:grid;  grid-template-columns: 80% auto;">
+            {{user.first_name}} {{user.last_name}}
+            <button *ngIf="user.confirmation==true" pButton pRipple type="button" icon="pi pi-check"
+              class="p-button-rounded p-button-text" style="color: #02ccc6; height: 100%; padding:1px"></button>
+            <button *ngIf="user.confirmation==false" pButton pRipple type="button" icon="pi pi-times"
+              class="p-button-rounded p-button-text" style="color: red; height: 100%; padding:1px"></button>
+          </div>
+          <div>
+            {{user.email}}
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
+  </div>
+  <div class="box-container">
 
     <div #tableContainer class="container-tables" dragula="COLUMNS" [(dragulaModel)]="tables">
       <!-- ==================================Elementos del lienzo============================== -->
       <div id="{{canvasElement.id}}" *ngFor="let canvasElement of canvasElements; '$implicit.id' as i"
         class="tables-container" cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event, canvasElement.id)"
-        (mouseover)="isHovered[i] = true" (mouseout)="onHoverOut(i)" cdkDrag>
+        (mouseover)="isHovered[i] = true" (mouseout)="onHoverOut(i)" (dblclick)="isToggled[i] = !isToggled[i]" cdkDrag>
         <div class="contenedor-flexbox" (resized)="onResized($event)">
           <div class="handle" cdkDragHandle>
-            <img id="img{{canvasElement.id}}" src="assets/images/svg_toolbar_icons/{{canvasElement.image}}">
+            <div class="main">
+              <img class="circle" id="img{{canvasElement.id}}"
+                src="assets/images/svg_toolbar_icons/{{canvasElement.image}}" alt="{{canvasElement.name}}">
+
+              <div *ngFor="let deg of canvasElement.chairs" class="shapes" style="--deg:{{deg+53}}deg;
+                        --width:{{canvasElement.width/(canvasElement.chairs.length/2)}}px;
+                        --height:{{canvasElement.height/(canvasElement.chairs.length/2)}}px;                        
+                        --distance:{{canvasElement.height*0.6}}px;
+                        max-width: 50px;
+                        max-height: 50px;">
+
+              </div>
+            </div>
           </div>
-        </div>
-        <div *ngIf="isHovered[i]" class="centered" style="color: #2b6777;
+          <!-- <div *ngIf="isHovered[i]" class="centered" style="color: #2b6777;
                   font-size: 14px;
-                  transform: translate(30%, -240%);">
-          {{canvasElement.name}}
-          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
-           (click)="deleteElement(canvasElement)"></button>
-           <button pButton pRipple icon="pi pi-save" class="p-button-rounded p-button-success"
-           (click)="resizeDiv(canvasElement.id)"></button>
+                  transform: translate(420%, -0%);">           
+            <button pButton pRipple icon="pi pi-save" class="p-button-rounded p-button-success"
+              (click)="resizeDiv(canvasElement.id, canvasElement.catalogue_id)"></button>
+          </div> -->
+          
         </div>
-        <strong *ngIf='canvasElement.catalogue_id == 18' (click)="isToggled[i] = !isToggled[i]" class="tbl-counter">Invitados: <code style="color: rgb(233, 131, 35);">{{canvasElement.users_count}}</code></strong>
+        <strong *ngIf='canvasElement.catalogue_id == 18' class="tbl-counter">
+          <div style="display: grid;
+          grid-template-columns: 70% 15% 15%;">
+            <div>
+              Invitados:
+              <code style="color: rgb(233, 131, 35);">
+              {{canvasElement.users_count}}
+              </code>
+            </div>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+              (click)="deleteElement(canvasElement)" style="width: 15px; height: 10px;">
+            </button>
+            <button pButton pRipple icon="pi pi-save" class="p-button-rounded p-button-success"
+              (click)="resizeDiv(canvasElement.id, canvasElement.catalogue_id)" style="width: 15px; height: 10px;">
+            </button>
+          </div>
+        </strong>
+        <strong *ngIf='canvasElement.catalogue_id != 18' class="tbl-counter">
+          <div style="display: grid;
+          grid-template-columns: 70% 15% 15%;">
+            {{canvasElement.name}}
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+              (click)="deleteElement(canvasElement)" style="width: 15px; height: 10px;">
+            </button>
+            <button pButton pRipple icon="pi pi-save" class="p-button-rounded p-button-success"
+              (click)="resizeDiv(canvasElement.id, canvasElement.catalogue_id)" style="width: 15px; height: 10px;">
+            </button>
+          </div>
+        </strong>
         <div *ngIf="isToggled[i]" class="table-guest-container">
           <div dragula="SPILL" [(dragulaModel)]="canvasElement.users" class="example-list">
-            <div class="table-box" *ngFor="let user of canvasElement.users">{{user.first_name}} {{user.last_name}}</div>
+            <div class="table-box" *ngFor="let user of canvasElement.users">
+              {{user.first_name}} {{user.last_name}}
+            </div>
           </div>
         </div>
       </div>
+      <div class="spacer"></div>
     </div>
-    <div class="spacer"></div>
   </div>
-</div>
+
+  <p-dialog [(visible)]="tableByNumberDialog" [style]="{width: '300px'}" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+      <div class="grid p-fluid">
+        <div>
+          <label for="minmax-buttons">Número de mesas</label>
+        </div>
+        <div>
+          <p-inputNumber [(ngModel)]="number" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1"
+            [max]="17">
+          </p-inputNumber>
+        </div>
+      </div>
+      <br>
+      <div class="grid p-fluid">
+        <div>
+          <label for="minmax-buttons">Número de sillas</label>
+        </div>
+        <div>
+          <p-inputNumber [(ngModel)]="chairsNumber" mode="decimal" [showButtons]="true" inputId="minmax-buttons"
+            [min]="1" [max]="17">
+          </p-inputNumber>
+        </div>
+      </div>
+      <br>
+      <br>
+      <div>
+        <button pButton pRipple label="Aceptar" class="p-button-success p-button-raised"
+          (click)="onSubmitDiningTableByNumberWithChairs(chairsNumber, number)"
+          (ngModelChange)="chairsNumber=4"></button>
+      </div>
+    </ng-template>
+  </p-dialog>
