@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, OnDestroy, Renderer2, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { PrimeNGConfig } from 'primeng/api';
+import { MenuItem, PrimeNGConfig } from 'primeng/api';
 import { AppComponent } from './app.component';
 
 @Component({
@@ -35,7 +35,7 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
 
     public topMenuLeaving: boolean;
 
-    public theme: string;
+    public theme: string;    
 
     documentClickListener: () => void;
 
@@ -50,8 +50,7 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
     constructor(public renderer: Renderer2, private primengConfig: PrimeNGConfig, public app: AppComponent) {}
 
     ngOnInit() {
-        this.primengConfig.ripple = true;
-      
+        this.primengConfig.ripple = true;         
     }
 
     ngAfterViewInit() {

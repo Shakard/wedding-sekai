@@ -285,15 +285,23 @@ code {
 }
 
 .table-guest-container {
-  position: fixed;
+  position: relative;
+  border: solid 1px #1b3f6e;
   width: auto;
   height: 100%;
   min-width: 100px;
   display: inline-block;
   vertical-align: top;
   z-index: 999;
-  transform: translate(-10%, 10%);
+  margin-top:10px;
+  // transform: translate(-10%, 130%);
   font-weight: 400;
+}
+
+.bottom-container{
+  position: absolute;
+  display: inline-block;
+  max-height: 30px;
 }
 
 .tbl-counter {
@@ -350,11 +358,12 @@ code {
 }
 
 .example-list {
-  border: solid 1px #1b3f6e;
+  // border: solid 1px #070707;
   margin-left: 10px;
   margin-right: 10px;
   min-height: 30px;
-  background: #2b7573;
+  min-width: 180px;
+  background: #c8d8e4;
   border-radius: 4px;
   overflow: hidden;
   display: block;

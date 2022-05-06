@@ -9,6 +9,7 @@ export interface User {
     last_name?: string;
     confirmation?:boolean;
     email?: string;
+    comment?: string;
     password?: string;
     password_confirmation?: string;
     chair?: Chair;

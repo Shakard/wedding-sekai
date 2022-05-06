@@ -7,9 +7,6 @@
   <h1>Llenar <code>Mesas</code></h1>
 </div>
 <p-menubar [model]="items">
-  <ng-template pTemplate="start">
-    <button (click)="openNewTableByNumber()">test</button>
-  </ng-template>
   <!-- <ng-template pTemplate="end">
     <input type="text" pInputText placeholder="Search">
   </ng-template> -->
@@ -26,8 +23,8 @@
             formControlName="first_name" (input)="searchGuest()" />
           <input class="filters" pInputText type="text" name="filters" placeholder="Apellidos"
             formControlName="last_name" (input)="searchGuest()" />
-          <input class="filters" pInputText type="text" name="filters" placeholder="Correo" formControlName="email"
-            (input)="searchGuest()" />
+          <input class="filters" pInputText type="text" name="filters" placeholder="Grupo" 
+            formControlName="cualquier" (input)="searchGuest()" />
         </form>
         <input type="checkbox" [indeterminate]="milestone?.status === false" [ngModel]="milestone?.status === true"
           (ngModelChange)="checkMilestone(milestone)">
@@ -77,44 +74,47 @@
             <button pButton pRipple icon="pi pi-save" class="p-button-rounded p-button-success"
               (click)="resizeDiv(canvasElement.id, canvasElement.catalogue_id)"></button>
           </div> -->
-          
+
         </div>
-        <strong *ngIf='canvasElement.catalogue_id == 18' class="tbl-counter">
-          <div style="display: grid;
-          grid-template-columns: 70% 15% 15%;">
-            <div>
-              Invitados:
-              <code style="color: rgb(233, 131, 35);">
-              {{canvasElement.users_count}}
-              </code>
+        <div class="bottom-container">
+          <strong *ngIf='canvasElement.catalogue_id == 18 && !isToggled[i]' class="tbl-counter">
+            <div style="width:140px; display:grid;
+            grid-template-columns: 70% 15% 15%;">
+              <div style="display:grid; grid-template-columns: 80% 20%;">
+                Invitados:
+                <code style="color: rgb(233, 131, 35);">
+                {{canvasElement.users_count}}
+                </code>
+              </div>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                (click)="deleteElement(canvasElement)" style="width: 15px; height: 10px;">
+              </button>
+              <button pButton pRipple icon="pi pi-save" class="p-button-rounded p-button-success"
+                (click)="resizeDiv(canvasElement.id, canvasElement.catalogue_id)" style="width: 15px; height: 10px;">
+              </button>
             </div>
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
-              (click)="deleteElement(canvasElement)" style="width: 15px; height: 10px;">
-            </button>
-            <button pButton pRipple icon="pi pi-save" class="p-button-rounded p-button-success"
-              (click)="resizeDiv(canvasElement.id, canvasElement.catalogue_id)" style="width: 15px; height: 10px;">
-            </button>
-          </div>
-        </strong>
-        <strong *ngIf='canvasElement.catalogue_id != 18' class="tbl-counter">
-          <div style="display: grid;
-          grid-template-columns: 70% 15% 15%;">
-            {{canvasElement.name}}
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
-              (click)="deleteElement(canvasElement)" style="width: 15px; height: 10px;">
-            </button>
-            <button pButton pRipple icon="pi pi-save" class="p-button-rounded p-button-success"
-              (click)="resizeDiv(canvasElement.id, canvasElement.catalogue_id)" style="width: 15px; height: 10px;">
-            </button>
-          </div>
-        </strong>
-        <div *ngIf="isToggled[i]" class="table-guest-container">
-          <div dragula="SPILL" [(dragulaModel)]="canvasElement.users" class="example-list">
-            <div class="table-box" *ngFor="let user of canvasElement.users">
-              {{user.first_name}} {{user.last_name}}
+          </strong>
+          <strong *ngIf='canvasElement.catalogue_id != 18 && !isToggled[i]' class="tbl-counter">
+            <div style="display: grid;
+            grid-template-columns: 70% 15% 15%;">
+              {{canvasElement.name}}
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                (click)="deleteElement(canvasElement)" style="width: 15px; height: 10px;">
+              </button>
+              <button pButton pRipple icon="pi pi-save" class="p-button-rounded p-button-success"
+                (click)="resizeDiv(canvasElement.id, canvasElement.catalogue_id)" style="width: 15px; height: 10px;">
+              </button>
+            </div>
+          </strong>
+          <div *ngIf="isToggled[i]" class="table-guest-container">
+            <div dragula="SPILL" [(dragulaModel)]="canvasElement.users" class="example-list">
+              <div class="table-box" *ngFor="let user of canvasElement.users">
+                {{user.first_name}} {{user.last_name}}
+              </div>
             </div>
           </div>
         </div>
+
       </div>
       <div class="spacer"></div>
     </div>

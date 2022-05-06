@@ -215,7 +215,7 @@ export class DragdropComponent implements OnInit, AfterViewInit {
     this.formFilters = this.formBuilder.group({
       first_name: [null],
       last_name: [null],
-      email: [null],
+      cualquier: [null],
       confirmation: [null],
     });
   }

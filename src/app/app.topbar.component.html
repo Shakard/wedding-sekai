@@ -2,22 +2,25 @@
     <div class="container">
         <div class="layout-topbar-logo" routerLink="/home">
             <!-- <img src="assets/layout/images/{{app.darkMode ? 'logo-white' : 'logo-dark'}}.svg" alt="logo">            -->
-            <img src="assets/layout/images/LOGO-20.png" alt="logo">           
-            <ng-container *ngIf="loggedUser" style="text-align: left">                
-                <p style="color:#02ccc6; font-family:Brush Script MT; font-size:28px">Hola!! {{loggedUser?.first_name}}</p> 
-             </ng-container>
-        </div>              
+            <img src="assets/layout/images/LOGO-20.png" alt="logo">
+            <ng-container *ngIf="loggedUser" style="text-align: left">
+                <p style="color:#02ccc6; font-family:Brush Script MT; font-size:28px">Hola!! {{loggedUser?.first_name}}
+                </p>
+            </ng-container>
+        </div>    
     </div>
 
-    <a *ngIf="loggedUser?.roles[0]?.name=='Admin'" class="p-link layout-menu-button layout-topbar-button" href="#" (click)="appMain.toggleMenu($event)">
+    <a *ngIf="loggedUser?.roles[0]?.name=='Admin' || loggedUser?.roles[0]?.name=='Viewer'" class="p-link layout-menu-button layout-topbar-button" href="#"
+        (click)="appMain.toggleMenu($event)">
         <i class="pi pi-bars"></i>
     </a>
 
-   
+
     <a class="p-link layout-topbar-menu-button layout-topbar-button" href="#" (click)="appMain.toggleTopMenu($event)">
         <i class="pi pi-ellipsis-v"></i>
     </a>
 
+    
 
     <div style="text-align: bottom;" class="layout-topbar-menu"
         [ngClass]="{'layout-topbar-menu-mobile-active':appMain.topMenuActive}">
@@ -29,4 +32,5 @@
 
     <div><button pButton pRipple type="button" label="Logout" class="p-button-text p-button-plain"
             (click)="logout()"></button></div>
+            
 </div>

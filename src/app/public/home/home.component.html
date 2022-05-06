@@ -1,31 +1,25 @@
-<ngx-spinner
-  size="medium"
-  color="#02ccc6"
-  type="ball-spin-clockwise"></ngx-spinner>
+<ngx-spinner size="medium" color="#02ccc6" type="ball-spin-clockwise"></ngx-spinner>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400&display=swap" rel="stylesheet">
 
 
 <!-- Listado de invitados -->
-<div class="boxHeader" style="height:2px">	
+<div class="boxHeader" style="height:2px">
 </div>
 <br>
 <h1>Administrar <code>Invitados</code></h1>
-<div class="boxHeader" style="height:2px">	
+<div class="boxHeader" style="height:2px">
 </div>
 <div *ngIf="loggedUser?.roles[0]?.name=='Admin'" class="buttons">
-	<!-- <button class="pulse">Pulse</button>
-	<button class="close">Close</button>
-	<button class="raise">Raise</button> -->
 	<button (click)="openNewUser()" class="up">Agregar Invitado</button>
 	<button pButton icon="pi pi-send" label="Notificar" (click)="sendUsersMail()" style="color:#4f62fa"></button>
 	<button (click)="openImportData()" class="offset">Importar Invitados</button>
 </div>
 <br>
 
-<p-table #dt [value]="users" [rows]="10" [paginator]="true" responsiveLayout="scroll"
-	[(selection)]="selectedUsers" [rowHover]="true" dataKey="id"
-	currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+<p-table #dt [value]="users" [rows]="20" [paginator]="true" responsiveLayout="scroll" [(selection)]="selectedUsers"
+	[rowHover]="true" dataKey="id" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+	[showCurrentPageReport]="true">
 
 	<ng-template pTemplate="header">
 		<tr>
@@ -38,6 +32,9 @@
 			</th>
 			<th pSortableColumn="email">Correo<p-sortIcon field="email"></p-sortIcon>
 			</th>
+			<th pSortableColumn="family_group">Grupo<p-sortIcon field="family_group"></p-sortIcon>
+			</th>
+			<th>Comentario</th>
 			<th>Mesa</th>
 			<th style="width: 6rem">Confirmados</th>
 			<th>Certificado</th>
@@ -62,6 +59,11 @@
 				<p-columnFilter type="text" field="email" [matchMode]="'contains'" placeholder="Buscar...">
 				</p-columnFilter>
 			</th>
+			<th>
+				<p-columnFilter type="text" field="family_group" [matchMode]="'contains'" placeholder="Buscar...">
+				</p-columnFilter>
+			</th>
+			<th></th>
 			<th>
 				<p-dropdown [options]="chairs" (onChange)="dt.filter($event.value, 'canvas_element.name', 'equals')"
 					autoWidth="false" [style]="{'width':'120px'}" styleClass="p-column-filter" placeholder="Todos"
@@ -88,6 +90,14 @@
 			<td>{{user.first_name}}</td>
 			<td>{{user.last_name}}</td>
 			<td>{{user.email}}</td>
+			<td>{{user.family_group}}</td>
+			<td>
+				<p-dialog [(visible)]="commentDialog" [style]="{width: '450px'}" header="Comentario" [modal]="true"
+					styleClass="p-fluid">
+					{{comment}}
+				</p-dialog>
+				<a *ngIf="user.comment" style="color: #4f62fa" (click)="showComment(user)">mostrar comentario</a>
+			</td>
 			<!-- columnas de la mesa -->
 			<td>{{user.canvas_element?.name}}</td>
 			<!-- columna de la confirmación -->
@@ -105,12 +115,12 @@
 			</td>
 			<!-- columnas de crud -->
 			<td>
-				<button *ngIf="loggedUser?.roles[0]?.name=='Admin'" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text"
-					style="color: #4f62fa" (click)="editUser(user)"></button>
+				<button *ngIf="loggedUser?.roles[0]?.name=='Admin' || loggedUser?.roles[0]?.name=='Viewer'" pButton pRipple type="button" icon="pi pi-pencil"
+					class="p-button-rounded p-button-text" style="color: #4f62fa" (click)="editUser(user)"></button>
 			</td>
 			<td>
-				<button *ngIf="loggedUser?.roles[0]?.name=='Admin'" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-text"
-					style="color: red" (click)="deleteUser(user)"></button>
+				<button *ngIf="loggedUser?.roles[0]?.name=='Admin'" pButton pRipple type="button" icon="pi pi-trash"
+					class="p-button-rounded p-button-text" style="color: red" (click)="deleteUser(user)"></button>
 			</td>
 		</tr>
 	</ng-template>
@@ -132,6 +142,10 @@
 				<input id="lastName" type="last_name" pInputText formControlName="last_name" placeholder="Apellidos" />
 				<small *ngIf="formUser.get('last_name').invalid && formUser.get('last_name').touched">* Por favor
 					ingrese sus nombres y apellidos</small>
+			</div>
+			<br>
+			<div class="p-field">
+				<input id="comment" type="comment" pInputText formControlName="comment" placeholder="Comentario" />
 			</div>
 			<br>
 			<div class="p-field">

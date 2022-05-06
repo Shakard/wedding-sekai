@@ -17,6 +17,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 export class HomeComponent implements OnInit, AfterViewInit {
   faTrash = faTrash;
   importedData: any[];
+  comment:string;
   convertedJson!: string;
   loggedUser: User;
   selectedUsers: User[];
@@ -33,6 +34,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   submitted: boolean;
   importDataDialog: boolean;
   userDialog: boolean;
+  commentDialog: boolean;
   chairDialog: boolean;
   setPassword: boolean;
   statuses: any[];
@@ -68,6 +70,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       first_name: [null, Validators.required],
       last_name: [null, Validators.required],
       confirmation: [null],
+      comment: [null],
       email: [null, [Validators.required, Validators.email]],
       password: [null, Validators.minLength(5)],
       password_confirmation: [null, Validators.minLength(5)],
@@ -140,6 +143,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public getLoggedUser() {
     this.userService.getLoggedUser().subscribe(response => {
       this.loggedUser = response['data']
+      console.log(this.loggedUser.roles[0]?.name);
+      
     });
   }
 
@@ -172,7 +177,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   public getGuests() {
     this.spinner.show();
-    this.userService.getGuests().subscribe(response => {
+    this.userService.get('guests-and-table').subscribe(response => {
       this.users = response['data']
       console.log(this.users);
       this.spinner.hide();
@@ -228,6 +233,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.formUser.patchValue(user);
     this.userDialog = true;
     this.setPassword = false;
+  }
+
+  showComment(user: User) {    
+    this.formUser.patchValue(user);
+    this.comment = this.formUser.value.comment;    
+    this.commentDialog = true;
   }
 
   confirmGuest(user: User) {

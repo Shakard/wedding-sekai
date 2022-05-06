@@ -34,6 +34,7 @@ import { DragdropComponent } from './public/dragdrop/dragdrop.component';
 import { AdminGuardGuard as AdminGuard} from './services/login/admin-guard.guard';
 import { GalleryComponent } from './public/gallery/gallery.component';
 import { DataComponent } from './public/data/data.component';
+import { ViewerGuardGuard as ViewerGuard} from './services/login/viewer-guard.guard';
 
 
 
@@ -49,7 +50,7 @@ import { DataComponent } from './public/data/data.component';
                     {path: 'gallery', component: GalleryComponent, canActivate: [AuthGuard, AdminGuard]}, 
                     {path: 'data', component: DataComponent, canActivate: [AuthGuard, AdminGuard]}, 
                     {path: 'seat', component: GuestSeatComponent, canActivate: [AuthGuard, AdminGuard]}, 
-                    {path: 'drag-drop', component: DragdropComponent, canActivate: [AuthGuard, AdminGuard]}, 
+                    {path: 'drag-drop', component: DragdropComponent, canActivate: [AuthGuard]}, 
                     {path: 'uikit/formlayout', component: FormLayoutComponent},                    
                     {path: 'uikit/input', component: InputComponent},
                     {path: 'uikit/floatlabel', component: FloatLabelComponent},

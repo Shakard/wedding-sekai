@@ -20,6 +20,7 @@ export class AppTopBarComponent implements OnDestroy, OnInit {
     loggedIn: any;
     items: MenuItem[];
     loggedUser: User;
+    activeItem: MenuItem;
 
     constructor(public app: AppComponent, public appMain: AppMainComponent,
         private loginComponent: LoginComponent,
@@ -29,6 +30,15 @@ export class AppTopBarComponent implements OnDestroy, OnInit {
 
     ngOnInit(): void {
            this.getLoggedUser();
+           this.items = [
+            {label: 'Home', icon: 'pi pi-fw pi-home'},
+            {label: 'Calendar', icon: 'pi pi-fw pi-calendar'},
+            {label: 'Edit', icon: 'pi pi-fw pi-pencil'},
+            {label: 'Documentation', icon: 'pi pi-fw pi-file'},
+            {label: 'Settings', icon: 'pi pi-fw pi-cog'}
+        ];
+
+        this.activeItem = this.items[0];     
     }
 
     ngOnDestroy() {

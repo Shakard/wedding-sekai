@@ -1,15 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { AppComponent } from './app.component';
+import { User } from './models/auth/user';
+import { UserService } from './services/user/user.service';
 
 @Component({
     selector: 'app-menu',
     template: `
         <div class="layout-menu-container">
-            <ul class="layout-menu" role="menu" (keydown)="onKeydown($event)">
+            <ul *ngIf="loggedUser?.roles[0]?.name=='Admin'"  class="layout-menu" role="menu" (keydown)="onKeydown($event)">
                 <li app-menu class="layout-menuitem-category" *ngFor="let item of model; let i = index;" [item]="item" [index]="i" [root]="true" role="none">
                     <div class="layout-menuitem-root-text" [attr.aria-label]="item.label">{{item.label}}</div>
                     <ul role="menu">
-                        <li app-menuitem *ngFor="let child of item.items" [item]="child" [index]="i" role="none"></li>
+                        <li app-menuitem *ngFor="let child of item.items" [item]="child" [index]="i" role="none"></li> 
+                    </ul>
+                </li>               
+            </ul>
+            <ul *ngIf="loggedUser?.roles[0]?.name=='Viewer'"  class="layout-menu" role="menu" (keydown)="onKeydown($event)">
+                <li app-menu class="layout-menuitem-category" *ngFor="let item of modelViewer; let i = index;" [item]="item" [index]="i" [root]="true" role="none">
+                    <div class="layout-menuitem-root-text" [attr.aria-label]="item.label">{{item.label}}</div>
+                    <ul role="menu">
+                        <li app-menuitem *ngFor="let child of item.items" [item]="child" [index]="i" role="none"></li> 
                     </ul>
                 </li>               
             </ul>
@@ -17,22 +27,31 @@ import { AppComponent } from './app.component';
     `
 })
 export class AppMenuComponent implements OnInit {
+    loggedUser: User;
 
     model: any[];
+    modelViewer:any[];
 
-    constructor(public app: AppComponent){}
+    constructor(public app: AppComponent, public userService: UserService){}
 
     ngOnInit() {
-
+        this.getLoggedUser();
+        this.modelViewer = [
+            {
+                label: '',
+                items:[   
+                    {label: 'Invitados',icon: 'pi pi-fw pi-home', routerLink: ['home']}, 
+                    {label: 'Administrar Boda',icon: 'pi pi-fw pi-cog', routerLink: ['drag-drop']}, 
+                ]
+            },];
         this.model = [
             {
                 label: '',
                 items:[   
-                    {label: 'data',icon: 'pi pi-fw pi-data', routerLink: ['data']}, 
+                    {label: 'data',icon: 'pi pi-fw pi-chart-line', routerLink: ['data']}, 
                     {label: 'Invitados',icon: 'pi pi-fw pi-home', routerLink: ['home']}, 
-                    // {label: 'Mesas',icon: 'pi pi-fw pi-cog', routerLink: ['table']}, 
                     {label: 'Imágenes',icon: 'pi pi-fw pi-image', routerLink: ['seat']}, 
-                    {label: 'Drag-drop',icon: 'pi pi-fw pi-cog', routerLink: ['drag-drop']}, 
+                    {label: 'Administrar Boda',icon: 'pi pi-fw pi-cog', routerLink: ['drag-drop']}, 
                     {label: 'Gallería',icon: 'pi pi-fw pi-image', routerLink: ['gallery']}, 
                 ]
             },
@@ -140,4 +159,10 @@ export class AppMenuComponent implements OnInit {
             event.preventDefault();
         }
     }
+
+    public getLoggedUser() {
+        this.userService.getLoggedUser().subscribe(response => {
+          this.loggedUser = response['data']
+        });
+      }
 }
