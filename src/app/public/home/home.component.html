@@ -10,31 +10,44 @@
 <h1>Administrar <code>Invitados</code></h1>
 <div class="boxHeader" style="height:2px">
 </div>
-<div *ngIf="loggedUser?.roles[0]?.name=='Admin'" class="buttons">
-	<button (click)="openNewUser()" class="up">Agregar Invitado</button>
-	<button pButton icon="pi pi-send" label="Notificar" (click)="sendUsersMail()" style="color:#4f62fa"></button>
-	<button (click)="openImportData()" class="offset">Importar Invitados</button>
-</div>
-<br>
+
 
 <p-table #dt [value]="users" [rows]="20" [paginator]="true" responsiveLayout="scroll" [(selection)]="selectedUsers"
 	[rowHover]="true" dataKey="id" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-	[showCurrentPageReport]="true">
+	[showCurrentPageReport]="true" [globalFilterFields]="['first_name','last_name','phone','email']">
 
+	<ng-template pTemplate="caption">
+		<div class="flex">
+			<div class="buttons">
+				<button *ngIf="loggedUser?.roles[0]?.name=='Admin' || loggedUser?.roles[0]?.name=='Viewer'" (click)="openNewUser()" class="up">Agregar Invitado</button>
+				<button *ngIf="loggedUser?.roles[0]?.name=='Admin'" pButton icon="pi pi-send" label="Notificar" (click)="sendUsersMail()" style="color:#4f62fa"></button>
+				<button *ngIf="loggedUser?.roles[0]?.name=='Admin'" (click)="openImportData()" class="offset">Importar Invitados</button>
+			</div>			
+			<span class="p-input-icon-left ml-auto" style="padding-top:5px">				
+				<i class="pi pi-search"></i>
+				<input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Buscar..." />
+				<br>
+				<small style="color:#ACBABF; margin-left: 35px;" >*nombres, apellidos, teléfono o correo</small>
+			</span>
+		</div>
+	</ng-template>
+	
 	<ng-template pTemplate="header">
 		<tr>
 			<th *ngIf="loggedUser?.roles[0]?.name=='Admin'" style="width: 3rem">
 				<p-tableHeaderCheckbox></p-tableHeaderCheckbox>
 			</th>
-			<th pSortableColumn="first_name">Nombres<p-sortIcon field="first_name"></p-sortIcon>
+			<th pSortableColumn="first_name" style="width: 100px;">Nombres<p-sortIcon field="first_name"></p-sortIcon>
 			</th>
-			<th pSortableColumn="last_name">Apellidos<p-sortIcon field="last_name"></p-sortIcon>
+			<th pSortableColumn="last_name" style="width: 110px;">Apellidos<p-sortIcon field="last_name"></p-sortIcon>
+			</th>
+			<th pSortableColumn="phone" style="width: 100px;">Teléfono<p-sortIcon field="phone"></p-sortIcon>
 			</th>
 			<th pSortableColumn="email">Correo<p-sortIcon field="email"></p-sortIcon>
-			</th>
+			</th>			
+			<th>Comentario</th>
 			<th pSortableColumn="family_group">Grupo<p-sortIcon field="family_group"></p-sortIcon>
 			</th>
-			<th>Comentario</th>
 			<th>Mesa</th>
 			<th style="width: 6rem">Confirmados</th>
 			<th>Certificado</th>
@@ -48,22 +61,26 @@
 					class="p-button-outlined p-button-danger" style="color: #c52424"></button>
 			</th>
 			<th>
-				<p-columnFilter type="text" field="first_name" [matchMode]="'contains'" placeholder="Buscar...">
-				</p-columnFilter>
+				<!-- <p-columnFilter type="text" field="first_name" [matchMode]="'contains'" placeholder="Buscar...">
+				</p-columnFilter> -->
 			</th>
 			<th>
-				<p-columnFilter type="text" field="last_name" [matchMode]="'contains'" placeholder="Buscar...">
-				</p-columnFilter>
+				<!-- <p-columnFilter type="text" field="last_name" [matchMode]="'contains'" placeholder="Buscar...">
+				</p-columnFilter> -->
 			</th>
 			<th>
-				<p-columnFilter type="text" field="email" [matchMode]="'contains'" placeholder="Buscar...">
-				</p-columnFilter>
-			</th>
+				<!-- <p-columnFilter type="text" field="phone" [matchMode]="'contains'" placeholder="Buscar...">
+				</p-columnFilter> -->
+			</th>			
+			<th>
+				<!-- <p-columnFilter type="text" field="email" [matchMode]="'contains'" placeholder="Buscar...">
+				</p-columnFilter> -->
+			</th>			
+			<th></th>
 			<th>
 				<p-columnFilter type="text" field="family_group" [matchMode]="'contains'" placeholder="Buscar...">
 				</p-columnFilter>
 			</th>
-			<th></th>
 			<th>
 				<p-dropdown [options]="chairs" (onChange)="dt.filter($event.value, 'canvas_element.name', 'equals')"
 					autoWidth="false" [style]="{'width':'120px'}" styleClass="p-column-filter" placeholder="Todos"
@@ -89,8 +106,8 @@
 			</td>
 			<td>{{user.first_name}}</td>
 			<td>{{user.last_name}}</td>
+			<td>{{user.phone}}</td>
 			<td>{{user.email}}</td>
-			<td>{{user.family_group}}</td>
 			<td>
 				<p-dialog [(visible)]="commentDialog" [style]="{width: '450px'}" header="Comentario" [modal]="true"
 					styleClass="p-fluid">
@@ -98,6 +115,8 @@
 				</p-dialog>
 				<a *ngIf="user.comment" style="color: #4f62fa" (click)="showComment(user)">mostrar comentario</a>
 			</td>
+			<td>{{user.family_group}}</td>
+			
 			<!-- columnas de la mesa -->
 			<td>{{user.canvas_element?.name}}</td>
 			<!-- columna de la confirmación -->
@@ -119,7 +138,7 @@
 					class="p-button-rounded p-button-text" style="color: #4f62fa" (click)="editUser(user)"></button>
 			</td>
 			<td>
-				<button *ngIf="loggedUser?.roles[0]?.name=='Admin'" pButton pRipple type="button" icon="pi pi-trash"
+				<button *ngIf="loggedUser?.roles[0]?.name=='Admin' || loggedUser?.roles[0]?.name=='Viewer'" pButton pRipple type="button" icon="pi pi-trash"
 					class="p-button-rounded p-button-text" style="color: red" (click)="deleteUser(user)"></button>
 			</td>
 		</tr>
@@ -143,17 +162,22 @@
 				<small *ngIf="formUser.get('last_name').invalid && formUser.get('last_name').touched">* Por favor
 					ingrese sus nombres y apellidos</small>
 			</div>
-			<br>
-			<div class="p-field">
-				<input id="comment" type="comment" pInputText formControlName="comment" placeholder="Comentario" />
-			</div>
-			<br>
+			<br>			
 			<div class="p-field">
 				<input id="email" type="email" aria-describedby="email-help" pInputText formControlName="email"
 					placeholder="Correo" />
 				<small *ngIf="formUser.get('email').invalid && formUser.get('email').touched">* Por favor ingrese su
 					correo</small>
 			</div>
+			<br>
+			<div class="p-field">
+				<input id="phone" type="phone" pInputText formControlName="phone" placeholder="Teléfono" />
+			</div>
+			<br>
+			<div class="p-field">
+				<input id="comment" type="comment" pInputText formControlName="comment" placeholder="Comentario" />
+			</div>
+			<br>
 			<br>
 
 			<button type="submit" pButton pRipple label="Aceptar" icon="pi pi-save"

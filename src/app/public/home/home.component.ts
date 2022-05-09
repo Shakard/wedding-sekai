@@ -70,6 +70,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       first_name: [null, Validators.required],
       last_name: [null, Validators.required],
       confirmation: [null],
+      phone: [null],
       comment: [null],
       email: [null, [Validators.required, Validators.email]],
       password: [null, Validators.minLength(5)],
