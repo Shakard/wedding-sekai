@@ -57,6 +57,7 @@ export class DragdropComponent implements OnInit, AfterViewInit {
   names: string;
   mail: string;
   surname: string;
+  tableType: string;
   items: MenuItem[];
   subs = new Subscription();
   formCanvasElement: FormGroup;
@@ -89,8 +90,8 @@ export class DragdropComponent implements OnInit, AfterViewInit {
   playgrounds: CanvasElement[];
   nurseries: CanvasElement[];
   genders: string[];
-  number:number=1;
-  chairsNumber:number=4;
+  number: number = 1;
+  chairsNumber: number = 4;
   width = 0;
   height = 0;
 
@@ -138,7 +139,7 @@ export class DragdropComponent implements OnInit, AfterViewInit {
           icon: 'pi pi-fw pi-plus',
           items: [
             { label: 'Mesas redondas', command: () => this.openNewTableByNumber() },
-            { label: 'Mesa redonda', command: () => this.onSubmitRoundTable() },
+            { label: 'Mesas rectangulares', command: () => this.openNewSquareTableByNumber() },
             { label: 'Silla', command: () => this.onSubmitChair() },
             { label: 'Baño caballeros', command: () => this.onSubmitBathroomMan() },
             { label: 'Baño damas', command: () => this.onSubmitBathroomWoman() },
@@ -577,13 +578,23 @@ export class DragdropComponent implements OnInit, AfterViewInit {
     data.forEach(function (item, index) {
       angles.push((angles[index] + (360 / numberOfChairs)) % 360);
     })
-    this.buildFormCanvasElement(angles);
-    this.formCanvasElement.patchValue({ name: 'Mesa ' });
-    this.formCanvasElement.patchValue({ code: 'Msa' });
-    this.formCanvasElement.patchValue({ image: 'round-table.png' });
-    this.formCanvasElement.patchValue({ catalogue_id: 18 });
-    this.storeRoundTableByNumber(number, this.formCanvasElement.value);    
-    this.formCanvasElement.reset();
+
+    if (this.tableType == 'round') {
+      this.buildFormCanvasElement(angles);
+      this.formCanvasElement.patchValue({ name: 'Mesa Redonda' });
+      this.formCanvasElement.patchValue({ code: 'MsaRdnd' });
+      this.formCanvasElement.patchValue({ image: 'round-table.png' });
+      this.formCanvasElement.patchValue({ catalogue_id: 18 });
+      this.storeRoundTableByNumber(number, this.formCanvasElement.value);
+      this.formCanvasElement.reset();
+    } else {
+      this.formCanvasElement.patchValue({ name: 'Mesa Rectangular' });
+      this.formCanvasElement.patchValue({ code: 'MsaRctngl' });
+      this.formCanvasElement.patchValue({ image: 'square-table.png' });
+      this.formCanvasElement.patchValue({ catalogue_id: 34 });
+      this.storeRoundTableByNumber(number, this.formCanvasElement.value);
+      this.formCanvasElement.reset();
+    }    
   }
 
   onSubmitRoundTable() {
@@ -870,6 +881,13 @@ export class DragdropComponent implements OnInit, AfterViewInit {
   openNewTableByNumber() {
     this.submitted = false;
     this.tableByNumberDialog = true;
+    this.tableType = 'round';
+  }
+
+  openNewSquareTableByNumber() {
+    this.submitted = false;
+    this.tableByNumberDialog = true;
+    this.tableType = 'square';
   }
   //================================================================
   //======================Inicio de brueba==========================

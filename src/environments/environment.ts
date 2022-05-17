@@ -5,6 +5,7 @@ export const URL_API = 'http://localhost/Wedding-backend/public/api/';
 
 export const environment = {
   production: false,
+  // URL_API_REMOTE: 'http://127.0.0.1:8000/api/',
   URL_API_REMOTE: 'http://localhost/Wedding-backend/public/api/',
   URL_API_LOCAL: 'https://backend.wedding-solvit.com/api/',  
 };

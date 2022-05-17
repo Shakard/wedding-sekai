@@ -354,6 +354,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
+  sendUsersQr() {
+    this.messageService.questionSendMail({})
+    .then((result) => {
+      if (result.isConfirmed) {
+        this.spinner.show()
+        this.userService.get('send-users-qr')
+          .subscribe(response => {
+            this.getGuests();
+            this.spinner.hide();
+            this.messageService.success(response);
+          }, error => {
+            this.getGuests();            
+            this.spinner.hide();
+            this.selectedUsers=null;            
+            this.messageService.error(error);
+          });
+      }
+    });
+  }
+
   removeChair(user: User) {
     this.formChair.patchValue(user.chair);
     this.formChair.patchValue({ user: null });

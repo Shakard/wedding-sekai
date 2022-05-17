@@ -21,6 +21,7 @@
 			<div class="buttons">
 				<button *ngIf="loggedUser?.roles[0]?.name=='Admin' || loggedUser?.roles[0]?.name=='Viewer'" (click)="openNewUser()" class="up">Agregar Invitado</button>
 				<button *ngIf="loggedUser?.roles[0]?.name=='Admin'" pButton icon="pi pi-send" label="Notificar" (click)="sendUsersMail()" style="color:#4f62fa"></button>
+				<button *ngIf="loggedUser?.roles[0]?.name=='Admin'" pButton icon="pi pi-send" label="Qr" (click)="sendUsersQr()" style="color:#4f62fa"></button>
 				<button *ngIf="loggedUser?.roles[0]?.name=='Admin'" (click)="openImportData()" class="offset">Importar Invitados</button>
 			</div>			
 			<span class="p-input-icon-left ml-auto" style="padding-top:5px">				
