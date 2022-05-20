@@ -54,10 +54,12 @@ export class DragdropComponent implements OnInit, AfterViewInit {
   angles: number[] = [];
   //================================================================
 
+  chr: string; 
   names: string;
   mail: string;
   surname: string;
   tableType: string;
+  loggedUser: User;
   items: MenuItem[];
   subs = new Subscription();
   formCanvasElement: FormGroup;
@@ -65,6 +67,7 @@ export class DragdropComponent implements OnInit, AfterViewInit {
   tableByNumberDialog: boolean;
   submitted: boolean;
   isToggled = {};
+  guestListIsToggled = false;
   isHovered = {};
   guestDeployed: boolean;
   canvasElement: CanvasElement;
@@ -127,6 +130,7 @@ export class DragdropComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.buildFormCanvasElement(this.angles);
+    this.getLoggedUser();
     this.buildFormFilters();
     this.getAllElements();
     this.getGuests();
@@ -140,7 +144,6 @@ export class DragdropComponent implements OnInit, AfterViewInit {
           items: [
             { label: 'Mesas redondas', command: () => this.openNewTableByNumber() },
             { label: 'Mesas rectangulares', command: () => this.openNewSquareTableByNumber() },
-            { label: 'Silla', command: () => this.onSubmitChair() },
             { label: 'Baño caballeros', command: () => this.onSubmitBathroomMan() },
             { label: 'Baño damas', command: () => this.onSubmitBathroomWoman() },
             { label: 'Mesa de dulces', command: () => this.onSubmitCandyBar() },
@@ -357,6 +360,14 @@ export class DragdropComponent implements OnInit, AfterViewInit {
   public getGuests() {
     this.userService.getGuests().subscribe(response => {
       this.users = response['data']
+    });
+  }
+
+  public getLoggedUser() {
+    this.userService.getLoggedUser().subscribe(response => {
+      this.loggedUser = response['data']
+      console.log(this.loggedUser.roles[0]?.name);
+      
     });
   }
 
@@ -595,6 +606,11 @@ export class DragdropComponent implements OnInit, AfterViewInit {
       this.storeRoundTableByNumber(number, this.formCanvasElement.value);
       this.formCanvasElement.reset();
     }    
+  }
+
+  idOf(i) {
+    // return String.fromCharCode(64 + i);
+    return (i >= 26 ? this.idOf((i / 26 >> 0) - 1) : '') +  'AABCDFGHIJKLMNOPQRSTUVWXYZ'[i % 26 >> 0];
   }
 
   onSubmitRoundTable() {

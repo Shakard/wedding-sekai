@@ -1,4 +1,4 @@
-<div class="layout-topbar">
+<div *ngIf="loggedUser?.roles[0]?.name=='Admin' || loggedUser?.roles[0]?.name=='Viewer'" class="layout-topbar">
     <div class="container">
         <div class="layout-topbar-logo" routerLink="/home">
             <!-- <img src="assets/layout/images/{{app.darkMode ? 'logo-white' : 'logo-dark'}}.svg" alt="logo">            -->
@@ -10,7 +10,7 @@
         </div>    
     </div>
 
-    <a *ngIf="loggedUser?.roles[0]?.name=='Admin' || loggedUser?.roles[0]?.name=='Viewer'" class="p-link layout-menu-button layout-topbar-button" href="#"
+    <a class="p-link layout-menu-button layout-topbar-button" href="#"
         (click)="appMain.toggleMenu($event)">
         <i class="pi pi-bars"></i>
     </a>
