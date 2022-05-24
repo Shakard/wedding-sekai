@@ -6,7 +6,7 @@ img {
 }
 
 .centered {
-  position: fixed;
+  position: absolute;
   border: 1px solid;
   border-color: #2b6777;
   background-color: #c8d8e4;
@@ -18,7 +18,7 @@ img {
   z-index: 999;
   color: #2b6777;
   font-size: 14px;
-  transform: translate(80%, -150%);
+  transform: translate(120%, -40%);
 }
 
 // =========================================================
@@ -297,6 +297,7 @@ code {
 }
 
 .box-container {
+  position: relative;
   overflow: hidden;
   width:100%;
   box-sizing: border-box;
@@ -305,8 +306,12 @@ code {
   background-color: #dddddd;
 }
 
+.container-tables {
+  position: absolute;
+}
+
 .table-guest-container {
-  position: relative;
+  position: absolute;
   border: solid 1px #1b3f6e;
   width: auto;
   height: 100%;
@@ -376,7 +381,7 @@ code {
 }
 
 .tables-container {
-  position: fixed;
+  position: absolute;
   width: auto;
   min-width: 60px;
   max-width: 100%;
@@ -833,6 +838,7 @@ code {
 // =================================================================================================================
 
 .tables-container {
+  position: absolute;
   outline: 2px dashed green;
 
   &.active {

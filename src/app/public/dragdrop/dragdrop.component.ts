@@ -13,6 +13,7 @@ import { CanvasElement } from 'src/app/models/table-management/canvas-element';
 import { ResizedEvent } from 'angular-resize-event';
 import { MenuItem } from 'primeng/api';
 import { Input, AfterViewInit, HostListener } from '@angular/core';
+import { Catalogue } from 'src/app/models/table-management/catalogue';
 
 const enum Status {
   OFF = 0,
@@ -54,7 +55,8 @@ export class DragdropComponent implements OnInit, AfterViewInit {
   angles: number[] = [];
   //================================================================
 
-  chr: string; 
+  chr: string;
+  canvasElementSelected: boolean = false;
   names: string;
   mail: string;
   surname: string;
@@ -65,6 +67,7 @@ export class DragdropComponent implements OnInit, AfterViewInit {
   formCanvasElement: FormGroup;
   formFilters: FormGroup;
   tableByNumberDialog: boolean;
+  customElementDialog: boolean;
   submitted: boolean;
   isToggled = {};
   guestListIsToggled = false;
@@ -73,6 +76,7 @@ export class DragdropComponent implements OnInit, AfterViewInit {
   canvasElement: CanvasElement;
   canvasElements: CanvasElement[];
   users: User[];
+  elementsTypes: Catalogue[];
   allUsers: User[];
   chairs: Chair[];
   tables: CanvasElement[];
@@ -135,6 +139,7 @@ export class DragdropComponent implements OnInit, AfterViewInit {
     this.getAllElements();
     this.getGuests();
     this.getTables();
+    this.getCanvasElementsTypes();
     this.items = [
       {
         label: 'Elementos',
@@ -142,6 +147,7 @@ export class DragdropComponent implements OnInit, AfterViewInit {
           label: 'New',
           icon: 'pi pi-fw pi-plus',
           items: [
+            { label: 'Figura', command: () => this.openNewCustomElement() },
             { label: 'Mesas redondas', command: () => this.openNewTableByNumber() },
             { label: 'Mesas rectangulares', command: () => this.openNewSquareTableByNumber() },
             { label: 'Baño caballeros', command: () => this.onSubmitBathroomMan() },
@@ -363,11 +369,17 @@ export class DragdropComponent implements OnInit, AfterViewInit {
     });
   }
 
+  public getCanvasElementsTypes() {
+    this.userService.get('canvas-elements-types').subscribe(response => {
+      this.elementsTypes = response['data']
+    });
+  }
+
   public getLoggedUser() {
     this.userService.getLoggedUser().subscribe(response => {
       this.loggedUser = response['data']
       console.log(this.loggedUser.roles[0]?.name);
-      
+
     });
   }
 
@@ -605,12 +617,12 @@ export class DragdropComponent implements OnInit, AfterViewInit {
       this.formCanvasElement.patchValue({ catalogue_id: 34 });
       this.storeRoundTableByNumber(number, this.formCanvasElement.value);
       this.formCanvasElement.reset();
-    }    
+    }
   }
 
   idOf(i) {
     // return String.fromCharCode(64 + i);
-    return (i >= 26 ? this.idOf((i / 26 >> 0) - 1) : '') +  'AABCDFGHIJKLMNOPQRSTUVWXYZ'[i % 26 >> 0];
+    return (i >= 26 ? this.idOf((i / 26 >> 0) - 1) : '') + 'AABCDFGHIJKLMNOPQRSTUVWXYZ'[i % 26 >> 0];
   }
 
   onSubmitRoundTable() {
@@ -894,6 +906,29 @@ export class DragdropComponent implements OnInit, AfterViewInit {
   //================================================================
   //======================fin de panzoom============================
   //================================================================
+  openNewCustomElement() {
+    this.submitted = false;
+    this.customElementDialog = true;
+  }
+
+  selectElementType(event: any) {
+    let rand = Math.random() * 7;
+    rand = Math.floor(rand);
+    console.log(rand); 
+
+    this.formCanvasElement.patchValue({ name: event.value?.name });
+    this.formCanvasElement.patchValue({ code: 'custom' });
+    this.formCanvasElement.patchValue({ image: rand + '.png' });
+    this.formCanvasElement.patchValue({ catalogue_id: event.value?.id });
+    this.canvasElementSelected = true;
+  }
+
+  submitCustomElement() {
+    this.formCanvasElement.patchValue({ code: 'custom' });
+    this.storeCanvasElement(this.formCanvasElement.value);
+    this.formCanvasElement.reset();
+  }
+
   openNewTableByNumber() {
     this.submitted = false;
     this.tableByNumberDialog = true;
@@ -905,6 +940,7 @@ export class DragdropComponent implements OnInit, AfterViewInit {
     this.tableByNumberDialog = true;
     this.tableType = 'square';
   }
+
   //================================================================
   //======================Inicio de brueba==========================
   //================================================================ 

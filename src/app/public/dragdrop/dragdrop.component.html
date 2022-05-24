@@ -176,3 +176,19 @@
       </div>
     </ng-template>
   </p-dialog>
+
+  <p-dialog [(visible)]="customElementDialog" [style]="{width: '300px'}" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+      <form [formGroup]="formCanvasElement" (ngSubmit)="submitCustomElement()">
+        <div class="p-field">
+          <p-dropdown [options]="elementsTypes" (onChange)="selectElementType($event)" placeholder="Seleccione un objeto"
+          optionLabel="name" [showClear]="true"></p-dropdown>
+        </div>
+        <div>
+        </div>
+        <br>  
+        <button type="submit" pButton pRipple label="Aceptar" icon="pi pi-save"
+          class="p-button-success p-button-raised"></button>
+      </form>
+    </ng-template>
+  </p-dialog>
