@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (result: any) => {
           localStorage.setItem('token', result.data.token);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/wedding-area']);
           this.spinner.hide();
         },
         

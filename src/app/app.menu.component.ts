@@ -51,7 +51,7 @@ export class AppMenuComponent implements OnInit {
                     {label: 'data',icon: 'pi pi-fw pi-chart-line', routerLink: ['data']}, 
                     {label: 'Invitados',icon: 'pi pi-fw pi-home', routerLink: ['home']}, 
                     {label: 'Imágenes',icon: 'pi pi-fw pi-image', routerLink: ['seat']}, 
-                    {label: 'Administrar Boda',icon: 'pi pi-fw pi-cog', routerLink: ['drag-drop']}, 
+                    {label: 'Administrar Boda',icon: 'pi pi-fw pi-cog', routerLink: ['wedding-area']}, 
                     {label: 'Gallería',icon: 'pi pi-fw pi-image', routerLink: ['gallery']}, 
                 ]
             },

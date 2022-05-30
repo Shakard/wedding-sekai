@@ -57,28 +57,35 @@
 </div>
 
 <div class="main-container">
-  <div class="box-container">
-    <div #tableContainer class="container-tables" dragula="COLUMNS" [(dragulaModel)]="tables">
+  <div #tableContainer class="sub-container">
+    <div class="container-tables" dragula="COLUMNS" [(dragulaModel)]="tables">
       <!-- ==================================Elementos del lienzo============================== -->
       <div id="{{canvasElement.id}}" *ngFor="let canvasElement of canvasElements; '$implicit.id' as i"
-        class="tables-container" cdkDragBoundary=".box-container" (cdkDragEnded)="dragEnd($event, canvasElement.id)"
-        (mouseover)="isHovered[i] = true" (mouseout)="onHoverOut(i)" (dblclick)="isToggled[i] = !isToggled[i]"
+        class="tables-container" cdkDragBoundary=".main-container" (cdkDragEnded)="dragEnd($event, canvasElement.id)"
+        (mouseover)="isHovered[i] = true" (mouseout)="onHoverOut(i)"
+        (click)="showGuests(i)" (dblclick)="isToggled[i] = !isToggled[i]"
         [cdkDragDisabled]="loggedUser?.roles[0]?.name!='Admin' && loggedUser?.roles[0]?.name!='Viewer'" cdkDrag>
         <div class="element-name" style="
                 --top:{{canvasElement.height/2.6}}px;
                 --left:{{canvasElement.width/2.6}}px;
                 --size:{{canvasElement.width/3}}px;">
-          <ng-container *ngIf="canvasElement.catalogue_id == 18" >{{canvasElement.code}}</ng-container>
-          <ng-container *ngIf="canvasElement.catalogue_id == 34" >{{idOf(canvasElement.code)}}</ng-container>
-          
+          <ng-container *ngIf="canvasElement.catalogue_id == 18">{{canvasElement.code}}</ng-container>
+          <!-- <ng-container *ngIf="canvasElement.catalogue_id == 34">{{idOf(canvasElement.code)}}</ng-container> -->
+          <ng-container *ngIf="canvasElement.catalogue_id == 34">{{canvasElement.code}}</ng-container>
         </div>
+        <div class="guest-element-name" *ngIf="canvasElement.catalogue_id != 34 && canvasElement.catalogue_id !=18"
+          style="
+        --top:{{canvasElement.height/2}}px;
+        --left:{{(canvasElement.width/2)-((canvasElement.width+canvasElement.height)/30)}}px;
+        --size:{{(canvasElement.width+canvasElement.height)/30}}px;">{{removeNumbers(canvasElement.name)}}</div>
+
         <div [ngStyle]="{'resize': (loggedUser?.roles[0]?.name=='Admin') ? 'both' : null }" class="contenedor-flexbox"
           (resized)="onResized($event)">
           <div class="handle" cdkDragHandle>
             <div class="main">
               <img class="circle" id="img{{canvasElement.id}}"
                 src="assets/images/svg_toolbar_icons/{{canvasElement.image}}" alt="{{canvasElement.name}}">
-              <ng-container *ngIf="canvasElement.catalogue_id == 18">
+              <!-- <ng-container *ngIf="canvasElement.catalogue_id == 18">
                 <div *ngFor="let deg of canvasElement.chairs" class="shapes" style="--deg:{{deg+53}}deg;
                 --width:{{canvasElement.width/(canvasElement.chairs.length/2)}}px;
                 --height:{{canvasElement.height/(canvasElement.chairs.length/2)}}px;                        
@@ -86,7 +93,7 @@
                 max-width: 50px;
                 max-height: 50px;">
                 </div>
-              </ng-container>
+              </ng-container> -->
             </div>
           </div>
         </div>
@@ -131,7 +138,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="(canvasElement.catalogue_id == 18 || canvasElement.catalogue_id == 34) && isHovered[i]"
+        <div *ngIf="(canvasElement.catalogue_id == 18 || canvasElement.catalogue_id == 34) && loggedUser?.roles[0]?.name=='Guest' && isCLicked[i]"
           class="centered">
           <ul>
             <li *ngFor="let user of canvasElement.users">
@@ -139,6 +146,10 @@
             </li>
           </ul>
         </div>
+        <!-- <p-button label="View" styleClass="p-button-link"
+        (click)="showGuests(i)" style="color: red;  position: absolute;
+                       transform: translate(-5%, -375%);
+                       z-index: 999;"></p-button> -->
       </div>
       <div class="spacer"></div>
     </div>
@@ -181,12 +192,12 @@
     <ng-template pTemplate="content">
       <form [formGroup]="formCanvasElement" (ngSubmit)="submitCustomElement()">
         <div class="p-field">
-          <p-dropdown [options]="elementsTypes" (onChange)="selectElementType($event)" placeholder="Seleccione un objeto"
-          optionLabel="name" [showClear]="true"></p-dropdown>
+          <p-dropdown [options]="elementsTypes" (onChange)="selectElementType($event)"
+            placeholder="Seleccione un objeto" optionLabel="name" [showClear]="true"></p-dropdown>
         </div>
         <div>
         </div>
-        <br>  
+        <br>
         <button type="submit" pButton pRipple label="Aceptar" icon="pi pi-save"
           class="p-button-success p-button-raised"></button>
       </form>

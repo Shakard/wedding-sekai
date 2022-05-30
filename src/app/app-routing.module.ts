@@ -50,7 +50,7 @@ import { ViewerGuardGuard as ViewerGuard} from './services/login/viewer-guard.gu
                     {path: 'gallery', component: GalleryComponent, canActivate: [AuthGuard, AdminGuard]}, 
                     {path: 'data', component: DataComponent, canActivate: [AuthGuard, AdminGuard]}, 
                     {path: 'seat', component: GuestSeatComponent, canActivate: [AuthGuard, AdminGuard]}, 
-                    {path: 'drag-drop', component: DragdropComponent, canActivate: [AuthGuard]}, 
+                    {path: 'wedding-area', component: DragdropComponent, canActivate: [AuthGuard]}, 
                     {path: 'uikit/formlayout', component: FormLayoutComponent},                    
                     {path: 'uikit/input', component: InputComponent},
                     {path: 'uikit/floatlabel', component: FloatLabelComponent},

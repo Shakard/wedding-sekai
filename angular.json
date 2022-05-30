@@ -32,7 +32,8 @@
                         ],
                         "scripts": [
                             "node_modules/prismjs/prism.js",
-                            "node_modules/prismjs/components/prism-typescript.js"
+                            "node_modules/prismjs/components/prism-typescript.js",
+                            "node_modules/jquery/dist/jquery.min.js"
                         ],
                         "allowedCommonJsDependencies": ["chart.js"]
                     },
@@ -41,13 +42,13 @@
                             "budgets": [
                                 {
                                     "type": "initial",
-                                    "maximumWarning": "3mb",
-                                    "maximumError": "5mb"
+                                    "maximumWarning": "6mb",
+                                    "maximumError": "10mb"
                                 },
                                 {
                                     "type": "anyComponentStyle",
-                                    "maximumWarning": "6kb",
-                                    "maximumError": "10kb"
+                                    "maximumWarning": "10kb",
+                                    "maximumError": "25kb"
                                 }
                             ],
                             "fileReplacements": [

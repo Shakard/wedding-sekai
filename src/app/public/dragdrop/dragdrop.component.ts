@@ -71,6 +71,7 @@ export class DragdropComponent implements OnInit, AfterViewInit {
   submitted: boolean;
   isToggled = {};
   guestListIsToggled = false;
+  isCLicked = {};
   isHovered = {};
   guestDeployed: boolean;
   canvasElement: CanvasElement;
@@ -275,7 +276,7 @@ export class DragdropComponent implements OnInit, AfterViewInit {
 
   resizeDiv(id: any, catalogue_id: any) {
     if (catalogue_id == 18) {
-      var data = { id: id, width: this.width, height: this.width };
+      var data = { id: id, width: this.width, height: this.height };
       this.userService.update('update-element-size', data).subscribe(response => {
         this.placeCanvasElementById(id);
         this.getAllElements();
@@ -299,7 +300,7 @@ export class DragdropComponent implements OnInit, AfterViewInit {
         if (x != null && y != null) {
           var d = document.getElementById(element.id.toString());
           if (d != null) {
-            d.style.position = "relative";
+            d.style.position = "absolute";
             d.style.left = x + 'px';
             d.style.top = y + 'px';
           }
@@ -361,6 +362,10 @@ export class DragdropComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.isHovered[$i] = false
     }, 2000);
+  }
+
+  public showGuests($i) {
+      this.isCLicked[$i] = !this.isCLicked[$i];
   }
 
   public getGuests() {
@@ -614,7 +619,8 @@ export class DragdropComponent implements OnInit, AfterViewInit {
       this.formCanvasElement.patchValue({ name: 'Mesa Rectangular' });
       this.formCanvasElement.patchValue({ code: 'MsaRctngl' });
       this.formCanvasElement.patchValue({ image: 'square-table.png' });
-      this.formCanvasElement.patchValue({ catalogue_id: 34 });
+      this.formCanvasElement.patchValue({ catalogue_id: 18 });
+      // this.formCanvasElement.patchValue({ catalogue_id: 34 });
       this.storeRoundTableByNumber(number, this.formCanvasElement.value);
       this.formCanvasElement.reset();
     }
@@ -622,7 +628,12 @@ export class DragdropComponent implements OnInit, AfterViewInit {
 
   idOf(i) {
     // return String.fromCharCode(64 + i);
-    return (i >= 26 ? this.idOf((i / 26 >> 0) - 1) : '') + 'AABCDFGHIJKLMNOPQRSTUVWXYZ'[i % 26 >> 0];
+    return (i >= 26 ? this.idOf((i / 26 >> 0) - 1) : '') + 'AABCDEFGHIJKLMNOPQRSTUVWXYZ'[i % 26 >> 0];
+  }
+
+  removeNumbers(name: string) {
+    const noNumbers = name.replace(/[0-9]/g, '');
+    return noNumbers;
   }
 
   onSubmitRoundTable() {
@@ -914,17 +925,17 @@ export class DragdropComponent implements OnInit, AfterViewInit {
   selectElementType(event: any) {
     let rand = Math.random() * 7;
     rand = Math.floor(rand);
-    console.log(rand); 
-
-    this.formCanvasElement.patchValue({ name: event.value?.name });
+    console.log(rand);
+    if (event.value?.id != 36) {
+      this.formCanvasElement.patchValue({ name: event.value?.name });
+      this.formCanvasElement.patchValue({ image: rand + '.png' });
+    }
     this.formCanvasElement.patchValue({ code: 'custom' });
-    this.formCanvasElement.patchValue({ image: rand + '.png' });
     this.formCanvasElement.patchValue({ catalogue_id: event.value?.id });
     this.canvasElementSelected = true;
   }
 
   submitCustomElement() {
-    this.formCanvasElement.patchValue({ code: 'custom' });
     this.storeCanvasElement(this.formCanvasElement.value);
     this.formCanvasElement.reset();
   }
@@ -942,7 +953,7 @@ export class DragdropComponent implements OnInit, AfterViewInit {
   }
 
   //================================================================
-  //======================Inicio de brueba==========================
+  //======================Inicio de prueba==========================
   //================================================================ 
 
   renderAngle(data, numberOfChairs) {

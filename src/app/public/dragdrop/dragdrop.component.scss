@@ -19,6 +19,7 @@ img {
   color: #2b6777;
   font-size: 14px;
   transform: translate(120%, -40%);
+  pointer-events: none;
 }
 
 // =========================================================
@@ -98,6 +99,7 @@ img {
   margin-left: 20rem;
   margin-top: -3.5rem;
   z-index: 1;
+  
 
 }
 
@@ -106,7 +108,7 @@ img {
   height: 25px;
   width: 228px;
   grid-template-columns: 90% 10%;
-  box-sizing: border-box;  
+  box-sizing: border-box;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -269,62 +271,67 @@ code {
 
 //=====================================================================
 .main-container {
+  overflow: hidden;
   position: relative;
   margin-left: 5px;
+  margin-right: 2rem;
   margin-bottom: 50px;
   width: 95%;
-  height: 101%;
-  min-height: 520px;
-  min-width: 510px;
+  height: 80vh;
+  // min-height: 520px;
+  // min-width: 510px;
   border: 3px solid;
   display: flex;
-  // grid-template-columns: 19% auto;
-  // border-color: #19bc8b;
+  background-color: #dddddd;
   border-color: #2b7573;
   border-radius: 4px;
-  // background-color: var(--surface-overlay);
-
   box-sizing: border-box;
-  // min-height: 515px;
-  // min-width: 1071px;
-  // resize: both;
-  // overflow: auto;
 }
 
-.filters{
+.filters {
   width: 90%;
   height: 120%;
 }
 
-.box-container {
-  position: relative;
-  overflow: hidden;
-  width:100%;
-  box-sizing: border-box;
-
-  // border: 3px solid black;
+.sub-container {
+  position: absolute;
+  width: 9999vh;
+  height: 9999vh;
+  // top: -9999px;
+  // left: -9999px;
   background-color: #dddddd;
+  // top: -5000vh;
+  // left: -5000vh;
+  // background-size: 100px 100px;
+  // background-image:
+  //   linear-gradient(to right, rgb(173, 173, 173) 3px, transparent 1px),
+  //   linear-gradient(to bottom, rgb(173, 173, 173) 3px, transparent 1px);
+  // background-size: 50% 50%;
+  // background-image:
+  //   linear-gradient(to right, blue 1px, transparent 1px),
+  //   linear-gradient(to bottom, blue 1px, transparent 1px);
 }
 
 .container-tables {
-  position: absolute;
+  position: relative;
 }
 
 .table-guest-container {
-  position: absolute;
+  position: relative;
   border: solid 1px #1b3f6e;
   width: auto;
   height: 100%;
   min-width: 100px;
   display: inline-block;
   vertical-align: top;
-  z-index: 999;
-  margin-top:10px;
+  z-index: 5;
+  margin-top: 10px;
   // transform: translate(-10%, 130%);
   font-weight: 400;
+  pointer-events: none;
 }
 
-.bottom-container{
+.bottom-container {
   position: absolute;
   display: inline-block;
   max-height: 30px;
@@ -361,7 +368,7 @@ code {
   background: rgb(255, 255, 255);
   border-radius: 3px;
   overflow: hidden;
-  overflow-y:scroll;
+  overflow-y: scroll;
   display: block;
 }
 
@@ -381,13 +388,13 @@ code {
 }
 
 .tables-container {
-  position: absolute;
+  position: relative;
   width: auto;
   min-width: 60px;
   max-width: 100%;
   margin: 0 25px 25px 0;
   display: inline-block;
-  vertical-align: top;
+  z-index: 6;
 }
 
 .example-list {
@@ -429,16 +436,21 @@ code {
 }
 
 .handle {
-  cursor: grab;
-}
-
-.contenedor-flexbox {
-  // resize: both;
+  position: relative;
   overflow: auto;
   display: flex;
   width: 100%;
   height: 100%;
-  /*Convertimos al menú en flexbox*/
+  cursor: grab;
+}
+
+.contenedor-flexbox {
+  position: relative;
+  overflow: auto;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  // /*Convertimos al menú en flexbox*/
   justify-content: space-between;
   /*Con esto le indicamos que margine todos los items que se encuentra adentro hacia la derecha e izquierda*/
 }
@@ -810,9 +822,10 @@ code {
   // border-color: #111;
   height: 10%;
   width: 10%;
-  z-index: 3;
+  z-index: 6;
   // border-radius: 50%;
   //  object-fit: fill;
+  pointer-events: none;
   position: flex;
 }
 
@@ -825,7 +838,7 @@ code {
   width: var(--width);
   height: var(--height);
   border-radius: 50%;
-  background: #171a2e;
+  background: #a1887f;
   /* TAKIT: Using CSS var is cool for the rotation
             Using translate here to shift it from the center */
   transform: rotate(var(--deg)) translate(-50%, var(--distance));
@@ -869,12 +882,12 @@ code {
 }
 
 // ============================================================================================================
-.element-name{
+.element-name {
   border-radius: 3px;
   position: absolute;
   // background-color: #171a2e;
   font-size: var(--size);
-  z-index: 99;
+  z-index: 7;
   font-weight: bold;
   color: white;
   top: calc(var(--top));
@@ -883,3 +896,55 @@ code {
   /* TAKIT: position at center, 3px is half the width */
   pointer-events: none;
 }
+
+// .guest-element-name{
+//   border-radius: 3px;
+//   position: absolute;
+//   // background-color: #171a2e;
+//   font-size: var(--size);
+//   z-index: 99;
+//   font-weight: bold;
+//   color: white;
+//   top: calc(var(--top));
+//   /* TAKIT: position at center, 25px is half the height */
+//   left: calc(var(--left));
+//   /* TAKIT: position at center, 3px is half the width */
+//   pointer-events: none;
+// }
+
+.guest-element-name {
+  border-radius: 3px;
+  position: absolute;
+  // background-color: #171a2e;
+  font-size: var(--size);
+  z-index: 7;
+  font-weight: bold;
+  color: white;
+  padding-top: var(--top);
+  /* TAKIT: position at center, 25px is half the height */
+  padding-left: var(--left);
+  /* TAKIT: position at center, 3px is half the width */
+  pointer-events: none;
+}
+
+// .grid{
+//   /* Change background size to change grid size. */
+//     background-size: 10px 10px;
+//     background-image:
+//     linear-gradient(to right, grey 1px, transparent 1px),
+//     linear-gradient(to bottom, grey 1px, transparent 1px);
+//   width: 400px;
+//   height: 200px;
+//   border: 1px solid black;
+//   position: relative;
+// }
+
+// .inner-grid{
+//   /* Highlight the center line. */
+//     background-size: 50% 50%;
+//     background-image:
+//     linear-gradient(to right, blue 1px, transparent 1px),
+//     linear-gradient(to bottom, blue 1px, transparent 1px);
+//   width: 100%;
+//   height: 100%
+// }
